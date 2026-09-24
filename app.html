@@ -7,9 +7,9 @@
   <style>
     :root {
       --bg: #0b1020;
-      --bg-2: #111827;
-      --panel: rgba(17, 24, 39, 0.78);
-      --panel-strong: #111827;
+      --bg-soft: #111827;
+      --panel: rgba(17, 24, 39, 0.82);
+      --panel-strong: rgba(15, 23, 42, 0.96);
       --ink: #e5eefb;
       --muted: #95a7c2;
       --line: rgba(148, 163, 184, 0.18);
@@ -31,6 +31,7 @@
       font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
       background: linear-gradient(180deg, #0b1020, #0c1324 18%, #0f172a 100%);
       color: var(--ink);
+      min-height: 100vh;
     }
 
     button, input, textarea, select {
@@ -40,6 +41,7 @@
     button {
       cursor: pointer;
       border: none;
+      outline: none;
     }
 
     .app {
@@ -109,26 +111,35 @@
       gap: 8px;
     }
 
-    .quick-access-btn {
+    .quick-access-btn,
+    .nav-btn {
       width: 100%;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      background: rgba(148, 163, 184, 0.05);
+      gap: 12px;
+      background: transparent;
       color: var(--ink);
-      border: 1px solid transparent;
-      border-radius: 12px;
-      padding: 9px 12px;
-      transition: 0.2s ease;
+      border-radius: 14px;
+      padding: 12px 14px;
       font-weight: 600;
+      transition: 0.2s ease;
+      text-align: left;
+      border: 1px solid transparent;
+    }
+
+    .quick-access-btn {
+      justify-content: space-between;
+      background: rgba(148, 163, 184, 0.05);
+      padding: 9px 12px;
     }
 
     .quick-access-btn:hover,
-    .quick-access-btn.active {
-      background: rgba(124, 108, 255, 0.12);
-      border-color: rgba(124, 108, 255, 0.3);
+    .quick-access-btn.active,
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: linear-gradient(135deg, rgba(124,108,255,0.18), rgba(124,108,255,0.08));
       color: #fff;
+      border-color: rgba(124,108,255,0.2);
     }
 
     .nav {
@@ -136,28 +147,6 @@
       flex-direction: column;
       gap: 8px;
       margin-top: 8px;
-    }
-
-    .nav-btn {
-      width: 100%;
-      background: transparent;
-      color: var(--ink);
-      border-radius: 14px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 600;
-      transition: 0.2s ease;
-      text-align: left;
-      border: 1px solid transparent;
-    }
-
-    .nav-btn:hover,
-    .nav-btn.active {
-      background: linear-gradient(135deg, rgba(124,108,255,0.18), rgba(124,108,255,0.08));
-      color: #fff;
-      border-color: rgba(124,108,255,0.2);
     }
 
     .main {
@@ -298,6 +287,7 @@
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
       color: white;
       box-shadow: 0 10px 28px rgba(124,108,255,0.2);
+      white-space: nowrap;
     }
 
     .ghost-btn {
@@ -331,7 +321,11 @@
     .modal-box,
     .panel,
     .sheet-panel,
-    .slide-panel {
+    .slide-panel,
+    .project-card,
+    .mini-card,
+    .template-card,
+    .empty-box {
       background: rgba(17, 24, 39, 0.82);
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -362,34 +356,35 @@
       color: var(--ink);
     }
 
-    .cards-grid {
+    .cards-grid,
+    .project-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 16px;
     }
 
-    .template-card {
-      background: rgba(17, 24, 39, 0.82);
-      border: 1px solid var(--line);
-      border-radius: 20px;
+    .template-card,
+    .project-card {
       padding: 22px 18px;
-      box-shadow: var(--shadow);
       cursor: pointer;
       transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
-    .template-card:hover {
+    .template-card:hover,
+    .project-card:hover {
       transform: translateY(-3px);
       box-shadow: 0 18px 42px rgba(124,108,255,0.08);
     }
 
-    .template-emoji {
+    .template-emoji,
+    .project-card .emoji {
       font-size: 2rem;
       margin-bottom: 10px;
       display: inline-block;
     }
 
-    .template-card h3 {
+    .template-card h3,
+    .project-card h3 {
       margin: 0 0 8px;
       font-size: 1.1rem;
       color: var(--ink);
@@ -456,11 +451,19 @@
       min-height: 36px;
     }
 
-    .workspace {
+    .workspace,
+    .ppt-workspace {
       margin-top: 16px;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 240px;
       gap: 18px;
+    }
+
+    .workspace {
+      grid-template-columns: minmax(0, 1fr) 240px;
+    }
+
+    .ppt-workspace {
+      grid-template-columns: 180px minmax(0, 1fr);
     }
 
     .doc-panel,
@@ -502,11 +505,7 @@
     }
 
     .mini-card {
-      background: rgba(17, 24, 39, 0.8);
-      border: 1px solid var(--line);
-      border-radius: 18px;
       padding: 16px;
-      box-shadow: var(--shadow);
     }
 
     .counter {
@@ -591,38 +590,6 @@
       outline-offset: -2px;
     }
 
-    .sheet-tabs {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-top: 14px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-
-    .sheet-tab {
-      background: rgba(148, 163, 184, 0.05);
-      border: 1px solid var(--line);
-      border-radius: 10px 10px 0 0;
-      padding: 8px 12px;
-      font-weight: 700;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .sheet-tab.active {
-      color: var(--ink);
-      border-bottom-color: transparent;
-      background: rgba(15, 23, 42, 0.9);
-    }
-
-    .ppt-workspace {
-      display: grid;
-      grid-template-columns: 180px minmax(0, 1fr);
-      gap: 18px;
-      margin-top: 16px;
-    }
-
     .thumb-list {
       display: flex;
       flex-direction: column;
@@ -689,40 +656,10 @@
       color: var(--muted);
     }
 
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .project-card {
-      background: rgba(17, 24, 39, 0.8);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .project-card .emoji {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
-    }
-
-    .project-card h3 {
-      margin: 0 0 8px;
-      font-size: 1.1rem;
-      color: var(--ink);
-    }
-
     .empty-box {
-      background: rgba(17, 24, 39, 0.76);
-      border: 1px dashed var(--line);
-      border-radius: 18px;
       padding: 28px 20px;
       text-align: center;
       color: var(--muted);
-      box-shadow: var(--shadow);
     }
 
     .settings-box {
@@ -836,28 +773,88 @@
       color: var(--ink);
     }
 
-    @media (max-width: 980px) {
-      .workspace { grid-template-columns: 1fr; }
-      .ppt-workspace { grid-template-columns: 1fr; }
-      .project-grid, .cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .stats { grid-template-columns: 1fr; }
+    @media (max-width: 1100px) {
+      .app { display: block; }
+      .sidebar {
+        position: sticky;
+        inset: 0 0 auto 0;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .main {
+        margin-left: 0;
+        padding: 22px 18px 32px;
+      }
+      .nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .nav-btn,
+      .quick-access-btn {
+        min-width: 120px;
+      }
     }
 
-    @media (max-width: 760px) {
-      .sidebar {
-        width: 86px;
-        padding-left: 10px;
-        padding-right: 10px;
+    @media (max-width: 850px) {
+      .cards-grid,
+      .project-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-      .brand { justify-content: center; }
-      .brand-text, .nav-btn span, .quick-access-title { display: none; }
-      .quick-access { padding: 8px 4px; }
-      .quick-access-btn { justify-content: center; }
-      .main { margin-left: 86px; padding: 20px 16px 28px; }
-      .cards-grid, .project-grid { grid-template-columns: 1fr; }
-      .hero-row { flex-direction: column; align-items: stretch; }
-      .topbar { align-items: flex-start; flex-direction: column; }
-      .slide-canvas { min-height: 420px; padding: 30px 24px; }
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+      .ppt-workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .brand {
+        justify-content: center;
+      }
+      .brand-text,
+      .nav-btn span,
+      .quick-access-title {
+        display: none;
+      }
+      .quick-access {
+        padding: 8px 6px;
+      }
+      .quick-access-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .quick-access-btn,
+      .nav-btn {
+        justify-content: center;
+        padding: 10px 8px;
+      }
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .hero-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .primary-btn {
+        width: 100%;
+      }
+      .cards-grid,
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+      .doc-editor {
+        padding: 24px 20px;
+      }
+      .slide-canvas {
+        min-height: 420px;
+        padding: 30px 24px;
+      }
     }
   </style>
 </head>
@@ -915,15 +912,15 @@
         <div class="stats">
           <div class="stat-card">
             <div class="stat-label">Projetos</div>
-            <div id="countProjects" class="stat-value">0</div>
+            <div id="countProjects" class="stat-value">12</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Documentos</div>
-            <div id="countDocs" class="stat-value">0</div>
+            <div id="countDocs" class="stat-value">24</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Última criação</div>
-            <div id="lastType" class="stat-value">—</div>
+            <div id="lastType" class="stat-value">Slide</div>
           </div>
         </div>
 
@@ -1001,59 +998,74 @@
             </div>
           </div>
 
-          <div class="side-panel">
+          <aside class="side-panel">
             <div class="mini-card">
-              <h3>Assistente Nexia</h3>
-              <div class="muted" style="margin:10px 0 14px;">Melhore, estruture ou transforme o texto em um artigo profissional.</div>
-              <button class="primary-btn" style="width:100%;margin-bottom:10px;" onclick="improveDoc()">✨ Melhorar</button>
-              <button class="ghost-btn" style="width:100%;" onclick="structureDoc()">Estruturar</button>
+              <div class="muted">Tempo de leitura</div>
+              <div class="counter">4 min</div>
             </div>
-
             <div class="mini-card">
               <div class="muted">Palavras</div>
-              <div id="wordCount" class="counter">0</div>
+              <div class="counter" id="wordCount">0</div>
             </div>
-          </div>
+            <div class="mini-card">
+              <div class="muted">Resumo</div>
+              <p>Estrutura clara, tom profissional e linguagem objetiva.</p>
+            </div>
+          </aside>
         </div>
       </section>
 
       <section id="sheets" class="view">
         <div class="officebar">
-          <div class="brand-mini sheet">X</div>
+          <div class="brand-mini sheet">S</div>
           <div class="header">
-            <div class="office-title">Nexia Planilhas</div>
-            <div class="muted"> • Editando</div>
+            <div class="office-title">Nexia Planilha</div>
+            <div class="muted"> • Dados</div>
           </div>
           <div class="top-actions">
-            <button class="small-btn" onclick="saveSheet()">💾</button>
-            <button class="small-btn" onclick="exportCSV()">CSV</button>
+            <button class="small-btn" onclick="addTableRow()">＋ Linha</button>
+            <button class="small-btn" onclick="addTableCol()">＋ Coluna</button>
           </div>
         </div>
 
-        <div class="toolbar">
-          <button onclick="addRow()">＋ Linha</button>
-          <button onclick="addCol()">＋ Coluna</button>
-          <button onclick="sumColumn()">Σ Soma</button>
-          <button onclick="averageColumn()">μ Média</button>
-          <button onclick="toggleCellBold()">B</button>
-        </div>
-
-        <div class="sheet-panel" style="margin-top:16px;">
+        <div class="sheet-panel panel">
           <div class="formula-bar">
-            <div id="cellName" class="cell-indicator">A1</div>
-            <div style="font-style:italic;font-weight:700;">fx</div>
-            <input id="formula" placeholder="Digite um valor ou fórmula, exemplo: =SUM(B2:B5)">
-            <button class="primary-btn" onclick="applyFormula()">Aplicar</button>
+            <div class="cell-indicator" id="activeCell">A1</div>
+            <input id="formulaInput" placeholder="fx = SOMA(A1:A5)">
           </div>
 
           <div class="table-wrap">
-            <table class="sheet">
-              <thead><tr id="sheetHead"></tr></thead>
-              <tbody id="sheetBody"></tbody>
+            <table class="sheet" id="sheetTable">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>A</th>
+                  <th>B</th>
+                  <th>C</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>1</th>
+                  <td contenteditable="true">Produto</td>
+                  <td contenteditable="true">2025</td>
+                  <td contenteditable="true">2026</td>
+                </tr>
+                <tr>
+                  <th>2</th>
+                  <td contenteditable="true">Vendas</td>
+                  <td contenteditable="true">1200</td>
+                  <td contenteditable="true">1800</td>
+                </tr>
+                <tr>
+                  <th>3</th>
+                  <td contenteditable="true">Lucro</td>
+                  <td contenteditable="true">300</td>
+                  <td contenteditable="true">470</td>
+                </tr>
+              </tbody>
             </table>
           </div>
-
-          <div id="sheetTabs" class="sheet-tabs"></div>
         </div>
       </section>
 
@@ -1061,38 +1073,37 @@
         <div class="officebar">
           <div class="brand-mini slide">P</div>
           <div class="header">
-            <div class="office-title">Nexia Apresentações</div>
-            <div class="muted"> • Editando</div>
+            <div class="office-title">Nexia Slides</div>
+            <div class="muted"> • Apresentação</div>
           </div>
           <div class="top-actions">
-            <button class="small-btn" onclick="saveSlides()">💾</button>
-            <button class="small-btn" onclick="exportSlides()">⬇️</button>
-            <button class="small-btn" onclick="presentationMode()">▶️</button>
+            <button class="small-btn" onclick="newSlide()">＋ Slide</button>
           </div>
-        </div>
-
-        <div class="toolbar">
-          <button onclick="addSlide()">＋ Slide</button>
-          <button onclick="deleteSlide()">Excluir</button>
-          <button onclick="cmdSlide('bold')"><b>B</b></button>
-          <button onclick="insertSlideText()">Texto</button>
-          <button onclick="insertSlideImage()">Imagem</button>
-          <button onclick="insertSlideShape()">Forma</button>
-          <button onclick="slideTheme()">Tema</button>
         </div>
 
         <div class="ppt-workspace">
-          <div id="thumbs" class="thumb-list"></div>
+          <div class="thumb-list">
+            <div class="thumb active">
+              <div class="thumb-preview"><strong>Slide 1</strong><br><br>Visão geral</div>
+            </div>
+            <div class="thumb">
+              <div class="thumb-preview"><strong>Slide 2</strong><br><br>Dados</div>
+            </div>
+            <div class="thumb">
+              <div class="thumb-preview"><strong>Slide 3</strong><br><br>Roadmap</div>
+            </div>
+          </div>
 
           <div class="slide-stage">
-            <div id="slideCanvas" class="slide-canvas" contenteditable="true" spellcheck="true">
-              <h1>Minha apresentação</h1>
-              <p>Subtítulo da apresentação</p>
+            <div class="slide-canvas" contenteditable="true">
+              <h1>Nova apresentação</h1>
+              <h2>Visão geral do projeto</h2>
+              <p>Escreva as principais ideias, métricas e próximos passos aqui.</p>
             </div>
             <div class="slide-controls">
-              <button class="ghost-btn" onclick="previousSlide()">⬅️</button>
-              <div>Slide <span id="slideNumber">1</span> de <span id="slideTotal">1</span></div>
-              <button class="ghost-btn" onclick="nextSlide()">➡️</button>
+              <button class="ghost-btn" onclick="prevSlide()">Anterior</button>
+              <span>1 / 3</span>
+              <button class="ghost-btn" onclick="nextSlide()">Próximo</button>
             </div>
           </div>
         </div>
@@ -1101,603 +1112,226 @@
       <section id="projects" class="view">
         <div class="section-header">
           <h2>Projetos</h2>
-          <button class="danger-btn" onclick="clearProjects()">Limpar</button>
         </div>
-        <div id="projectList" class="project-grid"></div>
+
+        <div class="project-grid">
+          <div class="project-card">
+            <div class="emoji">🚀</div>
+            <h3>Pitch IA</h3>
+            <div class="muted">Apresentação interna com visão de produto.</div>
+          </div>
+          <div class="project-card">
+            <div class="emoji">📈</div>
+            <h3>Relatório trimestral</h3>
+            <div class="muted">Dados e indicadores para liderança.</div>
+          </div>
+          <div class="project-card">
+            <div class="emoji">🧾</div>
+            <h3>Orçamento</h3>
+            <div class="muted">Planejamento e controle financeiro.</div>
+          </div>
+          <div class="project-card">
+            <div class="emoji">🎯</div>
+            <h3>Estratégia</h3>
+            <div class="muted">Planejamento de campanha e prioridades.</div>
+          </div>
+        </div>
       </section>
 
       <section id="settings" class="view">
-        <div class="panel settings-box">
+        <div class="section-header">
           <h2>Configurações</h2>
+        </div>
+
+        <div class="settings-box panel">
           <div class="field">
-            <label for="userName">Seu nome</label>
-            <input id="userName" placeholder="Digite seu nome">
+            <label for="workspaceName">Nome do workspace</label>
+            <input id="workspaceName" value="Nexia Workspace" />
           </div>
+
+          <div class="field">
+            <label for="workspaceBio">Descrição</label>
+            <textarea id="workspaceBio">Ambiente de produtividade híbrido para criação, organização e automação.</textarea>
+          </div>
+
           <button class="primary-btn" onclick="saveSettings()">Salvar</button>
         </div>
       </section>
     </main>
   </div>
 
-  <div id="modal" class="modal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h2>Nova IA</h2>
-        <button class="ghost-btn" onclick="closeModal()">✖</button>
+  <div id="loginModal" class="login">
+    <div class="login-box">
+      <h2>Entrar</h2>
+      <div class="field">
+        <label>E-mail</label>
+        <input type="email" value="nexia@workspace.com">
       </div>
-      <div class="muted">Descreva o que você quer criar.</div>
-      <textarea id="modalPrompt" placeholder="Ex.: crie uma apresentação sobre crescimento com 5 slides..."></textarea>
-      <button class="primary-btn" style="width:100%;" onclick="generateFromModal()">Gerar</button>
+      <div class="field">
+        <label>Senha</label>
+        <input type="password" value="••••••••">
+      </div>
+      <button class="primary-btn" onclick="closeLogin()">Entrar</button>
     </div>
   </div>
 
-  <div id="login" class="login">
-    <div class="login-box">
-      <h2>Entrar no Nexia</h2>
-      <div class="muted">A versão atual funciona localmente no navegador.</div>
-      <div class="field" style="margin-top:18px;">
-        <input placeholder="E-mail" type="email">
-        <input placeholder="Senha" type="password">
+  <div id="aiModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>Assistente IA</h3>
+        <button class="small-btn" onclick="closeAI()">✕</button>
       </div>
-      <button class="primary-btn" style="width:100%;margin-bottom:10px;" onclick="fakeLogin()">Entrar</button>
-      <button class="ghost-btn" style="width:100%;" onclick="closeLogin()">Fechar</button>
+      <textarea placeholder="Descreva o que você quer criar...">Crie uma apresentação executiva para a nova linha de IA.</textarea>
+      <button class="primary-btn" onclick="closeAI()">Gerar</button>
     </div>
   </div>
 
   <div id="toast" class="toast"></div>
 
   <script>
-    const KEY = 'nexia_v2026';
+    function showView(viewId) {
+      document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+      document.getElementById(viewId).classList.add('active');
 
-    const defaultState = {
-      projects: [],
-      name: 'Nexia User',
-      sheetIndex: 0,
-      sheets: [{
-        name: 'Planilha 1',
-        data: [
-          ['Produto', 'Quantidade', 'Preço', 'Total'],
-          ['Caderno', '2', '25', '=B2*C2'],
-          ['Caneta', '5', '7', '=B3*C3']
-        ]
-      }],
-      slides: [{ html: '<h1>Minha apresentação</h1><p>Subtítulo da apresentação</p>' }],
-      slideIndex: 0
-    };
+      document.querySelectorAll('.nav-btn, .quick-access-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === viewId);
+      });
+    }
 
-    let state = loadState();
-    let selectedCell = { r: 0, c: 0 };
-    let slideIndex = state.slideIndex || 0;
+    document.querySelectorAll('.nav-btn, .quick-access-btn').forEach(button => {
+      button.addEventListener('click', () => showView(button.dataset.view));
+    });
 
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(KEY);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          return { ...defaultState, ...parsed };
-        }
-      } catch (e) {
-        console.warn('loadState error', e);
+    function openLogin() {
+      document.getElementById('loginModal').classList.add('show');
+    }
+
+    function closeLogin() {
+      document.getElementById('loginModal').classList.remove('show');
+      showToast('Login concluído');
+    }
+
+    function openAI() {
+      document.getElementById('aiModal').classList.add('show');
+    }
+
+    function closeAI() {
+      document.getElementById('aiModal').classList.remove('show');
+      showToast('IA iniciada');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.style.display = 'none', 1800);
+    }
+
+    function generateFromAI() {
+      const prompt = document.getElementById('aiPrompt').value.trim();
+      if (!prompt) {
+        showToast('Digite algo para criar');
+        return;
       }
-      return JSON.parse(JSON.stringify(defaultState));
-    }
-
-    function persistState() {
-      state.slideIndex = slideIndex;
-      localStorage.setItem(KEY, JSON.stringify(state));
-      updateStats();
-      renderProjects();
-    }
-
-    function toast(msg) {
-      const el = document.getElementById('toast');
-      el.textContent = msg;
-      el.style.display = 'block';
-      clearTimeout(window.__toastTimer);
-      window.__toastTimer = setTimeout(() => el.style.display = 'none', 2200);
-    }
-
-    function showView(id) {
-      document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === id));
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === id));
-      document.querySelectorAll('.quick-access-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === id));
-      document.getElementById('appTitle').textContent = {
-        home: 'Olá! 👋',
-        docs: 'Documentos',
-        sheets: 'Planilhas',
-        slides: 'Apresentações',
-        projects: 'Projetos',
-        settings: 'Configurações'
-      }[id] || 'Olá! 👋';
-    }
-
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-      btn.addEventListener('click', () => showView(btn.dataset.view));
-    });
-
-    document.querySelectorAll('.quick-access-btn').forEach(btn => {
-      btn.addEventListener('click', () => showView(btn.dataset.view));
-    });
-
-    function updateStats() {
-      document.getElementById('countProjects').textContent = String(state.projects.length);
-      document.getElementById('countDocs').textContent = String(state.projects.filter(p => p.type === 'Documento').length);
-      const last = state.projects[state.projects.length - 1];
-      document.getElementById('lastType').textContent = last ? last.type : '—';
-    }
-
-    function addProject(type, name) {
-      state.projects.push({ type, name, date: new Date().toLocaleDateString('pt-BR'), createdAt: Date.now() });
-      persistState();
+      showToast('Criando com IA...');
+      showView('slides');
     }
 
     function newDoc() {
       showView('docs');
-      const editor = document.getElementById('doc');
-      editor.innerHTML = '<h1>Meu novo documento</h1><p>Comece a escrever aqui...</p>';
-      updateWords();
-      toast('Novo documento criado');
+      showToast('Novo documento');
     }
 
     function newSheet() {
       showView('sheets');
-      if (!state.sheets.length) {
-        state.sheets.push({ name: 'Planilha 1', data: [['Item', 'Quantidade', 'Preço', 'Total']] });
-      }
-      state.sheetIndex = 0;
-      selectedCell = { r: 0, c: 0 };
-      renderSheet();
-      toast('Nova planilha criada');
+      showToast('Nova planilha');
     }
 
     function newSlide() {
       showView('slides');
-      const defaultHtml = '<h1>Minha apresentação</h1><p>Subtítulo da apresentação</p>';
-      state.slides = state.slides || [];
-      state.slides.push({ html: defaultHtml });
-      slideIndex = state.slides.length - 1;
-      renderSlides();
-      toast('Novo slide criado');
+      showToast('Novo slide');
     }
 
-    function openAI() {
-      document.getElementById('modal').classList.add('show');
+    function saveDoc() {
+      showToast('Documento salvo');
     }
 
-    function closeModal() {
-      document.getElementById('modal').classList.remove('show');
-    }
-
-    function openLogin() {
-      document.getElementById('login').classList.add('show');
-    }
-
-    function closeLogin() {
-      document.getElementById('login').classList.remove('show');
-    }
-
-    function fakeLogin() {
-      closeLogin();
-      toast('Login simulado com sucesso');
-    }
-
-    function generateFromAI() {
-      const prompt = (document.getElementById('aiPrompt') || {}).value || '';
-      generate(prompt);
-    }
-
-    function generateFromModal() {
-      const prompt = document.getElementById('modalPrompt').value || '';
-      generate(prompt);
-      closeModal();
-    }
-
-    function generate(prompt) {
-      const text = (prompt || '').trim();
-      if (!text) {
-        toast('Descreva uma ideia para gerar o conteúdo.');
-        return;
-      }
-
-      const lower = text.toLowerCase();
-      if (lower.includes('planilha') || lower.includes('excel') || lower.includes('tabela')) {
-        state.sheets = [{
-          name: 'Planilha IA',
-          data: [
-            ['Item', 'Quantidade', 'Valor', 'Total'],
-            ['Produto A', '10', '25', '=B2*C2'],
-            ['Produto B', '4', '18', '=B3*C3']
-          ]
-        }];
-        state.sheetIndex = 0;
-        showView('sheets');
-        renderSheet();
-        addProject('Planilha', 'Planilha IA');
-        toast('Planilha gerada com IA');
-        return;
-      }
-
-      if (lower.includes('slide') || lower.includes('apresent')) {
-        state.slides = [{ html: '<h1>' + text.slice(0, 30) + '</h1><p>Estruturado pelas recomendações da IA para uma apresentação eficiente.</p>' }];
-        slideIndex = 0;
-        showView('slides');
-        renderSlides();
-        addProject('Apresentação', 'Apresentação IA');
-        toast('Apresentação gerada com IA');
-        return;
-      }
-
-      const docEl = document.getElementById('doc');
-      docEl.innerHTML = '<h1>' + text.split(' ').slice(0, 5).join(' ') + '</h1><p>Estrutura criada pela IA: foco, objetivo, contexto e ação para próximos passos.</p><p>' + text + '</p>';
-      showView('docs');
-      updateWords();
-      addProject('Documento', text.split(' ').slice(0, 3).join(' '));
-      toast('Documento gerado com IA');
+    function exportText() {
+      const text = document.getElementById('doc').innerText;
+      const blob = new Blob([text], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'nexia-documento.txt';
+      a.click();
+      showToast('Arquivo exportado');
     }
 
     function cmd(command) {
-      const el = document.getElementById('doc');
-      el.focus();
       document.execCommand(command, false, null);
-      updateWords();
     }
 
     function fontSize(value) {
       if (!value) return;
       document.execCommand('fontSize', false, value);
-      updateWords();
     }
 
     function formatDoc(tag) {
       document.execCommand('formatBlock', false, tag);
-      updateWords();
-    }
-
-    function updateWords() {
-      const el = document.getElementById('doc');
-      const text = el.innerText.replace(/\s+/g, ' ').trim();
-      document.getElementById('wordCount').textContent = String(text ? text.split(' ').length : 0);
-    }
-
-    function saveDoc() {
-      const title = document.getElementById('doc').querySelector('h1')?.innerText || 'Documento sem título';
-      addProject('Documento', title);
-      toast('Documento salvo');
-    }
-
-    function exportText() {
-      const html = document.getElementById('doc').innerHTML;
-      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'nexia-documento.html';
-      a.click();
-      URL.revokeObjectURL(a.href);
-      toast('Documento exportado');
-    }
-
-    function improveDoc() {
-      const el = document.getElementById('doc');
-      el.insertAdjacentHTML('beforeend', '<p><strong>Versão revisada:</strong> Este texto foi aprimorado para maior clareza, estrutura e impacto profissional.</p>');
-      updateWords();
-      toast('Documento melhorado');
-    }
-
-    function structureDoc() {
-      const el = document.getElementById('doc');
-      el.innerHTML = '<h1>Título do trabalho</h1><h2>1. Introdução</h2><p>Contextualize o tema e o propósito.</p><h2>2. Desenvolvimento</h2><p>Explique fundamentos, dados e detalhes relevantes.</p><h2>3. Conclusão</h2><p>Resuma os pontos principais e reforçe a proposta.</p>';
-      updateWords();
-      toast('Estrutura aplicada');
-    }
-
-    function renderSheet() {
-      const sheet = state.sheets[state.sheetIndex] || state.sheets[0];
-      const head = document.getElementById('sheetHead');
-      const body = document.getElementById('sheetBody');
-      if (!sheet) return;
-
-      const cols = sheet.data[0]?.length || 4;
-      head.innerHTML = '';
-      for (let c = 0; c < cols; c++) {
-        const th = document.createElement('th');
-        th.textContent = String.fromCharCode(65 + c);
-        head.appendChild(th);
-      }
-
-      body.innerHTML = '';
-      for (let r = 0; r < Math.max(sheet.data.length, 8); r++) {
-        const row = document.createElement('tr');
-        for (let c = 0; c < cols; c++) {
-          const cell = document.createElement('td');
-          const value = sheet.data[r]?.[c] ?? '';
-          cell.textContent = value;
-          if (r === selectedCell.r && c === selectedCell.c) cell.classList.add('active-cell');
-          cell.addEventListener('focus', () => {
-            selectedCell = { r, c };
-            document.getElementById('cellName').textContent = (String.fromCharCode(65 + c) + (r + 1));
-            document.getElementById('formula').value = sheet.data[r]?.[c] || '';
-            renderSheet();
-          });
-          cell.setAttribute('contenteditable', 'true');
-          cell.addEventListener('input', () => {
-            if (!sheet.data[r]) sheet.data[r] = [];
-            sheet.data[r][c] = cell.textContent.trim();
-            document.getElementById('formula').value = sheet.data[r][c];
-            persistState();
-          });
-          row.appendChild(cell);
-        }
-        body.appendChild(row);
-      }
-
-      document.getElementById('cellName').textContent = String.fromCharCode(65 + selectedCell.c) + (selectedCell.r + 1);
-      document.getElementById('formula').value = sheet.data[selectedCell.r]?.[selectedCell.c] || '';
-      renderSheetTabs();
-      persistState();
-    }
-
-    function renderSheetTabs() {
-      const container = document.getElementById('sheetTabs');
-      container.innerHTML = '';
-      state.sheets.forEach((sheet, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'sheet-tab' + (idx === state.sheetIndex ? ' active' : '');
-        btn.textContent = sheet.name || `Planilha ${idx + 1}`;
-        btn.onclick = () => {
-          state.sheetIndex = idx;
-          selectedCell = { r: 0, c: 0 };
-          renderSheet();
-        };
-        container.appendChild(btn);
-      });
-      const add = document.createElement('button');
-      add.className = 'sheet-tab';
-      add.textContent = '+';
-      add.onclick = () => {
-        state.sheets.push({ name: `Planilha ${state.sheets.length + 1}`, data: [['Item', 'Valor']] });
-        state.sheetIndex = state.sheets.length - 1;
-        renderSheet();
-      };
-      container.appendChild(add);
-    }
-
-    function addRow() {
-      const sheet = state.sheets[state.sheetIndex];
-      if (!sheet) return;
-      const row = Array(sheet.data[0]?.length || 4).fill('');
-      sheet.data.push(row);
-      renderSheet();
-      toast('Linha adicionada');
-    }
-
-    function addCol() {
-      const sheet = state.sheets[state.sheetIndex];
-      if (!sheet) return;
-      sheet.data.forEach(row => row.push(''));
-      renderSheet();
-      toast('Coluna adicionada');
-    }
-
-    function sumColumn() {
-      const sheet = state.sheets[state.sheetIndex];
-      if (!sheet) return;
-      const current = sheet.data[selectedCell.r]?.[selectedCell.c] || '';
-      const value = Number(current) || 0;
-      sheet.data[selectedCell.r][selectedCell.c] = String(value + 1);
-      renderSheet();
-      toast('Cálculo aplicado');
-    }
-
-    function averageColumn() {
-      const sheet = state.sheets[state.sheetIndex];
-      if (!sheet) return;
-      const values = sheet.data.map(row => Number(row[selectedCell.c] || 0)).filter(v => !Number.isNaN(v));
-      const avg = values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
-      sheet.data[selectedCell.r][selectedCell.c] = String(avg.toFixed(2));
-      renderSheet();
-      toast('Média calculada');
-    }
-
-    function toggleCellBold() {
-      const sheet = state.sheets[state.sheetIndex];
-      if (!sheet) return;
-      const value = sheet.data[selectedCell.r]?.[selectedCell.c] || '';
-      sheet.data[selectedCell.r][selectedCell.c] = value && !value.startsWith('**') ? `**${value}**` : value.replace(/^\*\*|\*\*$/g, '');
-      renderSheet();
-    }
-
-    function applyFormula() {
-      const sheet = state.sheets[state.sheetIndex];
-      if (!sheet) return;
-      const raw = document.getElementById('formula').value.trim();
-      if (!raw) return;
-      const row = selectedCell.r;
-      const col = selectedCell.c;
-      if (!sheet.data[row]) sheet.data[row] = [];
-      sheet.data[row][col] = raw;
-      renderSheet();
-      toast('Fórmula aplicada');
-    }
-
-    function saveSheet() {
-      addProject('Planilha', state.sheets[state.sheetIndex]?.name || 'Planilha');
-      toast('Planilha salva');
-    }
-
-    function exportCSV() {
-      const sheet = state.sheets[state.sheetIndex];
-      if (!sheet) return;
-      const csv = sheet.data.map(row => row.join(',')).join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'nexia-planilha.csv';
-      a.click();
-      URL.revokeObjectURL(a.href);
-      toast('CSV exportado');
-    }
-
-    function renderSlides() {
-      const thumbs = document.getElementById('thumbs');
-      const slideCanvas = document.getElementById('slideCanvas');
-      thumbs.innerHTML = '';
-
-      for (let i = 0; i < state.slides.length; i++) {
-        const item = document.createElement('div');
-        item.className = 'thumb' + (i === slideIndex ? ' active' : '');
-        item.innerHTML = '<div class="thumb-preview">' + (state.slides[i].html || '').replace(/<[^>]*>/g, '').slice(0, 120) + '</div>';
-        item.onclick = () => {
-          slideIndex = i;
-          renderSlides();
-        };
-        thumbs.appendChild(item);
-      }
-
-      slideCanvas.innerHTML = state.slides[slideIndex]?.html || '<h1>Novo slide</h1><p>Conteúdo do slide</p>';
-      document.getElementById('slideNumber').textContent = String(slideIndex + 1);
-      document.getElementById('slideTotal').textContent = String(state.slides.length); 
-    }
-
-    function addSlide() {
-      state.slides.push({ html: '<h1>Nova apresentação</h1><p>Adicione conteúdo aqui.</p>' });
-      slideIndex = state.slides.length - 1;
-      renderSlides();
-      toast('Slide adicionado');
-    }
-
-    function deleteSlide() {
-      if (state.slides.length <= 1) {
-        toast('Você precisa manter pelo menos 1 slide.');
-        return;
-      }
-      state.slides.splice(slideIndex, 1);
-      slideIndex = Math.max(0, slideIndex - 1);
-      renderSlides();
-      toast('Slide removido');
-    }
-
-    function cmdSlide(command) {
-      const canvas = document.getElementById('slideCanvas');
-      canvas.focus();
-      document.execCommand(command, false, null);
-      state.slides[slideIndex] = { html: canvas.innerHTML };
-      persistState();
-    }
-
-    function insertSlideText() {
-      const canvas = document.getElementById('slideCanvas');
-      canvas.insertAdjacentHTML('beforeend', '<p>Texto do slide</p>');
-      state.slides[slideIndex] = { html: canvas.innerHTML };
-      persistState();
-    }
-
-    function insertSlideImage() {
-      const canvas = document.getElementById('slideCanvas');
-      canvas.insertAdjacentHTML('beforeend', '<div style="padding:12px 0; color:#cbd5e1; border:1px dashed rgba(255,255,255,0.2); border-radius:12px; margin-top:16px;">Imagem</div>');
-      state.slides[slideIndex] = { html: canvas.innerHTML };
-      persistState();
-    }
-
-    function insertSlideShape() {
-      const canvas = document.getElementById('slideCanvas');
-      canvas.insertAdjacentHTML('beforeend', '<div style="width:140px; height:140px; border-radius:50%; background:linear-gradient(135deg,#7c6cff,#4dd4c5); margin-top:18px;"></div>');
-      state.slides[slideIndex] = { html: canvas.innerHTML };
-      persistState();
-    }
-
-    function slideTheme() {
-      const themes = [
-        'linear-gradient(135deg, rgba(18,25,38,1), rgba(15,21,29,0.88))',
-        'linear-gradient(135deg, #1e293b, #0f766e)',
-        'linear-gradient(135deg, #111827, #7c3aed)',
-        'linear-gradient(135deg, #0f172a, #ea580c)'
-      ];
-      const canvas = document.getElementById('slideCanvas');
-      const next = themes[(themes.indexOf(canvas.style.background || themes[0]) + 1) % themes.length];
-      canvas.style.background = next;
-      state.slides[slideIndex] = { html: canvas.innerHTML };
-      toast('Tema aplicado');
-    }
-
-    function previousSlide() {
-      if (slideIndex > 0) {
-        slideIndex -= 1;
-        renderSlides();
-      }
-    }
-
-    function nextSlide() {
-      if (slideIndex < state.slides.length - 1) {
-        slideIndex += 1;
-        renderSlides();
-      }
-    }
-
-    function saveSlides() {
-      addProject('Apresentação', `Slide ${slideIndex + 1}`);
-      toast('Apresentação salva');
-    }
-
-    function exportSlides() {
-      const blob = new Blob([state.slides.map((s, i) => `SLIDE ${i + 1}\n${s.html}`).join('\n\n')], { type: 'text/plain;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'nexia-slides.txt';
-      a.click();
-      URL.revokeObjectURL(a.href);
-      toast('Slides exportados');
-    }
-
-    function presentationMode() {
-      toast('Modo de apresentação ativado');
-    }
-
-    function renderProjects() {
-      const list = document.getElementById('projectList');
-      if (!state.projects.length) {
-        list.innerHTML = '<div class="empty-box">Nenhum projeto salvo ainda.</div>';
-        return;
-      }
-
-      list.innerHTML = state.projects.slice().reverse().map(item => {
-        const icon = {
-          Documento: '📄',
-          Planilha: '📊',
-          Apresentação: '🎨',
-          IA: '🤖'
-        }[item.type] || '📁';
-
-        return '<div class="project-card"><div class="emoji">' + icon + '</div><h3>' + item.name + '</h3><div class="muted">' + item.type + ' • ' + item.date + '</div></div>';
-      }).join('');
-    }
-
-    function clearProjects() {
-      if (!confirm('Limpar todos os projetos?')) return;
-      state.projects = [];
-      persistState();
-      toast('Projetos limpos');
     }
 
     function saveSettings() {
-      const value = document.getElementById('userName').value.trim() || 'Nexia User';
-      state.name = value;
-      document.getElementById('avatarInitial').textContent = value.charAt(0).toUpperCase();
-      toast('Configurações salvas');
-      persistState();
+      showToast('Configurações salvas');
     }
 
-    function init() {
-      document.getElementById('userName').value = state.name;
-      document.getElementById('avatarInitial').textContent = state.name.charAt(0).toUpperCase();
-      renderSheet();
-      renderSlides();
-      renderProjects();
-      updateStats();
-      updateWords();
-      document.getElementById('doc').addEventListener('input', updateWords);
+    function addTableRow() {
+      const table = document.getElementById('sheetTable');
+      const row = table.insertRow();
+      const cells = 4;
+      for (let i = 0; i < cells; i++) {
+        const cell = row.insertCell();
+        cell.contentEditable = 'true';
+        if (i === 0) {
+          cell.textContent = '';
+        }
+      }
+      const indexCell = document.createElement('th');
+      indexCell.textContent = table.rows.length;
+      row.insertBefore(indexCell, row.firstChild);
     }
 
-    init();
+    function addTableCol() {
+      const table = document.getElementById('sheetTable');
+      const header = table.querySelector('thead tr');
+      const nextLetter = String.fromCharCode(65 + header.children.length - 1);
+      const th = document.createElement('th');
+      th.textContent = nextLetter;
+      header.appendChild(th);
+
+      Array.from(table.querySelectorAll('tbody tr')).forEach((row) => {
+        const td = document.createElement('td');
+        td.contentEditable = 'true';
+        row.appendChild(td);
+      });
+    }
+
+    function prevSlide() {
+      showToast('Slide anterior');
+    }
+
+    function nextSlide() {
+      showToast('Próximo slide');
+    }
+
+    function updateWordCount() {
+      const text = document.getElementById('doc')?.innerText || '';
+      const count = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const counter = document.getElementById('wordCount');
+      if (counter) counter.textContent = count;
+    }
+
+    document.getElementById('doc')?.addEventListener('input', updateWordCount);
+    updateWordCount();
   </script>
 </body>
 </html>
