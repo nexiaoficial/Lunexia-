@@ -8,7 +8,7 @@
     :root {
       --bg: #0b1020;
       --bg-soft: #111827;
-      --panel: rgba(17, 24, 39, 0.82);
+      --panel: rgba(17, 24, 39, 0.8);
       --panel-strong: rgba(15, 23, 42, 0.96);
       --ink: #e5eefb;
       --muted: #95a7c2;
@@ -22,6 +22,7 @@
       --shadow: 0 18px 42px rgba(2, 6, 23, 0.42);
       --radius: 22px;
       --sidebar-w: 268px;
+      --mobile-header-h: 72px;
     }
 
     * { box-sizing: border-box; }
@@ -34,7 +35,7 @@
       min-height: 100vh;
     }
 
-    button, input, textarea, select {
+    a, button, input, textarea, select {
       font: inherit;
     }
 
@@ -60,6 +61,7 @@
       z-index: 20;
       border-right: 1px solid var(--line);
       backdrop-filter: blur(12px);
+      transition: transform 0.28s ease, opacity 0.28s ease;
     }
 
     .brand {
@@ -154,6 +156,7 @@
       margin-left: var(--sidebar-w);
       padding: 28px 30px 40px;
       background: rgba(15, 23, 42, 0.85);
+      min-width: 0;
     }
 
     .topbar {
@@ -276,11 +279,20 @@
     .primary-btn,
     .ghost-btn,
     .danger-btn,
-    .small-btn {
+    .small-btn,
+    .icon-btn {
       border-radius: 12px;
       padding: 12px 16px;
       font-weight: 700;
-      transition: 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+
+    .primary-btn:hover,
+    .ghost-btn:hover,
+    .danger-btn:hover,
+    .small-btn:hover,
+    .icon-btn:hover {
+      transform: translateY(-1px);
     }
 
     .primary-btn {
@@ -307,6 +319,17 @@
       color: #d9d2ff;
       border: 1px solid rgba(124,108,255,0.2);
       padding: 10px 12px;
+    }
+
+    .icon-btn {
+      display: inline-grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      background: rgba(148, 163, 184, 0.08);
+      color: var(--ink);
+      border: 1px solid var(--line);
     }
 
     .stats {
@@ -421,12 +444,16 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      min-width: 0;
     }
 
     .office-title {
       font-weight: 800;
       letter-spacing: -0.04em;
       color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .toolbar {
@@ -606,6 +633,11 @@
       border-radius: 14px;
       cursor: pointer;
       box-shadow: var(--shadow);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .thumb:hover {
+      transform: translateY(-1px);
     }
 
     .thumb.active {
@@ -773,26 +805,41 @@
       color: var(--ink);
     }
 
+    .mobile-toggle {
+      display: none;
+    }
+
     @media (max-width: 1100px) {
       .app { display: block; }
       .sidebar {
-        position: sticky;
-        inset: 0 0 auto 0;
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--line);
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: min(82vw, 310px);
+        transform: translateX(-110%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
       }
       .main {
         margin-left: 0;
-        padding: 22px 18px 32px;
+        padding: 20px 18px 30px;
       }
-      .nav {
-        flex-direction: row;
-        flex-wrap: wrap;
+      .mobile-toggle {
+        display: inline-grid;
+        place-items: center;
       }
-      .nav-btn,
-      .quick-access-btn {
-        min-width: 120px;
+      .mobile-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 6, 23, 0.6);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+        z-index: 15;
+      }
+      .mobile-backdrop.show {
+        opacity: 1;
+        pointer-events: auto;
       }
     }
 
@@ -859,8 +906,10 @@
   </style>
 </head>
 <body>
+  <div class="mobile-backdrop" id="mobileBackdrop"></div>
+
   <div class="app">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="brand">
         <div class="brand-mark">N</div>
         <div class="brand-text">Nexia<span>.</span></div>
@@ -888,9 +937,12 @@
 
     <main class="main">
       <div class="topbar">
-        <div class="title-wrap">
-          <h1 id="appTitle">Olá! 👋</h1>
-          <div class="sub">Crie, edite e organize tudo em um só lugar.</div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="icon-btn mobile-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+          <div class="title-wrap">
+            <h1 id="appTitle">Olá! 👋</h1>
+            <div class="sub">Crie, edite e organize tudo em um só lugar.</div>
+          </div>
         </div>
         <div class="top-actions">
           <button class="pill-btn" onclick="openLogin()">Conta</button>
@@ -1189,6 +1241,22 @@
   <div id="toast" class="toast"></div>
 
   <script>
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('mobileBackdrop');
+
+    function setSidebarOpen(open) {
+      sidebar.classList.toggle('open', open);
+      backdrop.classList.toggle('show', open);
+    }
+
+    document.getElementById('menuToggle').addEventListener('click', function () {
+      setSidebarOpen(!sidebar.classList.contains('open'));
+    });
+
+    backdrop.addEventListener('click', function () {
+      setSidebarOpen(false);
+    });
+
     function showView(viewId) {
       document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
       document.getElementById(viewId).classList.add('active');
@@ -1196,6 +1264,10 @@
       document.querySelectorAll('.nav-btn, .quick-access-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.view === viewId);
       });
+
+      if (window.innerWidth <= 1100) {
+        setSidebarOpen(false);
+      }
     }
 
     document.querySelectorAll('.nav-btn, .quick-access-btn').forEach(button => {
@@ -1286,27 +1358,26 @@
 
     function addTableRow() {
       const table = document.getElementById('sheetTable');
-      const row = table.insertRow();
-      const cells = 4;
-      for (let i = 0; i < cells; i++) {
+      const tbody = table.querySelector('tbody');
+      const row = tbody.insertRow();
+      const indexCell = document.createElement('th');
+      indexCell.textContent = tbody.rows.length + 1;
+      row.appendChild(indexCell);
+
+      for (let i = 0; i < 3; i++) {
         const cell = row.insertCell();
         cell.contentEditable = 'true';
-        if (i === 0) {
-          cell.textContent = '';
-        }
       }
-      const indexCell = document.createElement('th');
-      indexCell.textContent = table.rows.length;
-      row.insertBefore(indexCell, row.firstChild);
     }
 
     function addTableCol() {
       const table = document.getElementById('sheetTable');
-      const header = table.querySelector('thead tr');
-      const nextLetter = String.fromCharCode(65 + header.children.length - 1);
+      const headerRow = table.querySelector('thead tr');
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const nextIndex = headerRow.children.length - 1;
       const th = document.createElement('th');
-      th.textContent = nextLetter;
-      header.appendChild(th);
+      th.textContent = letters[nextIndex] || 'Z';
+      headerRow.appendChild(th);
 
       Array.from(table.querySelectorAll('tbody tr')).forEach((row) => {
         const td = document.createElement('td');
