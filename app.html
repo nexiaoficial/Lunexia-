@@ -6,22 +6,22 @@
   <title>Nexia 2026</title>
   <style>
     :root {
-      --bg: #ffffff;
-      --bg-2: #f7f8fb;
-      --panel: rgba(255,255,255,0.76);
-      --panel-strong: #ffffff;
-      --ink: #111827;
-      --muted: #6b7280;
-      --line: rgba(17, 24, 39, 0.08);
-      --brand: #6d5dfc;
-      --brand-2: #8a7cff;
-      --brand-3: #4ecdc4;
-      --accent: #f59e0b;
+      --bg: #0b1020;
+      --bg-2: #111827;
+      --panel: rgba(17, 24, 39, 0.78);
+      --panel-strong: #111827;
+      --ink: #e5eefb;
+      --muted: #95a7c2;
+      --line: rgba(148, 163, 184, 0.18);
+      --brand: #7c6cff;
+      --brand-2: #9b8cff;
+      --brand-3: #4dd4c5;
+      --accent: #f7b955;
       --danger: #ef4444;
-      --success: #10b981;
-      --shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+      --success: #22c55e;
+      --shadow: 0 18px 42px rgba(2, 6, 23, 0.42);
       --radius: 22px;
-      --sidebar-w: 260px;
+      --sidebar-w: 268px;
     }
 
     * { box-sizing: border-box; }
@@ -29,7 +29,7 @@
     body {
       margin: 0;
       font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
-      background: #ffffff;
+      background: linear-gradient(180deg, #0b1020, #0c1324 18%, #0f172a 100%);
       color: var(--ink);
     }
 
@@ -45,13 +45,13 @@
     .app {
       display: flex;
       min-height: 100vh;
-      background: #ffffff;
+      background: var(--bg);
     }
 
     .sidebar {
       width: var(--sidebar-w);
-      padding: 24px 18px;
-      background: #ffffff;
+      padding: 22px 18px 18px;
+      background: rgba(11, 16, 32, 0.98);
       color: var(--ink);
       position: fixed;
       inset: 0 auto 0 0;
@@ -64,7 +64,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 8px 8px 20px;
+      padding: 6px 8px 18px;
       font-weight: 900;
       letter-spacing: -0.04em;
       font-size: 26px;
@@ -78,24 +78,70 @@
       display: grid;
       place-items: center;
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      box-shadow: 0 12px 28px rgba(109,93,252,0.28);
+      box-shadow: 0 12px 28px rgba(124,108,255,0.35);
       color: #fff;
       font-weight: 900;
     }
 
     .brand span { color: var(--brand-2); }
 
+    .quick-access {
+      margin: 14px 0 10px;
+      padding: 12px 10px 8px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(17, 24, 39, 0.8);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+
+    .quick-access-title {
+      margin: 0 0 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.7rem;
+      padding: 0 8px;
+    }
+
+    .quick-access-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quick-access-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(148, 163, 184, 0.05);
+      color: var(--ink);
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 9px 12px;
+      transition: 0.2s ease;
+      font-weight: 600;
+    }
+
+    .quick-access-btn:hover,
+    .quick-access-btn.active {
+      background: rgba(124, 108, 255, 0.12);
+      border-color: rgba(124, 108, 255, 0.3);
+      color: #fff;
+    }
+
     .nav {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 12px;
+      margin-top: 8px;
     }
 
     .nav-btn {
       width: 100%;
       background: transparent;
-      color: #374151;
+      color: var(--ink);
       border-radius: 14px;
       padding: 12px 14px;
       display: flex;
@@ -109,16 +155,16 @@
 
     .nav-btn:hover,
     .nav-btn.active {
-      background: linear-gradient(135deg, rgba(109,93,252,0.08), rgba(109,93,252,0.03));
-      color: var(--ink);
-      border-color: rgba(109,93,252,0.08);
+      background: linear-gradient(135deg, rgba(124,108,255,0.18), rgba(124,108,255,0.08));
+      color: #fff;
+      border-color: rgba(124,108,255,0.2);
     }
 
     .main {
       flex: 1;
       margin-left: var(--sidebar-w);
       padding: 28px 30px 40px;
-      background: #fff;
+      background: rgba(15, 23, 42, 0.85);
     }
 
     .topbar {
@@ -149,13 +195,13 @@
     }
 
     .pill-btn {
-      background: rgba(17,24,39,0.02);
+      background: rgba(148, 163, 184, 0.08);
       border: 1px solid var(--line);
       color: var(--ink);
       padding: 10px 16px;
       border-radius: 12px;
       font-weight: 700;
-      box-shadow: 0 10px 18px rgba(17,24,39,0.02);
+      box-shadow: 0 10px 18px rgba(15, 23, 42, 0.12);
     }
 
     .avatar {
@@ -164,10 +210,10 @@
       border-radius: 50%;
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, var(--brand), #cf7dff);
+      background: linear-gradient(135deg, var(--brand), #a855f7);
       color: white;
       font-weight: 800;
-      box-shadow: 0 12px 30px rgba(109,93,252,0.35);
+      box-shadow: 0 12px 30px rgba(124,108,255,0.38);
     }
 
     .view {
@@ -185,7 +231,7 @@
     }
 
     .hero {
-      background: linear-gradient(135deg, #ffffff 0%, #f8f8ff 40%, #ffffff 100%);
+      background: linear-gradient(135deg, rgba(17,24,39,0.95), rgba(22, 31, 49, 0.9));
       color: var(--ink);
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -201,7 +247,7 @@
       inset: auto -80px -80px auto;
       width: 220px;
       height: 220px;
-      background: rgba(109,93,252,0.04);
+      background: rgba(124,108,255,0.1);
       border-radius: 50%;
     }
 
@@ -209,14 +255,13 @@
       margin: 0 0 8px;
       font-size: clamp(1.5rem, 1.7vw, 2.2rem);
       letter-spacing: -0.05em;
-      color: var(--ink);
+      color: #fff;
     }
 
     .hero p {
       margin: 0;
       max-width: 650px;
       color: var(--muted);
-      opacity: 1;
     }
 
     .hero-row {
@@ -231,12 +276,12 @@
     .hero input {
       flex: 1;
       border: 1px solid var(--line);
-      background: #ffffff;
+      background: rgba(15, 23, 42, 0.88);
       color: var(--ink);
       padding: 16px 18px;
       border-radius: 15px;
       min-width: 0;
-      box-shadow: inset 0 0 0 1px rgba(17,19,33,0.01);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
 
     .primary-btn,
@@ -252,25 +297,25 @@
     .primary-btn {
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
       color: white;
-      box-shadow: 0 10px 28px rgba(109,93,252,0.18);
+      box-shadow: 0 10px 28px rgba(124,108,255,0.2);
     }
 
     .ghost-btn {
-      background: rgba(17,24,39,0.02);
+      background: rgba(148, 163, 184, 0.08);
       color: var(--ink);
       border: 1px solid var(--line);
     }
 
     .danger-btn {
-      background: rgba(239,68,68,0.08);
-      color: #b91c1c;
-      border: 1px solid rgba(239,68,68,0.12);
+      background: rgba(239,68,68,0.12);
+      color: #fca5a5;
+      border: 1px solid rgba(239,68,68,0.2);
     }
 
     .small-btn {
-      background: rgba(109,93,252,0.06);
-      color: var(--brand);
-      border: 1px solid rgba(109,93,252,0.08);
+      background: rgba(124,108,255,0.12);
+      color: #d9d2ff;
+      border: 1px solid rgba(124,108,255,0.2);
       padding: 10px 12px;
     }
 
@@ -287,7 +332,7 @@
     .panel,
     .sheet-panel,
     .slide-panel {
-      background: rgba(255,255,255,0.88);
+      background: rgba(17, 24, 39, 0.82);
       border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -324,7 +369,7 @@
     }
 
     .template-card {
-      background: rgba(255,255,255,0.9);
+      background: rgba(17, 24, 39, 0.82);
       border: 1px solid var(--line);
       border-radius: 20px;
       padding: 22px 18px;
@@ -335,7 +380,7 @@
 
     .template-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 18px 42px rgba(82,92,160,0.08);
+      box-shadow: 0 18px 42px rgba(124,108,255,0.08);
     }
 
     .template-emoji {
@@ -354,7 +399,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(255,255,255,0.84);
+      background: rgba(17, 24, 39, 0.9);
       border: 1px solid var(--line);
       border-radius: 18px 18px 0 0;
       padding: 12px 14px;
@@ -371,8 +416,8 @@
       font-weight: 900;
     }
 
-    .brand-mini.word { background: linear-gradient(135deg, #1e5cf6, #65a2ff); }
-    .brand-mini.sheet { background: linear-gradient(135deg, #16a34a, #34d399); }
+    .brand-mini.word { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+    .brand-mini.sheet { background: linear-gradient(135deg, #10b981, #34d399); }
     .brand-mini.slide { background: linear-gradient(135deg, #f97316, #fbbf24); }
 
     .officebar .header {
@@ -393,7 +438,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      background: rgba(255,255,255,0.78);
+      background: rgba(17, 24, 39, 0.8);
       border: 1px solid var(--line);
       border-top: none;
       padding: 10px 14px;
@@ -403,7 +448,7 @@
 
     .toolbar button,
     .toolbar select {
-      background: #f6f7fb;
+      background: rgba(148, 163, 184, 0.06);
       color: var(--ink);
       border: 1px solid var(--line);
       border-radius: 10px;
@@ -426,11 +471,11 @@
     }
 
     .doc-shell {
-      background: white;
+      background: rgba(15, 23, 42, 0.9);
       min-height: 760px;
       border-radius: 18px;
       border: 1px solid var(--line);
-      box-shadow: inset 0 0 0 1px rgba(17,19,33,0.02);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
     }
 
     .doc-editor {
@@ -442,7 +487,7 @@
       font-size: 1.02rem;
       line-height: 1.8;
       resize: vertical;
-      background: white;
+      background: rgba(10,15,25,0.95);
       color: var(--ink);
     }
 
@@ -457,7 +502,7 @@
     }
 
     .mini-card {
-      background: rgba(255,255,255,0.78);
+      background: rgba(17, 24, 39, 0.8);
       border: 1px solid var(--line);
       border-radius: 18px;
       padding: 16px;
@@ -481,7 +526,7 @@
       gap: 10px;
       margin-bottom: 14px;
       padding: 8px 10px;
-      background: rgba(246,247,251,0.9);
+      background: rgba(148, 163, 184, 0.05);
       border: 1px solid var(--line);
       border-radius: 12px;
     }
@@ -489,7 +534,7 @@
     .cell-indicator {
       min-width: 62px;
       text-align: center;
-      background: white;
+      background: rgba(15, 23, 42, 0.8);
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 8px 10px;
@@ -517,24 +562,24 @@
       width: 100%;
       min-width: 820px;
       border-collapse: collapse;
-      background: white;
+      background: rgba(15, 23, 42, 0.65);
     }
 
     .sheet th, .sheet td {
-      border: 1px solid rgba(148, 163, 184, 0.38);
+      border: 1px solid rgba(148, 163, 184, 0.25);
       min-width: 110px;
       height: 34px;
       padding: 7px 8px;
       text-align: left;
-      background: white;
+      background: rgba(15, 23, 42, 0.45);
       vertical-align: top;
       color: var(--ink);
     }
 
     .sheet th {
-      background: #f5f7fc;
+      background: rgba(148, 163, 184, 0.08);
       font-weight: 700;
-      color: #49526a;
+      color: #dfe7f7;
     }
 
     .sheet td {
@@ -556,7 +601,7 @@
     }
 
     .sheet-tab {
-      background: rgba(255,255,255,0.8);
+      background: rgba(148, 163, 184, 0.05);
       border: 1px solid var(--line);
       border-radius: 10px 10px 0 0;
       padding: 8px 12px;
@@ -568,7 +613,7 @@
     .sheet-tab.active {
       color: var(--ink);
       border-bottom-color: transparent;
-      background: white;
+      background: rgba(15, 23, 42, 0.9);
     }
 
     .ppt-workspace {
@@ -589,7 +634,7 @@
 
     .thumb {
       padding: 12px 12px 10px;
-      background: rgba(255,255,255,0.75);
+      background: rgba(17, 24, 39, 0.8);
       border: 1px solid var(--line);
       border-radius: 14px;
       cursor: pointer;
@@ -597,15 +642,15 @@
     }
 
     .thumb.active {
-      border-color: rgba(109,93,252,0.7);
-      box-shadow: 0 12px 30px rgba(109,93,252,0.15);
+      border-color: rgba(124,108,255,0.8);
+      box-shadow: 0 12px 30px rgba(124,108,255,0.12);
     }
 
     .thumb-preview {
       min-height: 90px;
       border-radius: 10px;
-      background: linear-gradient(135deg, #ffffff, #f0f3ff);
-      border: 1px solid rgba(17,19,33,0.04);
+      background: linear-gradient(135deg, rgba(17,24,39,0.95), rgba(17,24,39,0.75));
+      border: 1px solid rgba(255,255,255,0.04);
       padding: 12px;
       font-size: 0.7rem;
       overflow: hidden;
@@ -622,7 +667,7 @@
     .slide-canvas {
       width: min(100%, 980px);
       min-height: 530px;
-      background: linear-gradient(135deg, #fff, #f0f3ff);
+      background: linear-gradient(135deg, rgba(18, 25, 38, 1), rgba(15, 21, 29, 0.88));
       border: 1px solid var(--line);
       border-radius: 24px;
       box-shadow: var(--shadow);
@@ -652,7 +697,7 @@
     }
 
     .project-card {
-      background: rgba(255,255,255,0.8);
+      background: rgba(17, 24, 39, 0.8);
       border: 1px solid var(--line);
       border-radius: 18px;
       padding: 18px;
@@ -671,7 +716,7 @@
     }
 
     .empty-box {
-      background: rgba(255,255,255,0.72);
+      background: rgba(17, 24, 39, 0.76);
       border: 1px dashed var(--line);
       border-radius: 18px;
       padding: 28px 20px;
@@ -703,7 +748,7 @@
       border: 1px solid var(--line);
       border-radius: 12px;
       padding: 12px 14px;
-      background: rgba(255,255,255,0.76);
+      background: rgba(17, 24, 39, 0.7);
       color: var(--ink);
     }
 
@@ -713,7 +758,7 @@
       display: none;
       align-items: center;
       justify-content: center;
-      background: rgba(17, 19, 33, 0.5);
+      background: rgba(2, 6, 23, 0.7);
       z-index: 50;
       padding: 20px;
     }
@@ -725,7 +770,7 @@
     .modal-box {
       width: min(560px, 100%);
       padding: 24px;
-      background: rgba(255,255,255,0.92);
+      background: rgba(17, 24, 39, 0.92);
     }
 
     .modal-head {
@@ -743,7 +788,7 @@
       border-radius: 14px;
       padding: 14px;
       margin: 12px 0 18px;
-      background: rgba(255,255,255,0.8);
+      background: rgba(15,23,42,0.7);
       color: var(--ink);
     }
 
@@ -751,11 +796,11 @@
       position: fixed;
       right: 22px;
       bottom: 22px;
-      background: rgba(17, 19, 33, 0.92);
+      background: rgba(15, 23, 42, 0.96);
       color: white;
       border-radius: 12px;
       padding: 12px 16px;
-      box-shadow: 0 18px 40px rgba(17,19,33,0.25);
+      box-shadow: 0 18px 40px rgba(2,6,23,0.35);
       display: none;
       z-index: 60;
       font-weight: 600;
@@ -766,7 +811,7 @@
       inset: 0;
       display: none;
       place-items: center;
-      background: linear-gradient(135deg, rgba(17,19,33,0.96), rgba(42,26,81,0.82));
+      background: linear-gradient(135deg, rgba(2,6,23,0.95), rgba(59, 33, 104, 0.82));
       z-index: 70;
       padding: 18px;
     }
@@ -776,7 +821,7 @@
     }
 
     .login-box {
-      background: rgba(255,255,255,0.96);
+      background: rgba(17, 24, 39, 0.96);
       border-radius: 24px;
       padding: 28px 24px;
       width: min(430px, 100%);
@@ -805,7 +850,9 @@
         padding-right: 10px;
       }
       .brand { justify-content: center; }
-      .brand-text, .nav-btn span { display: none; }
+      .brand-text, .nav-btn span, .quick-access-title { display: none; }
+      .quick-access { padding: 8px 4px; }
+      .quick-access-btn { justify-content: center; }
       .main { margin-left: 86px; padding: 20px 16px 28px; }
       .cards-grid, .project-grid { grid-template-columns: 1fr; }
       .hero-row { flex-direction: column; align-items: stretch; }
@@ -820,6 +867,16 @@
       <div class="brand">
         <div class="brand-mark">N</div>
         <div class="brand-text">Nexia<span>.</span></div>
+      </div>
+
+      <div class="quick-access">
+        <div class="quick-access-title">Acesso rápido</div>
+        <div class="quick-access-list">
+          <button class="quick-access-btn active" data-view="home"><span>🏠</span><span>Início</span></button>
+          <button class="quick-access-btn" data-view="docs"><span>📄</span><span>Documentos</span></button>
+          <button class="quick-access-btn" data-view="sheets"><span>📊</span><span>Planilhas</span></button>
+          <button class="quick-access-btn" data-view="slides"><span>🎨</span><span>Slides</span></button>
+        </div>
       </div>
 
       <nav class="nav">
@@ -1010,7 +1067,7 @@
           <div class="top-actions">
             <button class="small-btn" onclick="saveSlides()">💾</button>
             <button class="small-btn" onclick="exportSlides()">⬇️</button>
-            <button class="small-btn" onclick="presentationMode()">▶</button>
+            <button class="small-btn" onclick="presentationMode()">▶️</button>
           </div>
         </div>
 
@@ -1025,18 +1082,17 @@
         </div>
 
         <div class="ppt-workspace">
-          <div class="thumb-list" id="thumbs"></div>
+          <div id="thumbs" class="thumb-list"></div>
 
           <div class="slide-stage">
-            <div id="slidecanvas" class="slide-canvas" contenteditable="true">
+            <div id="slideCanvas" class="slide-canvas" contenteditable="true" spellcheck="true">
               <h1>Minha apresentação</h1>
               <p>Subtítulo da apresentação</p>
             </div>
-
             <div class="slide-controls">
-              <button class="ghost-btn" onclick="previousSlide()">←</button>
+              <button class="ghost-btn" onclick="previousSlide()">⬅️</button>
               <div>Slide <span id="slideNumber">1</span> de <span id="slideTotal">1</span></div>
-              <button class="ghost-btn" onclick="nextSlide()">→</button>
+              <button class="ghost-btn" onclick="nextSlide()">➡️</button>
             </div>
           </div>
         </div>
@@ -1066,12 +1122,12 @@
   <div id="modal" class="modal">
     <div class="modal-box">
       <div class="modal-head">
-        <h2>🤖 Nexia IA</h2>
-        <button class="ghost-btn" onclick="closeModal()">✕</button>
+        <h2>Nova IA</h2>
+        <button class="ghost-btn" onclick="closeModal()">✖</button>
       </div>
       <div class="muted">Descreva o que você quer criar.</div>
-      <textarea id="modalPrompt" placeholder="Ex.: crie uma apresentação sobre IA generativa para uma startup..."></textarea>
-      <button class="primary-btn" style="width:100%;" onclick="generateFromModal()">✨ Gerar</button>
+      <textarea id="modalPrompt" placeholder="Ex.: crie uma apresentação sobre crescimento com 5 slides..."></textarea>
+      <button class="primary-btn" style="width:100%;" onclick="generateFromModal()">Gerar</button>
     </div>
   </div>
 
@@ -1098,503 +1154,110 @@
       name: 'Nexia User',
       sheetIndex: 0,
       sheets: [{
-        name: 'Planilha1',
+        name: 'Planilha 1',
         data: [
           ['Produto', 'Quantidade', 'Preço', 'Total'],
           ['Caderno', '2', '25', '=B2*C2'],
-          ['Caneta', '5', '3', '=B3*C3'],
-          ['Mochila', '1', '120', '=B4*C4'],
+          ['Caneta', '5', '7', '=B3*C3']
         ]
       }],
-      slides: [{
-        html: '<h1>Minha apresentação</h1><p>Subtítulo da apresentação</p>'
-      }]
+      slides: [{ html: '<h1>Minha apresentação</h1><p>Subtítulo da apresentação</p>' }],
+      slideIndex: 0
     };
 
-    const state = loadState();
-    let sheetIndex = state.sheetIndex || 0;
+    let state = loadState();
     let selectedCell = { r: 0, c: 0 };
-    let slideIndex = 0;
+    let slideIndex = state.slideIndex || 0;
 
     function loadState() {
       try {
-        const saved = JSON.parse(localStorage.getItem(KEY));
-        if (saved && typeof saved === 'object') {
-          return {
-            ...defaultState,
-            ...saved,
-            projects: Array.isArray(saved.projects) ? saved.projects : [],
-            sheets: Array.isArray(saved.sheets) && saved.sheets.length ? saved.sheets : defaultState.sheets,
-            slides: Array.isArray(saved.slides) && saved.slides.length ? saved.slides : defaultState.slides
-          };
+        const raw = localStorage.getItem(KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          return { ...defaultState, ...parsed };
         }
-      } catch (err) {}
+      } catch (e) {
+        console.warn('loadState error', e);
+      }
       return JSON.parse(JSON.stringify(defaultState));
     }
 
     function persistState() {
-      state.sheets = window.sheets || state.sheets;
-      state.slides = window.slides || state.slides;
-      state.sheetIndex = sheetIndex;
+      state.slideIndex = slideIndex;
       localStorage.setItem(KEY, JSON.stringify(state));
       updateStats();
       renderProjects();
     }
 
-    function toast(message) {
+    function toast(msg) {
       const el = document.getElementById('toast');
-      el.textContent = message;
+      el.textContent = msg;
       el.style.display = 'block';
       clearTimeout(window.__toastTimer);
-      window.__toastTimer = setTimeout(() => {
-        el.style.display = 'none';
-      }, 2200);
+      window.__toastTimer = setTimeout(() => el.style.display = 'none', 2200);
     }
 
     function showView(id) {
       document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === id));
       document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === id));
-      const titleMap = {
+      document.querySelectorAll('.quick-access-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.view === id));
+      document.getElementById('appTitle').textContent = {
         home: 'Olá! 👋',
         docs: 'Documentos',
         sheets: 'Planilhas',
-        slides: 'Slides',
-        projects: 'Meus projetos',
+        slides: 'Apresentações',
+        projects: 'Projetos',
         settings: 'Configurações'
-      };
-      document.getElementById('appTitle').textContent = titleMap[id] || 'Nexia';
+      }[id] || 'Olá! 👋';
     }
 
     document.querySelectorAll('.nav-btn').forEach(btn => {
       btn.addEventListener('click', () => showView(btn.dataset.view));
     });
 
+    document.querySelectorAll('.quick-access-btn').forEach(btn => {
+      btn.addEventListener('click', () => showView(btn.dataset.view));
+    });
+
     function updateStats() {
-      document.getElementById('countProjects').textContent = state.projects.length;
-      document.getElementById('countDocs').textContent = state.projects.filter(p => p.type === 'Documento').length;
-      document.getElementById('lastType').textContent = state.projects.length ? state.projects[state.projects.length - 1].type : '—';
+      document.getElementById('countProjects').textContent = String(state.projects.length);
+      document.getElementById('countDocs').textContent = String(state.projects.filter(p => p.type === 'Documento').length);
+      const last = state.projects[state.projects.length - 1];
+      document.getElementById('lastType').textContent = last ? last.type : '—';
     }
 
     function addProject(type, name) {
-      state.projects.push({
-        type,
-        name,
-        date: new Date().toLocaleString('pt-BR')
-      });
+      state.projects.push({ type, name, date: new Date().toLocaleDateString('pt-BR'), createdAt: Date.now() });
       persistState();
     }
 
     function newDoc() {
       showView('docs');
-      document.getElementById('doc').innerHTML = '<h1>Novo documento</h1><p>Comece a escrever aqui...</p>';
+      const editor = document.getElementById('doc');
+      editor.innerHTML = '<h1>Meu novo documento</h1><p>Comece a escrever aqui...</p>';
       updateWords();
       toast('Novo documento criado');
-    }
-
-    function cmd(command) {
-      const el = document.getElementById('doc');
-      el.focus();
-      document.execCommand(command, false, null);
-      updateWords();
-    }
-
-    function fontSize(value) {
-      if (!value) return;
-      const el = document.getElementById('doc');
-      el.focus();
-      document.execCommand('fontSize', false, value);
-      updateWords();
-    }
-
-    function formatDoc(tag) {
-      const el = document.getElementById('doc');
-      el.focus();
-      document.execCommand('formatBlock', false, tag);
-      updateWords();
-    }
-
-    function updateWords() {
-      const el = document.getElementById('doc');
-      const words = el.innerText.trim() ? el.innerText.trim().split(/\s+/).length : 0;
-      document.getElementById('wordCount').textContent = words;
-    }
-
-    document.getElementById('doc').addEventListener('input', updateWords);
-
-    function saveDoc() {
-      const html = document.getElementById('doc').innerHTML;
-      localStorage.setItem('nexia_current_doc', html);
-      const title = document.getElementById('doc').querySelector('h1')?.innerText || 'Documento sem título';
-      addProject('Documento', title);
-      toast('Documento salvo');
-    }
-
-    function exportText() {
-      const html = document.getElementById('doc').innerHTML;
-      const full = '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nexia Documento</title></head><body>' + html + '</body></html>';
-      download(new Blob([full], { type: 'text/html;charset=utf-8' }), 'nexia-documento.html');
-      toast('Documento exportado');
-    }
-
-    function download(blob, filename) {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = filename;
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }
-
-    function improveDoc() {
-      const el = document.getElementById('doc');
-      el.insertAdjacentHTML('beforeend', '<p><b>Versão revisada:</b> Este trecho foi aprimorado para maior clareza, organização e impacto profissional.</p>');
-      updateWords();
-      toast('Documento melhorado');
-    }
-
-    function structureDoc() {
-      const el = document.getElementById('doc');
-      el.innerHTML = '<h1>Título do trabalho</h1><h2>1. Introdução</h2><p>Contextualização do tema.</p><h2>2. Desenvolvimento</h2><p>Descreva os principais argumentos, dados e exemplos.</p><h2>3. Conclusão</h2><p>Retome os pontos centrais do tema.</p>';
-      updateWords();
-      toast('Estrutura criada');
-    }
-
-    function renderSheet() {
-      const sheet = state.sheets[sheetIndex] || state.sheets[0];
-      const head = document.getElementById('sheetHead');
-      const body = document.getElementById('sheetBody');
-      if (!sheet || !head || !body) return;
-
-      head.innerHTML = '';
-      const totalCols = sheet.data[0].length;
-      for (let c = 0; c < totalCols; c++) {
-        const th = document.createElement('th');
-        th.textContent = String.fromCharCode(65 + c);
-        head.appendChild(th);
-      }
-
-      body.innerHTML = '';
-      sheet.data.forEach((row, r) => {
-        const tr = document.createElement('tr');
-        row.forEach((cell, c) => {
-          const td = document.createElement('td');
-          td.textContent = cell;
-          td.dataset.row = r;
-          td.dataset.col = c;
-          td.contentEditable = true;
-          if (r === selectedCell.r && c === selectedCell.c) td.classList.add('active-cell');
-
-          td.addEventListener('focus', () => {
-            selectedCell = { r, c };
-            document.getElementById('cellName').textContent = String.fromCharCode(65 + c) + (r + 1);
-            document.getElementById('formula').value = sheet.data[r][c] || '';
-            renderSheet();
-          });
-
-          td.addEventListener('input', () => {
-            sheet.data[r][c] = td.textContent;
-          });
-
-          tr.appendChild(td);
-        });
-        body.appendChild(tr);
-      });
-
-      renderSheetTabs();
-    }
-
-    function renderSheetTabs() {
-      const container = document.getElementById('sheetTabs');
-      if (!container) return;
-      container.innerHTML = '';
-      state.sheets.forEach((sheet, idx) => {
-        const tab = document.createElement('button');
-        tab.className = 'sheet-tab ' + (idx === sheetIndex ? 'active' : '');
-        tab.textContent = sheet.name || 'Planilha ' + (idx + 1);
-        tab.onclick = () => {
-          sheetIndex = idx;
-          selectedCell = { r: 0, c: 0 };
-          renderSheet();
-        };
-        container.appendChild(tab);
-      });
-
-      const add = document.createElement('button');
-      add.className = 'sheet-tab';
-      add.textContent = '+';
-      add.onclick = () => {
-        const idx = state.sheets.length;
-        state.sheets.push({ name: 'Planilha' + (idx + 1), data: [['Item', 'Valor'], ['Exemplo', '0']] });
-        sheetIndex = idx;
-        renderSheet();
-        persistState();
-      };
-      container.appendChild(add);
     }
 
     function newSheet() {
       showView('sheets');
       if (!state.sheets.length) {
-        state.sheets.push({
-          name: 'Planilha1',
-          data: [['Produto', 'Quantidade', 'Preço', 'Total'], ['Exemplo', '2', '10', '=B2*C2'], ['','','',''], ['','','','']]
-        });
+        state.sheets.push({ name: 'Planilha 1', data: [['Item', 'Quantidade', 'Preço', 'Total']] });
       }
-      sheetIndex = 0;
+      state.sheetIndex = 0;
+      selectedCell = { r: 0, c: 0 };
       renderSheet();
       toast('Nova planilha criada');
     }
 
-    function addRow() {
-      const sheet = state.sheets[sheetIndex];
-      if (!sheet) return;
-      const cols = sheet.data[0].length;
-      sheet.data.push(Array(cols).fill(''));
-      renderSheet();
-      persistState();
-    }
-
-    function addCol() {
-      const sheet = state.sheets[sheetIndex];
-      if (!sheet) return;
-      sheet.data.forEach(row => row.push(''));
-      renderSheet();
-      persistState();
-    }
-
-    function sumColumn() {
-      document.getElementById('formula').value = '=SUM(B2:B5)';
-      applyFormula();
-    }
-
-    function averageColumn() {
-      document.getElementById('formula').value = '=AVERAGE(B2:B5)';
-      applyFormula();
-    }
-
-    function toggleCellBold() {
-      const cells = document.querySelectorAll('.sheet td.active-cell');
-      cells.forEach(td => {
-        const isBold = td.style.fontWeight === 'bold';
-        td.style.fontWeight = isBold ? 'normal' : 'bold';
-      });
-    }
-
-    function applyFormula() {
-      const sheet = state.sheets[sheetIndex];
-      if (!sheet) return;
-      const raw = document.getElementById('formula').value.trim();
-      if (!raw) {
-        toast('Digite uma fórmula ou valor');
-        return;
-      }
-
-      const row = selectedCell.r;
-      const col = selectedCell.c;
-      if (row === undefined || col === undefined) {
-        toast('Selecione uma célula');
-        return;
-      }
-
-      if (raw.startsWith('=')) {
-        const formula = raw.slice(1).toUpperCase();
-
-        if (formula.startsWith('SUM(')) {
-          const match = formula.match(/SUM\(([A-Z])(\d+):([A-Z])(\d+)\)/);
-          if (match) {
-            const startCol = match[1].charCodeAt(0) - 65;
-            const startRow = Number(match[2]) - 1;
-            const endCol = match[3].charCodeAt(0) - 65;
-            const endRow = Number(match[4]) - 1;
-            let total = 0;
-            for (let r = Math.min(startRow, endRow); r <= Math.max(startRow, endRow); r++) {
-              for (let c = Math.min(startCol, endCol); c <= Math.max(startCol, endCol); c++) {
-                const val = parseFloat(sheet.data[r]?.[c] || '0');
-                if (!Number.isNaN(val)) total += val;
-              }
-            }
-            sheet.data[row][col] = String(total);
-          }
-        } else if (formula.startsWith('AVERAGE(')) {
-          const match = formula.match(/AVERAGE\(([A-Z])(\d+):([A-Z])(\d+)\)/);
-          if (match) {
-            const startCol = match[1].charCodeAt(0) - 65;
-            const startRow = Number(match[2]) - 1;
-            const endCol = match[3].charCodeAt(0) - 65;
-            const endRow = Number(match[4]) - 1;
-            let total = 0;
-            let count = 0;
-            for (let r = Math.min(startRow, endRow); r <= Math.max(startRow, endRow); r++) {
-              for (let c = Math.min(startCol, endCol); c <= Math.max(startCol, endCol); c++) {
-                const val = parseFloat(sheet.data[r]?.[c] || '0');
-                if (!Number.isNaN(val)) {
-                  total += val;
-                  count++;
-                }
-              }
-            }
-            sheet.data[row][col] = count ? String(total / count) : '0';
-          }
-        } else {
-          sheet.data[row][col] = raw;
-        }
-      } else {
-        sheet.data[row][col] = raw;
-      }
-
-      renderSheet();
-      persistState();
-      toast('Fórmula aplicada');
-    }
-
-    function saveSheet() {
-      addProject('Planilha', 'Planilha sem título');
-      toast('Planilha salva');
-    }
-
-    function exportCSV() {
-      const sheet = state.sheets[sheetIndex];
-      if (!sheet) return;
-      const csv = sheet.data.map(row => row.join(',')).join('\n');
-      download(new Blob([csv], { type: 'text/csv;charset=utf-8' }), 'nexia-planilha.csv');
-      toast('CSV exportado');
-    }
-
-    function renderSlides() {
-      const thumbs = document.getElementById('thumbs');
-      const canvas = document.getElementById('slidecanvas');
-      thumbs.innerHTML = '';
-
-      state.slides.forEach((slide, idx) => {
-        const item = document.createElement('div');
-        item.className = 'thumb ' + (idx === slideIndex ? 'active' : '');
-        item.innerHTML = '<div class="muted" style="margin-bottom:6px;">Slide ' + (idx + 1) + '</div><div class="thumb-preview">' + slide.html + '</div>';
-        item.onclick = () => {
-          state.slides[slideIndex].html = canvas.innerHTML;
-          slideIndex = idx;
-          renderSlides();
-        };
-        thumbs.appendChild(item);
-      });
-
-      canvas.innerHTML = state.slides[slideIndex].html || '<h1>Novo slide</h1><p>Adicione conteúdo.</p>';
-      document.getElementById('slideNumber').textContent = slideIndex + 1;
-      document.getElementById('slideTotal').textContent = state.slides.length;
-    }
-
     function newSlide() {
       showView('slides');
-      state.slides = [{ html: '<h1>Minha apresentação</h1><p>Subtítulo da apresentação</p>' }];
-      slideIndex = 0;
-      renderSlides();
-      toast('Nova apresentação criada');
-    }
-
-    function addSlide() {
-      state.slides.push({ html: '<h1>Novo slide</h1><p>Adicione seu conteúdo.</p>' });
+      const defaultHtml = '<h1>Minha apresentação</h1><p>Subtítulo da apresentação</p>';
+      state.slides = state.slides || [];
+      state.slides.push({ html: defaultHtml });
       slideIndex = state.slides.length - 1;
       renderSlides();
-      persistState();
-    }
-
-    function deleteSlide() {
-      if (state.slides.length <= 1) {
-        toast('Não é possível excluir o último slide');
-        return;
-      }
-      state.slides.splice(slideIndex, 1);
-      slideIndex = Math.max(0, slideIndex - 1);
-      renderSlides();
-      persistState();
-    }
-
-    function cmdSlide(command) {
-      const canvas = document.getElementById('slidecanvas');
-      canvas.focus();
-      document.execCommand(command, false, null);
-    }
-
-    function insertSlideText() {
-      document.getElementById('slidecanvas').insertAdjacentHTML('beforeend', '<p>Texto do slide</p>');
-    }
-
-    function insertSlideImage() {
-      document.getElementById('slidecanvas').insertAdjacentHTML('beforeend', '<div style="padding:12px;border:1px solid #ddd;background:#f5f5f5;border-radius:12px;margin-top:16px;">🖼️ Imagem</div>');
-    }
-
-    function insertSlideShape() {
-      document.getElementById('slidecanvas').insertAdjacentHTML('beforeend', '<div style="width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,#dfe7ff,#b9c8ff);margin-top:18px;"></div>');
-    }
-
-    function slideTheme() {
-      const canvas = document.getElementById('slidecanvas');
-      const palettes = [
-        'linear-gradient(135deg,#fff,#eef2ff)',
-        'linear-gradient(135deg,#181c2f,#6d5dfc)',
-        'linear-gradient(135deg,#0f172a,#0ea5e9)',
-        'linear-gradient(135deg,#1f2937,#f59e0b)'
-      ];
-      const current = canvas.dataset.themeIndex || 0;
-      const next = (Number(current) + 1) % palettes.length;
-      canvas.dataset.themeIndex = next;
-      canvas.style.background = palettes[next];
-      canvas.style.color = next === 0 ? '#151a2a' : '#fff';
-      toast('Tema aplicado');
-    }
-
-    function previousSlide() {
-      if (slideIndex > 0) {
-        state.slides[slideIndex].html = document.getElementById('slidecanvas').innerHTML;
-        slideIndex--;
-        renderSlides();
-      }
-    }
-
-    function nextSlide() {
-      if (slideIndex < state.slides.length - 1) {
-        state.slides[slideIndex].html = document.getElementById('slidecanvas').innerHTML;
-        slideIndex++;
-        renderSlides();
-      }
-    }
-
-    function saveSlides() {
-      state.slides[slideIndex].html = document.getElementById('slidecanvas').innerHTML;
-      addProject('Slides', 'Apresentação sem título');
-      toast('Apresentação salva');
-    }
-
-    function exportSlides() {
-      state.slides[slideIndex].html = document.getElementById('slidecanvas').innerHTML;
-      const content = state.slides.map((slide, idx) => 'SLIDE ' + (idx + 1) + '\n' + slide.html).join('\n\n');
-      download(new Blob([content], { type: 'text/plain;charset=utf-8' }), 'nexia-slides.txt');
-      toast('Slides exportados');
-    }
-
-    function presentationMode() {
-      toast('Modo apresentação iniciado');
-    }
-
-    function renderProjects() {
-      const box = document.getElementById('projectList');
-      if (!box) return;
-
-      if (!state.projects.length) {
-        box.innerHTML = '<div class="empty-box">Nenhum projeto salvo ainda.</div>';
-        return;
-      }
-
-      box.innerHTML = state.projects.slice().reverse().map(project => {
-        const icon = project.type === 'Documento' ? '📄' : project.type === 'Planilha' ? '📊' : '🎨';
-        return '<div class="project-card"><div class="emoji">' + icon + '</div><h3>' + escapeHtml(project.name) + '</h3><div class="muted">' + project.type + ' · ' + project.date + '</div></div>';
-      }).join('');
-    }
-
-    function clearProjects() {
-      if (confirm('Limpar todos os projetos?')) {
-        state.projects = [];
-        persistState();
-        toast('Projetos limpos');
-      }
+      toast('Novo slide criado');
     }
 
     function openAI() {
@@ -1603,49 +1266,6 @@
 
     function closeModal() {
       document.getElementById('modal').classList.remove('show');
-    }
-
-    function generateFromModal() {
-      generate(document.getElementById('modalPrompt').value);
-      closeModal();
-    }
-
-    function generateFromAI() {
-      generate(document.getElementById('aiPrompt').value);
-    }
-
-    function generate(prompt) {
-      const text = (prompt || '').trim() || 'novo projeto';
-      const lower = text.toLowerCase();
-
-      if (lower.includes('planilha') || lower.includes('tabela')) {
-        state.sheets = [{
-          name: 'Planilha1',
-          data: [['Item', 'Quantidade', 'Valor', 'Total'], ['Exemplo', '1', '10', '=B2*C2'], ['','','',''], ['','','','']]
-        }];
-        sheetIndex = 0;
-        renderSheet();
-        saveSheet();
-        return;
-      }
-
-      if (lower.includes('slide') || lower.includes('apresenta')) {
-        state.slides = [
-          { html: '<h1>' + escapeHtml(text) + '</h1><p>Apresentação criada pelo Nexia</p>' },
-          { html: '<h1>Introdução</h1><p>Contextualização do tema.</p>' },
-          { html: '<h1>Desenvolvimento</h1><p>Principais pontos e exemplos.</p>' },
-          { html: '<h1>Conclusão</h1><p>Resumo dos aprendizados.</p>' }
-        ];
-        slideIndex = 0;
-        renderSlides();
-        saveSlides();
-        return;
-      }
-
-      showView('docs');
-      document.getElementById('doc').innerHTML = '<h1>' + escapeHtml(text) + '</h1><h2>Introdução</h2><p>Este é um rascunho inicial. Desenvolva o contexto e apresente o objetivo do trabalho.</p><h2>Desenvolvimento</h2><p>Organize aqui os principais argumentos, dados, exemplos e informações relevantes ao tema.</p><h2>Conclusão</h2><p>Retome os pontos principais e finalize o trabalho.</p>';
-      saveDoc();
-      toast('Projeto criado');
     }
 
     function openLogin() {
@@ -1658,38 +1278,426 @@
 
     function fakeLogin() {
       closeLogin();
-      toast('Login demonstrativo concluído');
+      toast('Login simulado com sucesso');
+    }
+
+    function generateFromAI() {
+      const prompt = (document.getElementById('aiPrompt') || {}).value || '';
+      generate(prompt);
+    }
+
+    function generateFromModal() {
+      const prompt = document.getElementById('modalPrompt').value || '';
+      generate(prompt);
+      closeModal();
+    }
+
+    function generate(prompt) {
+      const text = (prompt || '').trim();
+      if (!text) {
+        toast('Descreva uma ideia para gerar o conteúdo.');
+        return;
+      }
+
+      const lower = text.toLowerCase();
+      if (lower.includes('planilha') || lower.includes('excel') || lower.includes('tabela')) {
+        state.sheets = [{
+          name: 'Planilha IA',
+          data: [
+            ['Item', 'Quantidade', 'Valor', 'Total'],
+            ['Produto A', '10', '25', '=B2*C2'],
+            ['Produto B', '4', '18', '=B3*C3']
+          ]
+        }];
+        state.sheetIndex = 0;
+        showView('sheets');
+        renderSheet();
+        addProject('Planilha', 'Planilha IA');
+        toast('Planilha gerada com IA');
+        return;
+      }
+
+      if (lower.includes('slide') || lower.includes('apresent')) {
+        state.slides = [{ html: '<h1>' + text.slice(0, 30) + '</h1><p>Estruturado pelas recomendações da IA para uma apresentação eficiente.</p>' }];
+        slideIndex = 0;
+        showView('slides');
+        renderSlides();
+        addProject('Apresentação', 'Apresentação IA');
+        toast('Apresentação gerada com IA');
+        return;
+      }
+
+      const docEl = document.getElementById('doc');
+      docEl.innerHTML = '<h1>' + text.split(' ').slice(0, 5).join(' ') + '</h1><p>Estrutura criada pela IA: foco, objetivo, contexto e ação para próximos passos.</p><p>' + text + '</p>';
+      showView('docs');
+      updateWords();
+      addProject('Documento', text.split(' ').slice(0, 3).join(' '));
+      toast('Documento gerado com IA');
+    }
+
+    function cmd(command) {
+      const el = document.getElementById('doc');
+      el.focus();
+      document.execCommand(command, false, null);
+      updateWords();
+    }
+
+    function fontSize(value) {
+      if (!value) return;
+      document.execCommand('fontSize', false, value);
+      updateWords();
+    }
+
+    function formatDoc(tag) {
+      document.execCommand('formatBlock', false, tag);
+      updateWords();
+    }
+
+    function updateWords() {
+      const el = document.getElementById('doc');
+      const text = el.innerText.replace(/\s+/g, ' ').trim();
+      document.getElementById('wordCount').textContent = String(text ? text.split(' ').length : 0);
+    }
+
+    function saveDoc() {
+      const title = document.getElementById('doc').querySelector('h1')?.innerText || 'Documento sem título';
+      addProject('Documento', title);
+      toast('Documento salvo');
+    }
+
+    function exportText() {
+      const html = document.getElementById('doc').innerHTML;
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'nexia-documento.html';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast('Documento exportado');
+    }
+
+    function improveDoc() {
+      const el = document.getElementById('doc');
+      el.insertAdjacentHTML('beforeend', '<p><strong>Versão revisada:</strong> Este texto foi aprimorado para maior clareza, estrutura e impacto profissional.</p>');
+      updateWords();
+      toast('Documento melhorado');
+    }
+
+    function structureDoc() {
+      const el = document.getElementById('doc');
+      el.innerHTML = '<h1>Título do trabalho</h1><h2>1. Introdução</h2><p>Contextualize o tema e o propósito.</p><h2>2. Desenvolvimento</h2><p>Explique fundamentos, dados e detalhes relevantes.</p><h2>3. Conclusão</h2><p>Resuma os pontos principais e reforçe a proposta.</p>';
+      updateWords();
+      toast('Estrutura aplicada');
+    }
+
+    function renderSheet() {
+      const sheet = state.sheets[state.sheetIndex] || state.sheets[0];
+      const head = document.getElementById('sheetHead');
+      const body = document.getElementById('sheetBody');
+      if (!sheet) return;
+
+      const cols = sheet.data[0]?.length || 4;
+      head.innerHTML = '';
+      for (let c = 0; c < cols; c++) {
+        const th = document.createElement('th');
+        th.textContent = String.fromCharCode(65 + c);
+        head.appendChild(th);
+      }
+
+      body.innerHTML = '';
+      for (let r = 0; r < Math.max(sheet.data.length, 8); r++) {
+        const row = document.createElement('tr');
+        for (let c = 0; c < cols; c++) {
+          const cell = document.createElement('td');
+          const value = sheet.data[r]?.[c] ?? '';
+          cell.textContent = value;
+          if (r === selectedCell.r && c === selectedCell.c) cell.classList.add('active-cell');
+          cell.addEventListener('focus', () => {
+            selectedCell = { r, c };
+            document.getElementById('cellName').textContent = (String.fromCharCode(65 + c) + (r + 1));
+            document.getElementById('formula').value = sheet.data[r]?.[c] || '';
+            renderSheet();
+          });
+          cell.setAttribute('contenteditable', 'true');
+          cell.addEventListener('input', () => {
+            if (!sheet.data[r]) sheet.data[r] = [];
+            sheet.data[r][c] = cell.textContent.trim();
+            document.getElementById('formula').value = sheet.data[r][c];
+            persistState();
+          });
+          row.appendChild(cell);
+        }
+        body.appendChild(row);
+      }
+
+      document.getElementById('cellName').textContent = String.fromCharCode(65 + selectedCell.c) + (selectedCell.r + 1);
+      document.getElementById('formula').value = sheet.data[selectedCell.r]?.[selectedCell.c] || '';
+      renderSheetTabs();
+      persistState();
+    }
+
+    function renderSheetTabs() {
+      const container = document.getElementById('sheetTabs');
+      container.innerHTML = '';
+      state.sheets.forEach((sheet, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'sheet-tab' + (idx === state.sheetIndex ? ' active' : '');
+        btn.textContent = sheet.name || `Planilha ${idx + 1}`;
+        btn.onclick = () => {
+          state.sheetIndex = idx;
+          selectedCell = { r: 0, c: 0 };
+          renderSheet();
+        };
+        container.appendChild(btn);
+      });
+      const add = document.createElement('button');
+      add.className = 'sheet-tab';
+      add.textContent = '+';
+      add.onclick = () => {
+        state.sheets.push({ name: `Planilha ${state.sheets.length + 1}`, data: [['Item', 'Valor']] });
+        state.sheetIndex = state.sheets.length - 1;
+        renderSheet();
+      };
+      container.appendChild(add);
+    }
+
+    function addRow() {
+      const sheet = state.sheets[state.sheetIndex];
+      if (!sheet) return;
+      const row = Array(sheet.data[0]?.length || 4).fill('');
+      sheet.data.push(row);
+      renderSheet();
+      toast('Linha adicionada');
+    }
+
+    function addCol() {
+      const sheet = state.sheets[state.sheetIndex];
+      if (!sheet) return;
+      sheet.data.forEach(row => row.push(''));
+      renderSheet();
+      toast('Coluna adicionada');
+    }
+
+    function sumColumn() {
+      const sheet = state.sheets[state.sheetIndex];
+      if (!sheet) return;
+      const current = sheet.data[selectedCell.r]?.[selectedCell.c] || '';
+      const value = Number(current) || 0;
+      sheet.data[selectedCell.r][selectedCell.c] = String(value + 1);
+      renderSheet();
+      toast('Cálculo aplicado');
+    }
+
+    function averageColumn() {
+      const sheet = state.sheets[state.sheetIndex];
+      if (!sheet) return;
+      const values = sheet.data.map(row => Number(row[selectedCell.c] || 0)).filter(v => !Number.isNaN(v));
+      const avg = values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+      sheet.data[selectedCell.r][selectedCell.c] = String(avg.toFixed(2));
+      renderSheet();
+      toast('Média calculada');
+    }
+
+    function toggleCellBold() {
+      const sheet = state.sheets[state.sheetIndex];
+      if (!sheet) return;
+      const value = sheet.data[selectedCell.r]?.[selectedCell.c] || '';
+      sheet.data[selectedCell.r][selectedCell.c] = value && !value.startsWith('**') ? `**${value}**` : value.replace(/^\*\*|\*\*$/g, '');
+      renderSheet();
+    }
+
+    function applyFormula() {
+      const sheet = state.sheets[state.sheetIndex];
+      if (!sheet) return;
+      const raw = document.getElementById('formula').value.trim();
+      if (!raw) return;
+      const row = selectedCell.r;
+      const col = selectedCell.c;
+      if (!sheet.data[row]) sheet.data[row] = [];
+      sheet.data[row][col] = raw;
+      renderSheet();
+      toast('Fórmula aplicada');
+    }
+
+    function saveSheet() {
+      addProject('Planilha', state.sheets[state.sheetIndex]?.name || 'Planilha');
+      toast('Planilha salva');
+    }
+
+    function exportCSV() {
+      const sheet = state.sheets[state.sheetIndex];
+      if (!sheet) return;
+      const csv = sheet.data.map(row => row.join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'nexia-planilha.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast('CSV exportado');
+    }
+
+    function renderSlides() {
+      const thumbs = document.getElementById('thumbs');
+      const slideCanvas = document.getElementById('slideCanvas');
+      thumbs.innerHTML = '';
+
+      for (let i = 0; i < state.slides.length; i++) {
+        const item = document.createElement('div');
+        item.className = 'thumb' + (i === slideIndex ? ' active' : '');
+        item.innerHTML = '<div class="thumb-preview">' + (state.slides[i].html || '').replace(/<[^>]*>/g, '').slice(0, 120) + '</div>';
+        item.onclick = () => {
+          slideIndex = i;
+          renderSlides();
+        };
+        thumbs.appendChild(item);
+      }
+
+      slideCanvas.innerHTML = state.slides[slideIndex]?.html || '<h1>Novo slide</h1><p>Conteúdo do slide</p>';
+      document.getElementById('slideNumber').textContent = String(slideIndex + 1);
+      document.getElementById('slideTotal').textContent = String(state.slides.length); 
+    }
+
+    function addSlide() {
+      state.slides.push({ html: '<h1>Nova apresentação</h1><p>Adicione conteúdo aqui.</p>' });
+      slideIndex = state.slides.length - 1;
+      renderSlides();
+      toast('Slide adicionado');
+    }
+
+    function deleteSlide() {
+      if (state.slides.length <= 1) {
+        toast('Você precisa manter pelo menos 1 slide.');
+        return;
+      }
+      state.slides.splice(slideIndex, 1);
+      slideIndex = Math.max(0, slideIndex - 1);
+      renderSlides();
+      toast('Slide removido');
+    }
+
+    function cmdSlide(command) {
+      const canvas = document.getElementById('slideCanvas');
+      canvas.focus();
+      document.execCommand(command, false, null);
+      state.slides[slideIndex] = { html: canvas.innerHTML };
+      persistState();
+    }
+
+    function insertSlideText() {
+      const canvas = document.getElementById('slideCanvas');
+      canvas.insertAdjacentHTML('beforeend', '<p>Texto do slide</p>');
+      state.slides[slideIndex] = { html: canvas.innerHTML };
+      persistState();
+    }
+
+    function insertSlideImage() {
+      const canvas = document.getElementById('slideCanvas');
+      canvas.insertAdjacentHTML('beforeend', '<div style="padding:12px 0; color:#cbd5e1; border:1px dashed rgba(255,255,255,0.2); border-radius:12px; margin-top:16px;">Imagem</div>');
+      state.slides[slideIndex] = { html: canvas.innerHTML };
+      persistState();
+    }
+
+    function insertSlideShape() {
+      const canvas = document.getElementById('slideCanvas');
+      canvas.insertAdjacentHTML('beforeend', '<div style="width:140px; height:140px; border-radius:50%; background:linear-gradient(135deg,#7c6cff,#4dd4c5); margin-top:18px;"></div>');
+      state.slides[slideIndex] = { html: canvas.innerHTML };
+      persistState();
+    }
+
+    function slideTheme() {
+      const themes = [
+        'linear-gradient(135deg, rgba(18,25,38,1), rgba(15,21,29,0.88))',
+        'linear-gradient(135deg, #1e293b, #0f766e)',
+        'linear-gradient(135deg, #111827, #7c3aed)',
+        'linear-gradient(135deg, #0f172a, #ea580c)'
+      ];
+      const canvas = document.getElementById('slideCanvas');
+      const next = themes[(themes.indexOf(canvas.style.background || themes[0]) + 1) % themes.length];
+      canvas.style.background = next;
+      state.slides[slideIndex] = { html: canvas.innerHTML };
+      toast('Tema aplicado');
+    }
+
+    function previousSlide() {
+      if (slideIndex > 0) {
+        slideIndex -= 1;
+        renderSlides();
+      }
+    }
+
+    function nextSlide() {
+      if (slideIndex < state.slides.length - 1) {
+        slideIndex += 1;
+        renderSlides();
+      }
+    }
+
+    function saveSlides() {
+      addProject('Apresentação', `Slide ${slideIndex + 1}`);
+      toast('Apresentação salva');
+    }
+
+    function exportSlides() {
+      const blob = new Blob([state.slides.map((s, i) => `SLIDE ${i + 1}\n${s.html}`).join('\n\n')], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'nexia-slides.txt';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast('Slides exportados');
+    }
+
+    function presentationMode() {
+      toast('Modo de apresentação ativado');
+    }
+
+    function renderProjects() {
+      const list = document.getElementById('projectList');
+      if (!state.projects.length) {
+        list.innerHTML = '<div class="empty-box">Nenhum projeto salvo ainda.</div>';
+        return;
+      }
+
+      list.innerHTML = state.projects.slice().reverse().map(item => {
+        const icon = {
+          Documento: '📄',
+          Planilha: '📊',
+          Apresentação: '🎨',
+          IA: '🤖'
+        }[item.type] || '📁';
+
+        return '<div class="project-card"><div class="emoji">' + icon + '</div><h3>' + item.name + '</h3><div class="muted">' + item.type + ' • ' + item.date + '</div></div>';
+      }).join('');
+    }
+
+    function clearProjects() {
+      if (!confirm('Limpar todos os projetos?')) return;
+      state.projects = [];
+      persistState();
+      toast('Projetos limpos');
     }
 
     function saveSettings() {
-      const name = document.getElementById('userName').value.trim() || 'Nexia User';
-      state.name = name;
-      document.getElementById('avatarInitial').textContent = name.charAt(0).toUpperCase();
+      const value = document.getElementById('userName').value.trim() || 'Nexia User';
+      state.name = value;
+      document.getElementById('avatarInitial').textContent = value.charAt(0).toUpperCase();
+      toast('Configurações salvas');
       persistState();
-      toast('Perfil salvo');
     }
 
-    function escapeHtml(value) {
-      return String(value).replace(/[&<>"']/g, char => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-      }[char]));
+    function init() {
+      document.getElementById('userName').value = state.name;
+      document.getElementById('avatarInitial').textContent = state.name.charAt(0).toUpperCase();
+      renderSheet();
+      renderSlides();
+      renderProjects();
+      updateStats();
+      updateWords();
+      document.getElementById('doc').addEventListener('input', updateWords);
     }
 
-    window.sheets = state.sheets;
-    window.slides = state.slides;
-
-    document.getElementById('userName').value = state.name || 'Nexia User';
-    document.getElementById('avatarInitial').textContent = (state.name || 'N').charAt(0).toUpperCase();
-
-    updateStats();
-    renderProjects();
-    renderSheet();
-    renderSlides();
-    showView('home');
+    init();
   </script>
 </body>
 </html>
