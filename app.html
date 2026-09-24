@@ -20,19 +20,15 @@
 }
 
 *{box-sizing:border-box}
-
 body{
 margin:0;
 font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
 background:var(--bg);
 color:var(--ink)
 }
-
 button,input,textarea,select{font:inherit}
 button{cursor:pointer;border:0}
-
 .app{display:flex;min-height:100vh}
-
 .side{
 width:250px;
 background:#111321;
@@ -42,15 +38,12 @@ position:fixed;
 inset:0 auto 0 0;
 z-index:10
 }
-
 .logo{
 font-size:24px;
 font-weight:800;
 padding:8px 12px 25px
 }
-
 .logo span{color:#8d80ff}
-
 .nav button{
 width:100%;
 text-align:left;
@@ -60,27 +53,22 @@ padding:12px 14px;
 border-radius:12px;
 margin:3px 0
 }
-
-.nav button.active,
-.nav button:hover{
+.nav button.active,.nav button:hover{
 background:#292c40;
 color:#fff
 }
-
 .main{
 margin-left:250px;
 flex:1;
 padding:28px;
 max-width:1600px
 }
-
 .top{
 display:flex;
 justify-content:space-between;
 align-items:center;
 margin-bottom:25px
 }
-
 .pill{
 background:#fff;
 border:1px solid var(--line);
@@ -88,7 +76,6 @@ padding:9px 13px;
 border-radius:12px;
 color:var(--muted)
 }
-
 .avatar{
 width:38px;
 height:38px;
@@ -99,13 +86,11 @@ display:grid;
 place-items:center;
 font-weight:800
 }
-
 .grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:15px
 }
-
 .card{
 background:var(--card);
 border:1px solid var(--line);
@@ -113,13 +98,11 @@ border-radius:18px;
 padding:20px;
 box-shadow:var(--shadow)
 }
-
 .hero{
 background:linear-gradient(135deg,#6d5dfc,#9c7cff);
 color:#fff;
 border:0
 }
-
 .hero input{
 width:100%;
 padding:14px;
@@ -127,7 +110,6 @@ border:0;
 border-radius:12px;
 margin:15px 0
 }
-
 .hero button{
 background:#fff;
 color:#5b4cf0;
@@ -135,13 +117,11 @@ padding:12px 16px;
 border-radius:11px;
 font-weight:700
 }
-
 .templates{
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:15px
 }
-
 .tpl{
 padding:20px;
 border-radius:16px;
@@ -150,27 +130,21 @@ border:1px solid var(--line);
 transition:.2s;
 cursor:pointer
 }
-
 .tpl:hover{
 transform:translateY(-2px);
 box-shadow:var(--shadow)
 }
-
 .icon{
 font-size:27px;
 margin-bottom:12px
 }
-
 .muted{color:var(--muted)}
-
 .row{
 display:flex;
 gap:10px;
 align-items:center
 }
-
 .space{justify-content:space-between}
-
 .btn{
 padding:10px 14px;
 border-radius:10px;
@@ -178,26 +152,21 @@ background:#ecebff;
 color:#5446dc;
 font-weight:700
 }
-
 .btn.primary{
 background:var(--brand);
 color:#fff
 }
-
 .btn.ghost{
 background:#fff;
 border:1px solid var(--line);
 color:var(--ink)
 }
-
 .btn.danger{
 background:#fff0f0;
 color:#bd3d3d
 }
-
 .view{display:none}
 .view.active{display:block}
-
 .toolbar{
 display:flex;
 gap:7px;
@@ -205,15 +174,12 @@ flex-wrap:wrap;
 padding:10px;
 border-bottom:1px solid var(--line)
 }
-
-.toolbar button,
-.toolbar select{
+.toolbar button,.toolbar select{
 background:#f3f4f8;
 border:1px solid var(--line);
 padding:7px 10px;
 border-radius:8px
 }
-
 .officebar{
 height:54px;
 background:#fff;
@@ -224,25 +190,19 @@ gap:12px;
 padding:7px 14px;
 border-radius:8px 8px 0 0
 }
-
 .officebar small{color:#777}
-
 .office-actions{
 margin-left:auto;
 display:flex;
 gap:6px
 }
-
 .office-actions button{
 background:#fff;
 border:1px solid #ddd;
 border-radius:6px;
 padding:7px 10px
 }
-
-.wordlogo,
-.excellogo,
-.pptlogo{
+.wordlogo,.excellogo,.pptlogo{
 width:34px;
 height:34px;
 border-radius:5px;
@@ -252,14 +212,10 @@ place-items:center;
 font-weight:900;
 font-size:20px
 }
-
 .wordlogo{background:#185abd}
 .excellogo{background:#107c41}
 .pptlogo{background:#d24726}
-
-.ribbon,
-.excel-ribbon,
-.ppt-ribbon{
+.ribbon,.excel-ribbon,.ppt-ribbon{
 background:#f7f7f7;
 border:1px solid #ddd;
 border-top:0;
@@ -268,7 +224,6 @@ gap:8px;
 padding:8px 10px;
 overflow:auto
 }
-
 .ribbon-group{
 display:flex;
 align-items:center;
@@ -277,23 +232,17 @@ padding-right:14px;
 border-right:1px solid #ddd;
 white-space:nowrap
 }
-
 .ribbon-group b{
 font-size:11px;
 color:#666;
 align-self:flex-start
 }
-
-.ribbon button,
-.ribbon select,
-.excel-ribbon button,
-.ppt-ribbon button{
+.ribbon button,.ribbon select,.excel-ribbon button,.ppt-ribbon button{
 background:#fff;
 border:1px solid #d7d7d7;
 border-radius:4px;
 padding:6px 8px
 }
-
 .word-workspace{
 background:#e8e8e8;
 min-height:700px;
@@ -302,7 +251,6 @@ display:grid;
 grid-template-columns:minmax(0,1fr) 220px;
 gap:18px
 }
-
 .word-page{
 background:#fff;
 max-width:850px;
@@ -311,21 +259,16 @@ margin:auto;
 width:100%;
 box-shadow:0 2px 8px #0002
 }
-
 .word-page .doc{min-height:1000px}
-
 .doc{
 padding:55px;
 outline:none;
 line-height:1.6
 }
-
 .doc h1{margin-top:0}
-
 .sidepanel{
 height:max-content
 }
-
 .formula-row{
 display:flex;
 align-items:center;
@@ -334,7 +277,6 @@ background:#fff;
 border:1px solid #ddd;
 padding:7px
 }
-
 .formula-row #cellName{
 width:60px;
 text-align:center;
@@ -342,56 +284,44 @@ border:1px solid #ccc;
 padding:5px;
 background:#f6f6f6
 }
-
 .formula-row span{
 font-style:italic;
 font-weight:bold
 }
-
 .formula-row .formula{
 margin:0;
 flex:1
 }
-
 .excel-shell{
 background:#fff;
 border:1px solid #ccc
 }
-
 .tablewrap{overflow:auto}
-
 .sheet{
 border-collapse:collapse;
 width:100%;
 min-width:900px
 }
-
-.sheet th,
-.sheet td{
+.sheet th,.sheet td{
 border:1px solid #d0d0d0;
 padding:6px 8px;
 min-width:100px;
 height:29px
 }
-
 .sheet th{
 background:#f3f3f3;
 color:#555;
 font-weight:600
 }
-
 .sheet td{background:#fff}
-
 .sheet td:focus{
 outline:2px solid #217346;
 outline-offset:-2px
 }
-
 .sheet td.selected{
 outline:2px solid #217346;
 outline-offset:-2px
 }
-
 .sheet td input{
 border:0;
 outline:0;
@@ -399,7 +329,6 @@ background:transparent;
 width:100%;
 min-width:90px
 }
-
 .sheet-tabs{
 background:#eee;
 border:1px solid #ccc;
@@ -409,7 +338,6 @@ gap:4px;
 align-items:center;
 overflow:auto
 }
-
 .sheet-tab{
 background:#fff;
 border:1px solid #ccc;
@@ -417,17 +345,14 @@ padding:6px 15px;
 border-radius:5px 5px 0 0;
 white-space:nowrap
 }
-
 .sheet-tab.active{
 border-top:3px solid #107c41
 }
-
 .slides{
 display:grid;
 grid-template-columns:190px 1fr;
 gap:15px
 }
-
 .ppt-workspace{
 background:#ddd;
 min-height:680px;
@@ -436,9 +361,7 @@ grid-template-columns:190px 1fr;
 gap:18px;
 padding:18px
 }
-
 .ppt-thumbs{overflow:auto}
-
 .thumb{
 border:2px solid transparent;
 border-radius:10px;
@@ -447,24 +370,19 @@ background:#fff;
 margin-bottom:10px;
 cursor:pointer
 }
-
 .thumb.active{border-color:var(--brand)}
-
 .thumb div{
 font-size:7px;
 max-height:75px;
 overflow:hidden
 }
-
 .thumb h1{font-size:15px}
-
 .ppt-stage{
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center
 }
-
 .slidecanvas{
 aspect-ratio:16/9;
 background:linear-gradient(135deg,#fff,#f0efff);
@@ -477,29 +395,23 @@ width:min(960px,90%);
 box-shadow:0 4px 15px #0002;
 outline:none
 }
-
 .slidecanvas h1{font-size:42px}
-
 .slidecontrols{
 display:flex;
 gap:8px;
 margin-top:12px
 }
-
 .ppt-status{
 padding:10px;
 color:#666
 }
-
 .stats{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:15px;
 margin:18px 0
 }
-
 .stat b{font-size:25px}
-
 .modal{
 position:fixed;
 inset:0;
@@ -510,9 +422,7 @@ justify-content:center;
 padding:20px;
 z-index:20
 }
-
 .modal.show{display:flex}
-
 .modalbox{
 background:#fff;
 border-radius:18px;
@@ -520,17 +430,13 @@ max-width:560px;
 width:100%;
 padding:25px
 }
-
-.modal input,
-.modal textarea,
-.loginbox input{
+.modal input,.modal textarea,.loginbox input{
 width:100%;
 padding:12px;
 border:1px solid var(--line);
 border-radius:10px;
 margin:7px 0 14px
 }
-
 .toast{
 position:fixed;
 right:20px;
@@ -542,12 +448,10 @@ border-radius:10px;
 display:none;
 z-index:30
 }
-
 .empty{
 padding:50px;
 text-align:center
 }
-
 .login{
 position:fixed;
 inset:0;
@@ -556,22 +460,18 @@ display:none;
 place-items:center;
 z-index:50
 }
-
 .login.show{display:grid}
-
 .loginbox{
 background:#fff;
 padding:30px;
 border-radius:20px;
 width:min(420px,92vw)
 }
-
 hr{
 border:0;
 border-top:1px solid var(--line);
 margin:15px 0
 }
-
 @media(max-width:900px){
 .side{width:72px}
 .logo{font-size:0}
@@ -584,8 +484,7 @@ font-size:22px
 margin-left:72px;
 padding:18px
 }
-.grid,
-.templates{
+.grid,.templates{
 grid-template-columns:repeat(2,1fr)
 }
 .word-workspace{
@@ -598,10 +497,8 @@ grid-template-columns:1fr
 grid-template-columns:1fr
 }
 }
-
 @media(max-width:560px){
-.grid,
-.templates{
+.grid,.templates{
 grid-template-columns:1fr
 }
 .main{padding:12px}
@@ -620,13 +517,10 @@ padding:30px
 </head>
 
 <body>
-
 <div class="app">
 
 <aside class="side">
-
 <div class="logo">Nexia<span>.</span></div>
-
 <div class="nav">
 
 <button class="active" data-view="home">
@@ -659,631 +553,276 @@ padding:30px
 <main class="main">
 
 <div class="top">
-
 <div>
 <h1 id="title">Olá! 👋</h1>
-
-<div class="muted">
-Crie, edite e organize tudo em um só lugar.
+<div class="muted">Crie, edite e organize tudo em um só lugar.</div>
 </div>
-
-</div>
-
 <div class="row">
-
-<button class="pill" onclick="openLogin()">
-Conta
-</button>
-
+<button class="pill" onclick="openLogin()">Conta</button>
 <div class="avatar">N</div>
-
 </div>
-
 </div>
-
-
-<!-- INÍCIO -->
 
 <section id="home" class="view active">
-
 <div class="card hero">
-
 <h2>O que você quer criar?</h2>
-
-<p>
-Documentos, planilhas e apresentações simples,
-rápidas e fáceis de usar.
-</p>
-
-<input
-id="aiPrompt"
-placeholder="Ex.: trabalho sobre energia solar com 8 páginas..."
->
-
-<button onclick="generateFromAI()">
-✨ Criar com IA
-</button>
-
+<p>Documentos, planilhas e apresentações simples, rápidas e fáceis de usar.</p>
+<input id="aiPrompt" placeholder="Ex.: trabalho sobre energia solar com 8 páginas...">
+<button onclick="generateFromAI()">✨ Criar com IA</button>
 </div>
 
-
 <div class="stats">
-
 <div class="card stat">
 <div class="muted">Projetos</div>
 <b id="countProjects">0</b>
 </div>
-
 <div class="card stat">
 <div class="muted">Documentos</div>
 <b id="countDocs">0</b>
 </div>
-
 <div class="card stat">
 <div class="muted">Última criação</div>
 <b id="lastType">—</b>
 </div>
-
 </div>
-
 
 <h2>Comece por aqui</h2>
-
 <div class="templates">
-
 <div class="tpl" onclick="newDoc()">
-
 <div class="icon">📄</div>
-
 <b>Trabalho / documento</b>
-
-<p class="muted">
-Texto, relatório, currículo ou trabalho acadêmico.
-</p>
-
+<p class="muted">Texto, relatório, currículo ou trabalho acadêmico.</p>
 </div>
-
 
 <div class="tpl" onclick="newSheet()">
-
 <div class="icon">📊</div>
-
 <b>Planilha</b>
-
-<p class="muted">
-Tabela, fórmulas, orçamento e cálculos.
-</p>
-
+<p class="muted">Tabela, fórmulas, orçamento e cálculos.</p>
 </div>
-
 
 <div class="tpl" onclick="newSlide()">
-
 <div class="icon">🎨</div>
-
 <b>Apresentação</b>
-
-<p class="muted">
-Monte slides para aula, reunião ou pitch.
-</p>
-
+<p class="muted">Monte slides para aula, reunião ou pitch.</p>
 </div>
-
 
 <div class="tpl" onclick="openAI()">
-
 <div class="icon">🤖</div>
-
 <b>Assistente IA</b>
-
-<p class="muted">
-Transforme uma ideia em um projeto.
-</p>
-
+<p class="muted">Transforme uma ideia em um projeto.</p>
 </div>
-
 </div>
-
 </section>
 
-
-<!-- DOCUMENTOS -->
-
 <section id="docs" class="view">
-
 <div class="officebar">
-
 <div class="wordlogo">W</div>
-
 <div>
 <b>Nexia Documento</b>
 <small> • Editando</small>
 </div>
-
 <div class="office-actions">
-
 <button onclick="saveDoc()">💾</button>
-
 <button onclick="exportText()">⬇️</button>
-
 <button onclick="printDoc()">🖨️</button>
-
 </div>
-
 </div>
-
 
 <div class="ribbon">
-
 <div class="ribbon-group">
-
 <b>Área de transferência</b>
-
-<button onclick="document.execCommand('copy')">
-Copiar
-</button>
-
-<button onclick="document.execCommand('cut')">
-Recortar
-</button>
-
+<button onclick="document.execCommand('copy')">Copiar</button>
+<button onclick="document.execCommand('cut')">Recortar</button>
 </div>
 
-
 <div class="ribbon-group">
-
 <b>Fonte</b>
-
 <button onclick="cmd('bold')"><b>B</b></button>
-
 <button onclick="cmd('italic')"><i>I</i></button>
-
 <button onclick="cmd('underline')"><u>U</u></button>
-
 <select onchange="fontSize(this.value)">
-
 <option value="">Tamanho</option>
 <option value="1">Pequeno</option>
 <option value="3">Normal</option>
 <option value="5">Grande</option>
 <option value="7">Muito grande</option>
-
 </select>
-
 </div>
 
-
 <div class="ribbon-group">
-
 <b>Parágrafo</b>
-
-<button onclick="cmd('insertUnorderedList')">
-☷
-</button>
-
-<button onclick="cmd('insertOrderedList')">
-1.
-</button>
-
-<button onclick="cmd('justifyLeft')">
-⬅
-</button>
-
-<button onclick="cmd('justifyCenter')">
-↔
-</button>
-
-<button onclick="cmd('justifyRight')">
-➡
-</button>
-
+<button onclick="cmd('insertUnorderedList')">☷</button>
+<button onclick="cmd('insertOrderedList')">1.</button>
+<button onclick="cmd('justifyLeft')">⬅</button>
+<button onclick="cmd('justifyCenter')">↔</button>
+<button onclick="cmd('justifyRight')">➡</button>
 </div>
-
 
 <div class="ribbon-group">
-
 <b>Estilos</b>
-
-<button onclick="formatDoc('p')">
-Parágrafo
-</button>
-
-<button onclick="formatDoc('h1')">
-Título
-</button>
-
-<button onclick="formatDoc('h2')">
-Subtítulo
-</button>
-
+<button onclick="formatDoc('p')">Parágrafo</button>
+<button onclick="formatDoc('h1')">Título</button>
+<button onclick="formatDoc('h2')">Subtítulo</button>
 </div>
-
 </div>
-
 
 <div class="word-workspace">
-
 <div class="word-page">
-
-<div
-id="doc"
-class="doc"
-contenteditable="true"
-spellcheck="true"
->
-
+<div id="doc" class="doc" contenteditable="true" spellcheck="true">
 <h1>Meu novo documento</h1>
-
-<p>
-Comece a escrever aqui...
-</p>
-
+<p>Comece a escrever aqui...</p>
 </div>
-
 </div>
-
 
 <div class="sidepanel">
-
 <div class="card">
-
 <b>Assistente Nexia</b>
-
-<p class="muted">
-Use a IA local para melhorar ou estruturar seu texto.
-</p>
-
-<button class="btn primary" onclick="improveDoc()">
-✨ Melhorar
-</button>
-
-<button class="btn ghost" onclick="structureDoc()">
-Estruturar
-</button>
-
+<p class="muted">Use a IA local para melhorar ou estruturar seu texto.</p>
+<button class="btn primary" onclick="improveDoc()">✨ Melhorar</button>
+<button class="btn ghost" onclick="structureDoc()">Estruturar</button>
 <hr>
-
-<div class="muted">
-Palavras
-</div>
-
+<div class="muted">Palavras</div>
 <b id="wordCount">0</b>
-
 </div>
-
 </div>
-
 </div>
-
 </section>
 
-
-<!-- PLANILHAS -->
-
 <section id="sheets" class="view">
-
 <div class="officebar">
-
 <div class="excellogo">X</div>
-
 <div>
 <b>Nexia Planilhas</b>
 <small> • Editando</small>
 </div>
-
 <div class="office-actions">
-
 <button onclick="saveSheet()">💾</button>
-
 <button onclick="exportCSV()">CSV</button>
-
 </div>
-
 </div>
-
 
 <div class="excel-ribbon">
-
 <button onclick="addRow()">＋ Linha</button>
-
 <button onclick="addCol()">＋ Coluna</button>
-
 <button onclick="sumColumn()">Σ Soma</button>
-
 <button onclick="averageColumn()">μ Média</button>
-
 <button onclick="toggleCellBold()">B</button>
-
 </div>
-
 
 <div class="formula-row">
-
 <div id="cellName">A1</div>
-
 <span>fx</span>
-
-<input
-id="formula"
-class="formula"
-placeholder="Digite um valor ou fórmula, exemplo: =B2*C2"
-onkeydown="if(event.key==='Enter')applyFormula()"
->
-
-<button class="btn primary" onclick="applyFormula()">
-Aplicar
-</button>
-
+<input id="formula" class="formula" placeholder="Digite um valor ou fórmula, exemplo: =B2*C2" onkeydown="if(event.key==='Enter')applyFormula()">
+<button class="btn primary" onclick="applyFormula()">Aplicar</button>
 </div>
 
-
 <div class="excel-shell">
-
 <div class="tablewrap">
-
 <table class="sheet">
-
 <thead>
 <tr id="sheetHead"></tr>
 </thead>
-
 <tbody id="sheetBody"></tbody>
-
 </table>
-
 </div>
-
-
 <div id="sheetTabs" class="sheet-tabs"></div>
-
 </div>
-
 </section>
 
-
-<!-- SLIDES -->
-
 <section id="slides" class="view">
-
 <div class="officebar">
-
 <div class="pptlogo">P</div>
-
 <div>
 <b>Nexia Apresentações</b>
 <small> • Editando</small>
 </div>
-
 <div class="office-actions">
-
 <button onclick="saveSlides()">💾</button>
-
 <button onclick="exportSlides()">⬇️</button>
-
 <button onclick="presentationMode()">▶</button>
-
 </div>
-
 </div>
-
 
 <div class="ppt-ribbon">
-
 <button onclick="addSlide()">＋ Slide</button>
-
 <button onclick="deleteSlide()">Excluir</button>
-
-<button onclick="cmdSlide('bold')">
-<b>B</b>
-</button>
-
-<button onclick="insertSlideText()">
-Texto
-</button>
-
-<button onclick="insertSlideImage()">
-Imagem
-</button>
-
-<button onclick="insertSlideShape()">
-Forma
-</button>
-
-<button onclick="slideTheme()">
-Tema
-</button>
-
+<button onclick="cmdSlide('bold')"><b>B</b></button>
+<button onclick="insertSlideText()">Texto</button>
+<button onclick="insertSlideImage()">Imagem</button>
+<button onclick="insertSlideShape()">Forma</button>
+<button onclick="slideTheme()">Tema</button>
 </div>
-
 
 <div class="ppt-workspace">
-
 <div class="ppt-thumbs" id="thumbs"></div>
 
-
 <div class="ppt-stage">
-
-<div
-id="slidecanvas"
-class="slidecanvas"
-contenteditable="true"
->
-
+<div id="slidecanvas" class="slidecanvas" contenteditable="true">
 <h1>Minha apresentação</h1>
-
-<p>
-Subtítulo da apresentação
-</p>
-
+<p>Subtítulo da apresentação</p>
 </div>
-
 
 <div class="slidecontrols">
-
-<button class="btn ghost" onclick="previousSlide()">
-←
-</button>
-
+<button class="btn ghost" onclick="previousSlide()">←</button>
 <div class="ppt-status">
-Slide <span id="slideNumber">1</span>
-de
-<span id="slideTotal">1</span>
+Slide <span id="slideNumber">1</span> de <span id="slideTotal">1</span>
 </div>
-
-<button class="btn ghost" onclick="nextSlide()">
-→
-</button>
-
+<button class="btn ghost" onclick="nextSlide()">→</button>
 </div>
-
 </div>
-
 </div>
-
 </section>
-
-
-<!-- PROJETOS -->
 
 <section id="projects" class="view">
-
 <div class="row space">
-
 <div>
-
 <h2>Projetos</h2>
-
-<p class="muted">
-Tudo que você salvou no Nexia.
-</p>
-
+<p class="muted">Tudo que você salvou no Nexia.</p>
 </div>
-
-<button class="btn danger" onclick="clearProjects()">
-Limpar
-</button>
-
+<button class="btn danger" onclick="clearProjects()">Limpar</button>
 </div>
-
 <div id="projectList"></div>
-
 </section>
 
-
-<!-- CONFIGURAÇÕES -->
-
 <section id="settings" class="view">
-
 <div class="card">
-
 <h2>Configurações</h2>
-
 <label>Seu nome</label>
-
-<input
-id="userName"
-class="modal-input"
-placeholder="Digite seu nome"
-style="width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:8px 0 15px"
->
-
-<button class="btn primary" onclick="saveSettings()">
-Salvar
-</button>
-
+<input id="userName" class="modal-input" placeholder="Digite seu nome" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:8px 0 15px">
+<button class="btn primary" onclick="saveSettings()">Salvar</button>
 </div>
-
 </section>
 
 </main>
 </div>
 
-
-<!-- MODAL IA -->
-
 <div id="modal" class="modal">
-
 <div class="modalbox">
-
 <div class="row space">
-
 <h2>🤖 Nexia IA</h2>
-
-<button class="btn ghost" onclick="closeModal()">
-✕
-</button>
-
+<button class="btn ghost" onclick="closeModal()">✕</button>
 </div>
-
-<p class="muted">
-Descreva o que você quer criar.
-</p>
-
-<textarea
-id="modalPrompt"
-rows="5"
-placeholder="Ex.: crie uma apresentação sobre energia solar..."
-></textarea>
-
-<button class="btn primary" onclick="generateFromModal()">
-✨ Gerar
-</button>
-
+<p class="muted">Descreva o que você quer criar.</p>
+<textarea id="modalPrompt" rows="5" placeholder="Ex.: crie uma apresentação sobre energia solar..."></textarea>
+<button class="btn primary" onclick="generateFromModal()">✨ Gerar</button>
 </div>
-
 </div>
-
-
-<!-- LOGIN -->
 
 <div id="login" class="login">
-
 <div class="loginbox">
-
 <h2>Entrar no Nexia</h2>
-
-<p class="muted">
-Esta versão funciona localmente no navegador.
-</p>
-
-<input
-placeholder="E-mail"
-type="email"
->
-
-<input
-placeholder="Senha"
-type="password"
->
-
-<button
-class="btn primary"
-onclick="fakeLogin()"
-style="width:100%"
->
-Entrar
-</button>
-
+<p class="muted">Esta versão funciona localmente no navegador.</p>
+<input placeholder="E-mail" type="email">
+<input placeholder="Senha" type="password">
+<button class="btn primary" onclick="fakeLogin()" style="width:100%">Entrar</button>
 <br><br>
-
-<button
-class="btn ghost"
-onclick="closeLogin()"
-style="width:100%"
->
-Fechar
-</button>
-
+<button class="btn ghost" onclick="closeLogin()" style="width:100%">Fechar</button>
 </div>
-
 </div>
-
 
 <div id="toast" class="toast"></div>
 
-
 <script>
-
 const KEY='nexia_v4';
 
 let data=loadData();
@@ -1301,7 +840,6 @@ data:[
 ];
 
 let sheetIndex=data.sheetIndex||0;
-
 let selectedCell={r:0,c:0};
 
 let slides=data.slides||[
@@ -1312,206 +850,473 @@ html:'<h1>Minha apresentação</h1><p>Subtítulo da apresentação</p>'
 
 let slideIndex=0;
 
-
 function loadData(){
-
 try{
-
 const d=JSON.parse(localStorage.getItem(KEY));
-
 if(d&&typeof d==='object'){
-
 d.projects=Array.isArray(d.projects)?d.projects:[];
-
 return d;
-
 }
-
 }catch(e){}
-
-return {
-projects:[],
-name:''
-};
-
+return {projects:[],name:''};
 }
-
 
 function persist(){
-
 data.sheets=sheets;
 data.sheetIndex=sheetIndex;
 data.slides=slides;
-
 localStorage.setItem(KEY,JSON.stringify(data));
-
 updateStats();
 renderProjects();
-
 }
-
 
 function toast(message){
-
 const el=document.getElementById('toast');
-
 el.textContent=message;
-
 el.style.display='block';
-
 clearTimeout(window.__toast);
-
-window.__toast=setTimeout(()=>{
-el.style.display='none';
-},2200);
-
+window.__toast=setTimeout(()=>{el.style.display='none';},2200);
 }
 
-
 function show(id){
-
 document.querySelectorAll('.view').forEach(v=>{
 v.classList.toggle('active',v.id===id);
 });
-
 document.querySelectorAll('.nav button').forEach(b=>{
 b.classList.toggle('active',b.dataset.view===id);
 });
-
 }
 
-
 document.querySelectorAll('.nav button').forEach(button=>{
-
 button.addEventListener('click',()=>{
 show(button.dataset.view);
 });
-
 });
 
-
 function updateStats(){
-
-document.getElementById('countProjects').textContent=
-data.projects.length;
-
-document.getElementById('countDocs').textContent=
-data.projects.filter(p=>p.type==='Documento').length;
-
-document.getElementById('lastType').textContent=
-data.projects.length
-?data.projects[data.projects.length-1].type
-:'—';
-
+document.getElementById('countProjects').textContent=data.projects.length;
+document.getElementById('countDocs').textContent=data.projects.filter(p=>p.type==='Documento').length;
+document.getElementById('lastType').textContent=data.projects.length ? data.projects[data.projects.length-1].type : '—';
 }
 
-
 function addProject(type,name){
-
 data.projects.push({
 type,
 name,
 date:new Date().toLocaleString('pt-BR')
 });
-
 persist();
-
 }
-
 
 function newDoc(){
-
 show('docs');
-
-document.getElementById('doc').innerHTML=
-'<h1>Novo documento</h1><p>Comece a escrever aqui...</p>';
-
+document.getElementById('doc').innerHTML='<h1>Novo documento</h1><p>Comece a escrever aqui...</p>';
 updateWords();
-
 toast('Novo documento criado');
-
 }
-
 
 function cmd(command){
-
 document.getElementById('doc').focus();
-
 document.execCommand(command,false,null);
-
 updateWords();
-
 }
-
 
 function fontSize(value){
-
 if(!value)return;
-
 document.getElementById('doc').focus();
-
 document.execCommand('fontSize',false,value);
-
 updateWords();
-
 }
-
 
 function formatDoc(tag){
-
 document.getElementById('doc').focus();
-
 document.execCommand('formatBlock',false,tag);
-
 updateWords();
-
 }
-
 
 function updateWords(){
-
 const text=document.getElementById('doc').innerText.trim();
-
 const words=text?text.split(/\s+/).length:0;
-
 document.getElementById('wordCount').textContent=words;
-
 }
 
-
-document.getElementById('doc').addEventListener(
-'input',
-updateWords
-);
-
+document.getElementById('doc').addEventListener('input',updateWords);
 
 function saveDoc(){
-
 const html=document.getElementById('doc').innerHTML;
-
-localStorage.setItem(
-'nexia_current_doc',
-html
-);
-
-addProject(
-'Documento',
-document.getElementById('doc').querySelector('h1')?.innerText||'Documento sem título'
-);
-
+localStorage.setItem('nexia_current_doc',html);
+addProject('Documento',document.getElementById('doc').querySelector('h1')?.innerText||'Documento sem título');
 toast('Documento salvo');
-
 }
 
-
 function exportText(){
-
 const html=document.getElementById('doc').innerHTML;
-
 const full=
-'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Nexia Documento</title></head><body>'
-+html+
+'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nexia Documento</title></head><body>'
++ html +
 '</body></html>';
 
 download(
-new Blob([full],{t
+new Blob([full],{type:'text/html;charset=utf-8'}),
+'nexia-documento.html'
+);
+
+toast('Documento exportado');
+}
+
+function download(blob,name){
+const a=document.createElement('a');
+a.href=URL.createObjectURL(blob);
+a.download=name;
+a.click();
+URL.revokeObjectURL(a.href);
+}
+
+function printDoc(){
+window.print();
+}
+
+function improveDoc(){
+const el=document.getElementById('doc');
+el.insertAdjacentHTML('beforeend','<p><b>Versão revisada:</b> Este trecho foi estruturado para ficar mais claro, organizado e fácil de ler.</p>');
+toast('Documento melhorado');
+}
+
+function structureDoc(){
+const el=document.getElementById('doc');
+el.innerHTML='<h1>Título do trabalho</h1><h2>1. Introdução</h2><p>Contextualização do tema.</p><h2>2. Desenvolvimento</h2><p>Apresente os principais argumentos, dados e exemplos.</p><h2>3. Conclusão</h2><p>Retome os pontos principais e finalize o tema.</p>';
+toast('Estrutura criada');
+}
+
+function renderSheet(){
+const table=document.getElementById('sheetBody');
+const head=document.getElementById('sheetHead');
+if(!table || !head) return;
+
+head.innerHTML='';
+const colCount=sheets[sheetIndex].data[0].length;
+for(let c=0;c<colCount;c++){
+const th=document.createElement('th');
+th.textContent=String.fromCharCode(65+c);
+head.appendChild(th);
+}
+
+table.innerHTML='';
+sheets[sheetIndex].data.forEach((row,r)=>{
+const tr=document.createElement('tr');
+row.forEach((cell,c)=>{
+const td=document.createElement('td');
+td.textContent=cell;
+td.contentEditable=true;
+td.dataset.row=r;
+td.dataset.col=c;
+td.addEventListener('focus',()=>{
+selectedCell={r,c};
+document.getElementById('cellName').textContent=String.fromCharCode(65+c)+(r+1);
+document.getElementById('formula').value=cell || '';
+});
+td.addEventListener('input',()=>{
+sheets[sheetIndex].data[r][c]=td.textContent;
+});
+tr.appendChild(td);
+});
+table.appendChild(tr);
+});
+}
+
+function newSheet(){
+show('sheets');
+if(!sheets[sheetIndex]) sheets[sheetIndex]={name:'Planilha1',data:[['Produto','Quantidade','Preço','Total'],['Exemplo','2','10','=B2*C2'],['','','',''],['','','','']]};
+renderSheet();
+toast('Nova planilha criada');
+}
+
+function addRow(){
+const active=sheets[sheetIndex];
+const cols=active.data[0].length;
+active.data.push(Array(cols).fill(''));
+renderSheet();
+}
+
+function addCol(){
+const active=sheets[sheetIndex];
+active.data.forEach(row=>row.push(''));
+renderSheet();
+}
+
+function sumColumn(){
+const formula=document.getElementById('formula');
+formula.value='=SUM(B2:B5)';
+applyFormula();
+}
+
+function averageColumn(){
+const formula=document.getElementById('formula');
+formula.value='=AVERAGE(B2:B5)';
+applyFormula();
+}
+
+function toggleCellBold(){
+const cell=document.querySelector('.sheet td.selected');
+if(cell) cell.style.fontWeight = cell.style.fontWeight === 'bold' ? 'normal' : 'bold';
+}
+
+function applyFormula(){
+const input=document.getElementById('formula');
+const value=input.value.trim();
+if(!value){
+toast('Digite uma fórmula ou valor');
+return;
+}
+
+const active=sheets[sheetIndex];
+const row=selectedCell.r;
+const col=selectedCell.c;
+if(row===undefined || col===undefined){
+toast('Selecione uma célula');
+return;
+}
+
+if(value.startsWith('=')){
+const formula=value.slice(1).toUpperCase();
+if(formula.startsWith('SUM(')){
+const match=formula.match(/SUM\((?:([A-Z])(\d+):([A-Z])(\d+))\)/);
+if(match){
+const startCol=match[1].charCodeAt(0)-65;
+const startRow=parseInt(match[2],10)-1;
+const endCol=match[3].charCodeAt(0)-65;
+const endRow=parseInt(match[4],10)-1;
+let total=0;
+for(let r=Math.min(startRow,endRow); r<=Math.max(startRow,endRow); r++){
+for(let c=Math.min(startCol,endCol); c<=Math.max(startCol,endCol); c++){
+const cellVal=active.data[r]?.[c];
+const num=parseFloat(cellVal);
+if(!Number.isNaN(num)) total+=num;
+}
+}
+active.data[row][col]=String(total);
+}
+}else if(formula.startsWith('AVERAGE(')){
+const match=formula.match(/AVERAGE\((?:([A-Z])(\d+):([A-Z])(\d+))\)/);
+if(match){
+const startCol=match[1].charCodeAt(0)-65;
+const startRow=parseInt(match[2],10)-1;
+const endCol=match[3].charCodeAt(0)-65;
+const endRow=parseInt(match[4],10)-1;
+let total=0, count=0;
+for(let r=Math.min(startRow,endRow); r<=Math.max(startRow,endRow); r++){
+for(let c=Math.min(startCol,endCol); c<=Math.max(startCol,endCol); c++){
+const cellVal=active.data[r]?.[c];
+const num=parseFloat(cellVal);
+if(!Number.isNaN(num)){ total+=num; count++; }
+}
+}
+active.data[row][col]=count ? String(total/count) : '0';
+}
+}else{
+active.data[row][col]=value;
+}
+}else{
+active.data[row][col]=value;
+}
+
+renderSheet();
+toast('Fórmula aplicada');
+}
+
+function saveSheet(){
+addProject('Planilha','Planilha sem título');
+toast('Planilha salva');
+}
+
+function exportCSV(){
+const active=sheets[sheetIndex];
+const rows=active.data.map(r=>r.join(',')).join('\n');
+download(new Blob([rows],{type:'text/csv;charset=utf-8'}),'nexia-planilha.csv');
+toast('CSV exportado');
+}
+
+function newSlide(){
+show('slides');
+slides=[{html:'<h1>Minha apresentação</h1><p>Subtítulo</p>'}];
+slideIndex=0;
+renderSlides();
+toast('Nova apresentação criada');
+}
+
+function addSlide(){
+slides.push({html:'<h1>Novo slide</h1><p>Adicione seu conteúdo</p>'});
+slideIndex=slides.length-1;
+renderSlides();
+}
+
+function deleteSlide(){
+if(slides.length<=1){
+toast('Não é possível excluir o último slide');
+return;
+}
+slides.splice(slideIndex,1);
+slideIndex=Math.max(0, slideIndex-1);
+renderSlides();
+}
+
+function renderSlides(){
+const thumbs=document.getElementById('thumbs');
+thumbs.innerHTML='';
+slides.forEach((slide,i)=>{
+const div=document.createElement('div');
+div.className='thumb '+(i===slideIndex?'active':'');
+div.innerHTML='<small>Slide '+(i+1)+'</small><div>'+slide.html+'</div>';
+div.onclick=()=>{
+slides[slideIndex].html=document.getElementById('slidecanvas').innerHTML;
+slideIndex=i;
+renderSlides();
+};
+thumbs.appendChild(div);
+});
+
+document.getElementById('slidecanvas').innerHTML=slides[slideIndex].html;
+document.getElementById('slideNumber').textContent=slideIndex+1;
+document.getElementById('slideTotal').textContent=slides.length;
+}
+
+function saveSlides(){
+slides[slideIndex].html=document.getElementById('slidecanvas').innerHTML;
+addProject('Slides','Apresentação sem título');
+toast('Apresentação salva');
+}
+
+function cmdSlide(command){
+document.getElementById('slidecanvas').focus();
+document.execCommand(command,false,null);
+}
+
+function insertSlideText(){
+document.getElementById('slidecanvas').insertAdjacentHTML('beforeend','<p>Texto do slide</p>');
+}
+
+function insertSlideImage(){
+document.getElementById('slidecanvas').insertAdjacentHTML('beforeend','<div style="padding:10px;border:1px solid #ddd;background:#f6f6f6">🖼️ Imagem</div>');
+}
+
+function insertSlideShape(){
+document.getElementById('slidecanvas').insertAdjacentHTML('beforeend','<div style="width:120px;height:120px;border-radius:50%;background:#dfe4ff;margin-top:20px"></div>');
+}
+
+function slideTheme(){
+const slide=document.getElementById('slidecanvas');
+slide.style.background='linear-gradient(135deg,#171923,#6d5dfc)';
+slide.style.color='white';
+}
+
+function previousSlide(){
+if(slideIndex>0){
+slides[slideIndex].html=document.getElementById('slidecanvas').innerHTML;
+slideIndex--;
+renderSlides();
+}
+}
+
+function nextSlide(){
+if(slideIndex<slides.length-1){
+slides[slideIndex].html=document.getElementById('slidecanvas').innerHTML;
+slideIndex++;
+renderSlides();
+}
+}
+
+function exportSlides(){
+slides[slideIndex].html=document.getElementById('slidecanvas').innerHTML;
+const blob=new Blob([slides.map((s,i)=>'SLIDE '+(i+1)+'\n'+s.html).join('\n\n')],{type:'text/plain;charset=utf-8'});
+download(blob,'nexia-slides.txt');
+toast('Slides exportados');
+}
+
+function presentationMode(){
+toast('Modo apresentação iniciado');
+}
+
+function renderProjects(){
+const box=document.getElementById('projectList');
+if(!box) return;
+box.innerHTML=data.projects.length ? data.projects.slice().reverse().map(p=>{
+const icon = p.type === 'Documento' ? '📄' : p.type === 'Planilha' ? '📊' : '🎨';
+return `<div class="card"><div class="icon">${icon}</div><b>${escapeHtml(p.name)}</b><p class="muted">${p.type} · ${p.date}</p></div>`;
+}).join('') : '<div class="card empty">Nenhum projeto salvo ainda.</div>';
+}
+
+function escapeHtml(s){
+return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+
+function clearProjects(){
+if(confirm('Limpar todos os projetos?')){
+data.projects=[];
+persist();
+toast('Projetos limpos');
+}
+}
+
+function openAI(){
+document.getElementById('modal').classList.add('show');
+}
+function closeModal(){
+document.getElementById('modal').classList.remove('show');
+}
+
+function generateFromModal(){
+generate(document.getElementById('modalPrompt').value);
+closeModal();
+}
+
+function generateFromAI(){
+generate(document.getElementById('aiPrompt').value);
+}
+
+function generate(prompt){
+prompt=(prompt||'').trim() || 'novo projeto';
+const p=prompt.toLowerCase();
+
+if(p.includes('planilha')||p.includes('tabela')){
+newSheet();
+sheets=[[
+['Item','Quantidade','Valor','Total'],
+['Exemplo','1','10','=B2*C2'],
+['','','',''],
+['','','','']
+]];
+sheetIndex=0;
+renderSheet();
+saveSheet();
+}else if(p.includes('slide')||p.includes('apresenta')){
+newSlide();
+slides=[{html:`<h1>${escapeHtml(prompt)}</h1><p>Apresentação criada pelo Nexia</p>`},{html:'<h1>Introdução</h1><p>Contextualização do tema.</p>'},{html:'<h1>Desenvolvimento</h1><p>Principais pontos e exemplos.</p>'},{html:'<h1>Conclusão</h1><p>Resumo dos aprendizados.</p>'}];
+slideIndex=0;
+renderSlides();
+saveSlides();
+}else{
+newDoc();
+document.getElementById('doc').innerHTML=`<h1>${escapeHtml(prompt)}</h1><h2>Introdução</h2><p>Este é um rascunho inicial. Desenvolva o contexto e apresente o objetivo do trabalho.</p><h2>Desenvolvimento</h2><p>Organize aqui os principais argumentos, dados, exemplos e informações relevantes ao tema.</p><h2>Conclusão</h2><p>Retome os pontos principais e finalize o trabalho.</p><h2>Referências</h2><p>Inclua as fontes utilizadas.</p>`;
+saveDoc();
+}
+toast('Projeto criado');
+}
+
+function openLogin(){document.getElementById('login').classList.add('show');}
+function closeLogin(){document.getElementById('login').classList.remove('show');}
+function fakeLogin(){closeLogin();toast('Login demonstrativo concluído');}
+
+function saveSettings(){
+data.name=document.getElementById('userName').value||'';
+persist();
+toast('Perfil salvo');
+}
+
+document.getElementById('userName').value=data.name||'';
+updateStats();
+renderProjects();
+renderSheet();
+renderSlides();
+</script>
+</body>
+</html>
