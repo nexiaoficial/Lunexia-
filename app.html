@@ -1583,6 +1583,10 @@
       if (!nextLabel) return;
       const trimmedLabel = nextLabel.trim();
       if (!trimmedLabel) return;
+      if (getGraphemes(trimmedLabel).length > 2) {
+        showToast('Use no máximo 2 caracteres no avatar.');
+        return;
+      }
       dashboardState.avatarLabel = getAvatarLabelFromText(trimmedLabel);
       dashboardState.avatarCustom = true;
       saveDashboardState();
@@ -1731,12 +1735,12 @@
 
     function saveSettings() {
       const profile = {
-        displayName: document.getElementById('displayName')?.value.trim() || initialDashboardState.profile.displayName,
-        accountEmail: document.getElementById('accountEmail')?.value.trim() || initialDashboardState.profile.accountEmail,
-        birthDate: document.getElementById('birthDate')?.value || initialDashboardState.profile.birthDate,
-        workspaceName: document.getElementById('workspaceName')?.value.trim() || initialDashboardState.profile.workspaceName,
-        bio: document.getElementById('bio')?.value.trim() || initialDashboardState.profile.bio,
-        securityHint: document.getElementById('securityHint')?.value.trim() || initialDashboardState.profile.securityHint
+        displayName: document.getElementById('displayName')?.value.trim() ?? '',
+        accountEmail: document.getElementById('accountEmail')?.value.trim() ?? '',
+        birthDate: document.getElementById('birthDate')?.value ?? '',
+        workspaceName: document.getElementById('workspaceName')?.value.trim() ?? '',
+        bio: document.getElementById('bio')?.value.trim() ?? '',
+        securityHint: document.getElementById('securityHint')?.value.trim() ?? ''
       };
       dashboardState.profile = profile;
       const displayName = profile.displayName;
