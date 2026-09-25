@@ -263,7 +263,7 @@
               <span>Nome</span>
               <input id="authNameInput" name="name" type="text" autocomplete="name" maxlength="80">
             </label>
-            <label class="auth-field">
+            <label class="auth-field" id="authEmailField">
               <span>E-mail</span>
               <input id="authEmailInput" name="email" type="email" autocomplete="email" maxlength="120" required>
             </label>
@@ -299,7 +299,9 @@
       switchLine: container.querySelector('#authPortalSwitch'),
       nameField: container.querySelector('#authNameField'),
       nameInput: container.querySelector('#authNameInput'),
+      emailField: container.querySelector('#authEmailField'),
       emailInput: container.querySelector('#authEmailInput'),
+      passwordField: container.querySelector('#authPasswordField'),
       passwordInput: container.querySelector('#authPasswordInput'),
       meta: container.querySelector('#authPortalMeta'),
       metaName: container.querySelector('#authMetaName'),
@@ -339,6 +341,8 @@
       ui.secondary.textContent = account ? 'Já tenho conta' : 'Entrar com conta existente';
       ui.switchLine.innerHTML = `Já possui uma conta?<button type="button" data-mode="login">Entrar</button>`;
       ui.nameField.hidden = false;
+      ui.emailField.hidden = false;
+      ui.passwordField.hidden = false;
       ui.nameInput.required = true;
       ui.emailInput.required = true;
       ui.passwordInput.required = true;
@@ -354,6 +358,8 @@
       ui.secondary.textContent = account ? 'Criar outra conta' : 'Criar conta segura';
       ui.switchLine.innerHTML = `Ainda não tem conta?<button type="button" data-mode="create">Criar agora</button>`;
       ui.nameField.hidden = true;
+      ui.emailField.hidden = false;
+      ui.passwordField.hidden = false;
       ui.nameInput.required = false;
       ui.nameInput.value = account?.name || '';
       ui.emailInput.required = true;
@@ -368,6 +374,8 @@
       ui.secondary.textContent = 'Continuar no aplicativo';
       ui.switchLine.innerHTML = '';
       ui.nameField.hidden = true;
+      ui.emailField.hidden = true;
+      ui.passwordField.hidden = true;
       ui.nameInput.required = false;
       ui.emailInput.required = false;
       ui.passwordInput.required = false;
