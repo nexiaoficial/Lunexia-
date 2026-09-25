@@ -1304,7 +1304,7 @@
       </section>
 
       <section id="settings" class="view">
-        <div class="settings-box card">
+        <div class="settings-box card" id="settingsPanel" tabindex="-1">
           <h2 style="margin-top:0;">Configurações</h2>
           <div class="field">
             <label for="displayName">Nome do perfil</label>
@@ -1548,13 +1548,14 @@
 
     function openSettingsView(fieldId) {
       setActiveView('settings');
-      if (fieldId) {
-        requestAnimationFrame(() => {
-          const field = document.getElementById(fieldId);
-          field?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-          field?.focus({ preventScroll: true });
-        });
-      }
+      requestAnimationFrame(() => {
+        const panel = document.getElementById('settingsPanel');
+        panel?.focus({ preventScroll: true });
+        if (!fieldId) return;
+        const field = document.getElementById(fieldId);
+        field?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        setTimeout(() => field?.focus({ preventScroll: true }), 60);
+      });
     }
 
     function openClientSpace() {
@@ -1585,7 +1586,7 @@
         return;
       }
       Object.assign(dashboardState, createDefaultDashboardState());
-      saveDashboardState();
+      localStorage.removeItem(dashboardStorageKey);
       renderDashboardStats();
       renderSettingsForm();
       renderProjectGrid();
