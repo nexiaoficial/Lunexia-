@@ -20,6 +20,7 @@
     .brand-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
     .brand-wordmark{font-size:2rem;font-weight:800;letter-spacing:-.08em;line-height:1;color:#f5f3ff}
     .brand-tag{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#cabdff;line-height:1.2}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .orbit-ring{fill:none;stroke:rgba(199,166,255,.65);stroke-width:2.2;stroke-dasharray:6 7}
     .moon-core{filter:drop-shadow(0 0 14px rgba(199,166,255,.55))}
     .moon-shape{fill:#a78bff;stroke:#f0e4ff;stroke-width:1.4;stroke-linejoin:round}
@@ -97,7 +98,7 @@
     <aside class="left panel">
       <div class="brand">
         <span class="brand-mark">
-          <svg viewBox="0 0 140 140" role="img" aria-label="Símbolo lunar da Lunexia com elementos criativos em órbita" focusable="false">
+          <svg viewBox="0 0 140 140" aria-hidden="true" focusable="false">
             <circle class="moon-halo" cx="61" cy="69" r="41" fill="rgba(199,166,255,.35)"></circle>
             <ellipse class="orbit-ring" cx="70" cy="70" rx="50" ry="38" transform="rotate(-18 70 70)"></ellipse>
             <g class="moon-core">
@@ -124,6 +125,7 @@
         <span class="brand-copy">
           <span class="brand-wordmark">Lunexia</span>
           <span class="brand-tag">Criação em órbita</span>
+          <span class="sr-only">Logotipo com lua crescente em tons de roxo e elementos criativos orbitando ao redor.</span>
         </span>
       </div>
       <div class="section"><h3>Modelos</h3><div class="templates">
