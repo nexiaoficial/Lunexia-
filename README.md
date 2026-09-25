@@ -1,4 +1,4 @@
-# Nexia 2026
+# Lunexia 2026
 
 O aplicativo possui uma interface responsiva para celular, tablet e computador, além de suporte à instalação como PWA.
 
