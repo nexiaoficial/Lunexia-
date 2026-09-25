@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Nexia 2026</title>
+  <title>Luexia 2026</title>
   <style>
     :root {
       --bg: #0b1020;
@@ -912,17 +912,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="brand">
         <div class="brand-mark">N</div>
-        <div class="brand-text">Nexia<span>.</span></div>
-      </div>
-
-      <div class="quick-access">
-        <div class="quick-access-title">Acesso rápido</div>
-        <div class="quick-access-list">
-          <button class="quick-access-btn active" data-view="home"><span>🏠</span><span>Início</span></button>
-          <button class="quick-access-btn" data-view="docs"><span>📄</span><span>Documentos</span></button>
-          <button class="quick-access-btn" data-view="sheets"><span>📊</span><span>Planilhas</span></button>
-          <button class="quick-access-btn" data-view="slides"><span>🎨</span><span>Slides</span></button>
-        </div>
+        <div class="brand-text">Lunexia<span>.</span></div>
       </div>
 
       <nav class="nav">
@@ -945,8 +935,8 @@
           </div>
         </div>
         <div class="top-actions">
-          <button class="pill-btn" onclick="openLogin()">Conta</button>
-          <div class="avatar" id="avatarInitial">N</div>
+          <button class="pill-btn" onclick="openLogin()">Conta,email,data de nascimento, segurança, excluir conta.</button>
+          <div class="avatar" id="avatarInitial">crie avatar, espaço do cliente.</div>
         </div>
       </div>
 
@@ -964,11 +954,11 @@
         <div class="stats">
           <div class="stat-card">
             <div class="stat-label">Projetos</div>
-            <div id="countProjects" class="stat-value">12</div>
+            <div id="countProjects" class="stat-value">0,aumenta o número de projeto de acordo com as suas criações.</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Documentos</div>
-            <div id="countDocs" class="stat-value">24</div>
+            <div id="countDocs" class="stat-value">0,conta a quantidade de acordo com os documentos que você coloca no app.</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Última criação</div>
@@ -996,7 +986,7 @@
           <div class="template-card" onclick="newSlide()">
             <div class="template-emoji">🎨</div>
             <h3>Apresentação</h3>
-            <div class="muted">Slides bonitos para reunião, aula ou pitch.</div>
+            <div class="muted">Slides bonitos para reunião, aula ou pitch,ou trabalho,ou apresentação.</div>
           </div>
 
           <div class="template-card" onclick="openAI()">
@@ -1011,7 +1001,7 @@
         <div class="officebar">
           <div class="brand-mini word">W</div>
           <div class="header">
-            <div class="office-title">Nexia Documento</div>
+            <div class="office-title">Lunexia Documento</div>
             <div class="muted"> • Editando</div>
           </div>
           <div class="top-actions">
@@ -1038,6 +1028,7 @@
           <button onclick="cmd('insertOrderedList')">Numeração</button>
           <button onclick="formatDoc('h1')">Título</button>
           <button onclick="formatDoc('h2')">Subtítulo</button>
+          <button onclick="formatDoc('h2')">Fonte,negrito</button>
         </div>
 
         <div class="workspace">
@@ -1071,12 +1062,13 @@
         <div class="officebar">
           <div class="brand-mini sheet">S</div>
           <div class="header">
-            <div class="office-title">Nexia Planilha</div>
+            <div class="office-title">Luexia Planilha</div>
             <div class="muted"> • Dados</div>
           </div>
           <div class="top-actions">
             <button class="small-btn" onclick="addTableRow()">＋ Linha</button>
             <button class="small-btn" onclick="addTableCol()">＋ Coluna</button>
+            <button class="small-btn" onclick="addTableCol()">＋ Gráfico</button>
           </div>
         </div>
 
@@ -1125,7 +1117,7 @@
         <div class="officebar">
           <div class="brand-mini slide">P</div>
           <div class="header">
-            <div class="office-title">Nexia Slides</div>
+            <div class="office-title">Lunexia Slides</div>
             <div class="muted"> • Apresentação</div>
           </div>
           <div class="top-actions">
@@ -1198,7 +1190,7 @@
         <div class="settings-box panel">
           <div class="field">
             <label for="workspaceName">Nome do workspace</label>
-            <input id="workspaceName" value="Nexia Workspace" />
+            <input id="workspaceName" value="Lunexia Workspace" />
           </div>
 
           <div class="field">
@@ -1217,17 +1209,20 @@
       <h2>Entrar</h2>
       <div class="field">
         <label>E-mail</label>
-        <input type="email" value="nexia@workspace.com">
+        <input type="email" value="lunexia@workspace.com">
       </div>
       <div class="field">
         <label>Senha</label>
         <input type="password" value="••••••••">
       </div>
+      <button class="primary-btn" onclick="close
+Create an accountLogin()">Criar</button>
       <button class="primary-btn" onclick="closeLogin()">Entrar</button>
     </div>
   </div>
 
-  <div id="aiModal" class="modal">
+  <div id="aiModal"
+    class="modal">
     <div class="modal-box">
       <div class="modal-head">
         <h3>Assistente IA</h3>
