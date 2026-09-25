@@ -1384,6 +1384,7 @@
       documentCount: 0,
       lastCreation: '',
       avatarLabel: 'LU',
+      avatarCustom: false,
       creations: [],
       profile: {
         displayName: 'Usuário Lunexia',
@@ -1583,6 +1584,7 @@
       const trimmedLabel = nextLabel.trim();
       if (!trimmedLabel) return;
       dashboardState.avatarLabel = getAvatarLabelFromText(trimmedLabel);
+      dashboardState.avatarCustom = true;
       saveDashboardState();
       renderDashboardStats();
       showToast('Avatar atualizado.');
@@ -1599,13 +1601,8 @@
         showToast('Exclusão cancelada.');
         return;
       }
-      Object.assign(dashboardState, createDefaultDashboardState());
       localStorage.removeItem(dashboardStorageKey);
-      renderDashboardStats();
-      renderSettingsForm();
-      renderProjectGrid();
-      setActiveView('home');
-      showToast('Conta excluída localmente.');
+      window.location.reload();
     }
 
     function openAI() {
@@ -1743,7 +1740,7 @@
       };
       dashboardState.profile = profile;
       const displayName = profile.displayName;
-      if (displayName) {
+      if (displayName && !dashboardState.avatarCustom) {
         dashboardState.avatarLabel = displayName
           .split(/\s+/)
           .filter(Boolean)
