@@ -1,0 +1,3169 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lunexia 2026</title>
+
+<style>
+:root{
+  --bg:#0b1020;
+  --bg-soft:#111827;
+  --panel:rgba(17,24,39,.82);
+  --panel-strong:rgba(15,23,42,.96);
+  --ink:#e5eefb;
+  --muted:#95a7c2;
+  --line:rgba(148,163,184,.18);
+  --brand:#7c6cff;
+  --brand-2:#9b8cff;
+  --brand-3:#4dd4c5;
+  --danger:#ef4444;
+  --success:#22c55e;
+  --shadow:0 18px 42px rgba(2,6,23,.42);
+  --radius:22px;
+  --sidebar-w:268px;
+}
+
+*{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  font-family:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;
+  background:linear-gradient(180deg,#0b1020,#0c1324 18%,#0f172a 100%);
+  color:var(--ink);
+  min-height:100vh;
+}
+
+button,input,textarea,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+  border:none;
+  outline:none;
+}
+
+.app{
+  display:flex;
+  min-height:100vh;
+  background:var(--bg);
+}
+
+.sidebar{
+  width:var(--sidebar-w);
+  padding:22px 18px 18px;
+  background:rgba(11,16,32,.98);
+  color:var(--ink);
+  position:fixed;
+  inset:0 auto 0 0;
+  z-index:20;
+  border-right:1px solid var(--line);
+  backdrop-filter:blur(12px);
+  transition:.28s ease;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:6px 8px 18px;
+  font-weight:900;
+  letter-spacing:-.04em;
+  font-size:26px;
+}
+
+.brand-mark{
+  position:relative;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(circle at 35% 30%,#f9f7ff,#efe8ff 16%,#d9d2ff 36%,#b7a8ff 62%,#7c6cff);
+  box-shadow:0 12px 28px rgba(124,108,255,.35),inset -10px -10px 16px rgba(51,34,118,.35);
+  flex-shrink:0;
+}
+
+.brand-mark:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:rgba(11,16,32,.7);
+  transform:translateX(9px);
+}
+
+.brand-mark:after{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius:50%;
+  border:1.5px solid rgba(184,172,255,.6);
+  transform:scale(1.16);
+}
+
+.brand-mark .orbit-dot,
+.brand-mark .orbit-star,
+.brand-mark .orbit-card{
+  position:absolute;
+  display:block;
+}
+
+.orbit-dot{
+  width:7px;
+  height:7px;
+  right:6px;
+  top:8px;
+  border-radius:50%;
+  background:#a393ff;
+  box-shadow:0 0 12px #a393ff;
+}
+
+.orbit-star{
+  width:9px;
+  height:9px;
+  left:20px;
+  top:-3px;
+  border-radius:50%;
+  background:#f7d87a;
+  box-shadow:0 0 12px #f7d87a;
+}
+
+.orbit-card{
+  width:14px;
+  height:8px;
+  left:4px;
+  bottom:8px;
+  border-radius:6px;
+  background:rgba(255,255,255,.8);
+}
+
+.brand span{
+  color:var(--brand-2);
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:18px;
+}
+
+.nav-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:transparent;
+  color:var(--ink);
+  border-radius:14px;
+  padding:12px 14px;
+  font-weight:600;
+  text-align:left;
+  border:1px solid transparent;
+  transition:.2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+  background:linear-gradient(135deg,rgba(124,108,255,.18),rgba(124,108,255,.08));
+  color:#fff;
+  border-color:rgba(124,108,255,.2);
+}
+
+.main{
+  flex:1;
+  margin-left:var(--sidebar-w);
+  padding:28px 30px 40px;
+  min-width:0;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+  margin-bottom:24px;
+}
+
+.title-wrap h1{
+  margin:0;
+  font-size:clamp(2rem,2vw,2.7rem);
+  letter-spacing:-.05em;
+}
+
+.sub{
+  margin-top:6px;
+  color:var(--muted);
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.pill-btn,
+.ghost-btn{
+  background:rgba(148,163,184,.08);
+  border:1px solid var(--line);
+  color:var(--ink);
+  padding:10px 16px;
+  border-radius:12px;
+  font-weight:700;
+}
+
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,var(--brand),#a855f7);
+  color:#fff;
+  font-weight:800;
+}
+
+.icon-btn{
+  display:inline-grid;
+  place-items:center;
+  width:40px;
+  height:40px;
+  padding:0;
+  background:rgba(148,163,184,.08);
+  color:var(--ink);
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+
+.mobile-toggle{
+  display:none;
+}
+
+.view{
+  display:none;
+}
+
+.view.active{
+  display:block;
+  animation:fadeIn .22s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.hero,
+.card,
+.stat-card,
+.template-card,
+.project-card,
+.panel,
+.modal-box,
+.settings-box{
+  background:rgba(17,24,39,.82);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(14px);
+}
+
+.hero{
+  padding:24px;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero h2{
+  margin:0 0 8px;
+  font-size:clamp(1.5rem,1.7vw,2.2rem);
+}
+
+.hero p{
+  margin:0;
+  max-width:700px;
+  color:var(--muted);
+}
+
+.hero-row{
+  display:flex;
+  gap:12px;
+  margin-top:18px;
+}
+
+.hero input{
+  flex:1;
+  min-width:0;
+  border:1px solid var(--line);
+  background:rgba(15,23,42,.88);
+  color:var(--ink);
+  padding:16px 18px;
+  border-radius:15px;
+}
+
+.primary-btn{
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  color:#fff;
+  box-shadow:0 10px 28px rgba(124,108,255,.2);
+  border-radius:12px;
+  padding:12px 16px;
+  font-weight:700;
+}
+
+.danger-btn{
+  background:rgba(239,68,68,.12);
+  color:#fca5a5;
+  border:1px solid rgba(239,68,68,.2);
+  border-radius:12px;
+  padding:12px 16px;
+  font-weight:700;
+}
+
+.small-btn{
+  background:rgba(124,108,255,.12);
+  color:#d9d2ff;
+  border:1px solid rgba(124,108,255,.2);
+  border-radius:10px;
+  padding:9px 12px;
+  font-weight:700;
+}
+
+.stats{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.stat-card{
+  padding:18px 20px;
+}
+
+.stat-label{
+  font-size:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:var(--muted);
+}
+
+.stat-value{
+  font-size:2rem;
+  font-weight:800;
+  margin-top:10px;
+}
+
+.section-header{
+  margin:28px 0 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+}
+
+.section-header h2{
+  margin:0;
+}
+
+.cards-grid,
+.project-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+}
+
+.template-card,
+.project-card{
+  padding:22px 18px;
+  cursor:pointer;
+  transition:.18s;
+}
+
+.template-card:hover,
+.project-card:hover{
+  transform:translateY(-3px);
+}
+
+.template-emoji,
+.project-card .emoji{
+  font-size:2rem;
+  margin-bottom:10px;
+}
+
+.template-card h3,
+.project-card h3{
+  margin:0 0 8px;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+/* OFFICE */
+
+.officebar{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:rgba(17,24,39,.9);
+  border:1px solid var(--line);
+  border-radius:18px 18px 0 0;
+  padding:12px 14px;
+}
+
+.brand-mini{
+  width:32px;
+  height:32px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-weight:900;
+}
+
+.brand-mini.word{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
+.brand-mini.sheet{background:linear-gradient(135deg,#10b981,#34d399)}
+.brand-mini.slide{background:linear-gradient(135deg,#f97316,#fbbf24)}
+
+.office-title{
+  font-weight:800;
+}
+
+.header{
+  flex:1;
+  display:flex;
+  justify-content:space-between;
+}
+
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  background:rgba(17,24,39,.8);
+  border:1px solid var(--line);
+  border-top:none;
+  padding:10px 14px;
+  border-radius:0 0 18px 18px;
+}
+
+.toolbar button,
+.toolbar select{
+  background:rgba(148,163,184,.06);
+  color:var(--ink);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:8px 10px;
+}
+
+.workspace{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 240px;
+  gap:18px;
+}
+
+.doc-panel,
+.sheet-panel,
+.panel{
+  padding:18px;
+}
+
+.doc-shell{
+  background:rgba(15,23,42,.9);
+  min-height:760px;
+  border-radius:18px;
+  border:1px solid var(--line);
+}
+
+.doc-editor{
+  width:100%;
+  min-height:760px;
+  padding:42px 46px;
+  font-size:1.02rem;
+  line-height:1.8;
+  outline:none;
+  color:var(--ink);
+}
+
+.mini-card{
+  padding:16px;
+  background:rgba(17,24,39,.82);
+  border:1px solid var(--line);
+  border-radius:18px;
+  margin-bottom:14px;
+}
+
+.counter{
+  font-size:2rem;
+  font-weight:800;
+}
+
+.formula-bar{
+  display:flex;
+  gap:10px;
+  margin-bottom:14px;
+  padding:8px 10px;
+  background:rgba(148,163,184,.05);
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+
+.cell-indicator{
+  min-width:62px;
+  text-align:center;
+  padding:8px;
+  border:1px solid var(--line);
+  border-radius:8px;
+}
+
+.formula-bar input{
+  flex:1;
+  min-width:0;
+  border:none;
+  outline:none;
+  background:transparent;
+  color:var(--ink);
+}
+
+.table-wrap{
+  overflow:auto;
+  border-radius:16px;
+  border:1px solid var(--line);
+}
+
+table.sheet{
+  width:100%;
+  min-width:820px;
+  border-collapse:collapse;
+}
+
+.sheet th,
+.sheet td{
+  border:1px solid rgba(148,163,184,.25);
+  min-width:110px;
+  height:34px;
+  padding:7px 8px;
+  text-align:left;
+  color:var(--ink);
+}
+
+.sheet th{
+  background:rgba(148,163,184,.08);
+}
+
+/* SLIDES */
+
+.ppt-workspace{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:180px minmax(0,1fr);
+  gap:18px;
+}
+
+.thumb-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-height:700px;
+  overflow:auto;
+}
+
+.thumb{
+  padding:10px;
+  background:rgba(17,24,39,.8);
+  border:1px solid var(--line);
+  border-radius:14px;
+  cursor:pointer;
+}
+
+.thumb.active{
+  border-color:var(--brand);
+}
+
+.thumb-preview{
+  min-height:80px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#121926,#182235);
+  padding:10px;
+  font-size:.7rem;
+}
+
+.slide-stage{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+
+.slide-canvas{
+  width:min(100%,980px);
+  min-height:530px;
+  background:linear-gradient(135deg,#121926,#0f151d);
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:52px 50px;
+  outline:none;
+}
+
+/* SETTINGS */
+
+.settings-box{
+  max-width:620px;
+  padding:22px;
+  margin-top:18px;
+}
+
+.field{
+  display:grid;
+  gap:10px;
+  margin:16px 0;
+}
+
+.field label{
+  font-weight:700;
+}
+
+.field input,
+.field textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px 14px;
+  background:rgba(17,24,39,.7);
+  color:var(--ink);
+}
+
+/* =========================
+   EDITOR DE FOTOS LUNEXIA
+========================= */
+
+.photo-layout{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:230px minmax(0,1fr) 250px;
+  gap:16px;
+}
+
+.photo-sidebar,
+.photo-tools{
+  background:rgba(17,24,39,.86);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+
+.photo-sidebar h3,
+.photo-tools h3{
+  margin:0 0 14px;
+}
+
+.tool-group{
+  display:grid;
+  gap:8px;
+  margin-bottom:18px;
+}
+
+.tool-group-title{
+  color:var(--muted);
+  font-size:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.tool-btn{
+  width:100%;
+  text-align:left;
+  padding:11px 12px;
+  border-radius:12px;
+  background:rgba(148,163,184,.06);
+  border:1px solid var(--line);
+  color:var(--ink);
+}
+
+.tool-btn:hover{
+  background:rgba(124,108,255,.15);
+  border-color:rgba(124,108,255,.3);
+}
+
+.upload-box{
+  border:1px dashed rgba(124,108,255,.55);
+  border-radius:16px;
+  padding:18px 12px;
+  text-align:center;
+  background:rgba(124,108,255,.06);
+  cursor:pointer;
+  margin-bottom:16px;
+}
+
+.upload-box:hover{
+  background:rgba(124,108,255,.12);
+}
+
+#photoInput{
+  display:none;
+}
+
+.canvas-area{
+  min-height:650px;
+  background:
+    linear-gradient(45deg,#151c2b 25%,transparent 25%),
+    linear-gradient(-45deg,#151c2b 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#151c2b 75%),
+    linear-gradient(-45deg,transparent 75%,#151c2b 75%);
+  background-size:24px 24px;
+  background-position:0 0,0 12px,12px -12px,-12px 0;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  position:relative;
+}
+
+#designCanvas{
+  position:relative;
+  width:min(100%,850px);
+  height:560px;
+  background:#fff;
+  overflow:hidden;
+  border-radius:8px;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+  transform-origin:center;
+}
+
+.design-element{
+  position:absolute;
+  user-select:none;
+  touch-action:none;
+  cursor:move;
+}
+
+.design-element.selected{
+  outline:2px solid var(--brand);
+  outline-offset:2px;
+}
+
+.design-image{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.design-text{
+  min-width:80px;
+  min-height:30px;
+  padding:5px;
+  color:#111827;
+  font-weight:700;
+  white-space:pre-wrap;
+}
+
+.design-shape{
+  width:140px;
+  height:100px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#7c6cff,#a393ff);
+}
+
+.design-circle{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#4dd4c5,#7c6cff);
+}
+
+.empty-canvas{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:#6b7280;
+  pointer-events:none;
+  text-align:center;
+  padding:30px;
+}
+
+.range-row{
+  display:grid;
+  gap:6px;
+  margin-bottom:12px;
+}
+
+.range-row label{
+  display:flex;
+  justify-content:space-between;
+  font-size:.82rem;
+  color:var(--muted);
+}
+
+.range-row input{
+  width:100%;
+}
+
+.photo-preview{
+  min-height:120px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:#111827;
+  margin-bottom:12px;
+}
+
+.photo-preview img{
+  max-width:100%;
+  max-height:140px;
+}
+
+.filter-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+
+.filter-buttons button{
+  padding:9px 5px;
+  border-radius:9px;
+  color:var(--ink);
+  background:rgba(148,163,184,.07);
+  border:1px solid var(--line);
+  font-size:.78rem;
+}
+
+.editor-status{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:.8rem;
+  text-align:center;
+}
+
+/* MODAIS */
+
+.modal,
+.login{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(2,6,23,.7);
+  z-index:50;
+  padding:20px;
+}
+
+.modal.show,
+.login.show{
+  display:flex;
+}
+
+.modal-box,
+.login-box{
+  width:min(560px,100%);
+  padding:24px;
+  background:rgba(17,24,39,.96);
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modal textarea{
+  width:100%;
+  min-height:130px;
+  margin:14px 0;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px;
+  background:rgba(15,23,42,.7);
+  color:var(--ink);
+}
+
+.toast{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  background:rgba(15,23,42,.96);
+  color:white;
+  border-radius:12px;
+  padding:12px 16px;
+  box-shadow:0 18px 40px rgba(2,6,23,.35);
+  display:none;
+  z-index:100;
+}
+
+/* MOBILE */
+
+@media(max-width:1100px){
+  .sidebar{
+    transform:translateX(-110%);
+    width:min(82vw,310px);
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .main{
+    margin-left:0;
+    padding:20px 18px 30px;
+  }
+
+  .mobile-toggle{
+    display:inline-grid;
+  }
+
+  .mobile-backdrop{
+    position:fixed;
+    inset:0;
+    background:rgba(2,6,23,.6);
+    opacity:0;
+    pointer-events:none;
+    z-index:15;
+  }
+
+  .mobile-backdrop.show{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .photo-layout{
+    grid-template-columns:1fr;
+  }
+
+  .photo-sidebar,
+  .photo-tools{
+    order:initial;
+  }
+}
+
+@media(max-width:850px){
+  .cards-grid,
+  .project-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .workspace,
+  .ppt-workspace{
+    grid-template-columns:1fr;
+  }
+
+  .photo-sidebar{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+}
+
+@media(max-width:640px){
+  .topbar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .hero-row{
+    flex-direction:column;
+  }
+
+  .primary-btn{
+    width:100%;
+  }
+
+  .cards-grid,
+  .project-grid{
+    grid-template-columns:1fr;
+  }
+
+  .doc-editor{
+    padding:24px 20px;
+  }
+
+  .slide-canvas{
+    min-height:420px;
+    padding:30px 24px;
+  }
+
+  .canvas-area{
+    padding:10px;
+    min-height:480px;
+  }
+
+  #designCanvas{
+    height:460px;
+  }
+
+  .photo-sidebar{
+    display:block;
+  }
+
+  .photo-tools{
+    padding:12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="mobile-backdrop" id="mobileBackdrop"></div>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+    <div class="brand-mark" aria-label="Logotipo Lunexia">
+      <span class="orbit-star"></span>
+      <span class="orbit-card"></span>
+      <span class="orbit-dot"></span>
+    </div>
+    <div class="brand-text">Lunexia<span>.</span></div>
+  </div>
+
+  <nav class="nav">
+
+    <button class="nav-btn active" data-view="home">
+      <span>🏠</span><span>Início</span>
+    </button>
+
+    <button class="nav-btn" data-view="docs">
+      <span>📄</span><span>Documentos</span>
+    </button>
+
+    <button class="nav-btn" data-view="sheets">
+      <span>📊</span><span>Planilhas</span>
+    </button>
+
+    <button class="nav-btn" data-view="slides">
+      <span>🎨</span><span>Slides</span>
+    </button>
+
+    <button class="nav-btn" data-view="photos">
+      <span>🖼️</span><span>Editor de fotos</span>
+    </button>
+
+    <button class="nav-btn" data-view="projects">
+      <span>📁</span><span>Projetos</span>
+    </button>
+
+    <button class="nav-btn" data-view="settings">
+      <span>⚙️</span><span>Configurações</span>
+    </button>
+
+  </nav>
+
+</aside>
+
+<main class="main">
+
+<div class="topbar">
+
+  <div style="display:flex;align-items:center;gap:12px">
+
+    <button class="icon-btn mobile-toggle" id="menuToggle">
+      ☰
+    </button>
+
+    <div class="title-wrap">
+      <h1 id="appTitle">Olá! 👋</h1>
+      <div class="sub">
+        Crie, edite e organize tudo em um só lugar.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="top-actions">
+
+    <button class="pill-btn" onclick="openLogin()">
+      Conta
+    </button>
+
+    <div class="avatar" id="avatarInitial">
+      L
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= INÍCIO ================= -->
+
+<section id="home" class="view active">
+
+<div class="hero">
+
+  <h2>O que você quer criar hoje?</h2>
+
+  <p>
+    Documentos, planilhas, apresentações e artes em uma interface moderna.
+  </p>
+
+  <div class="hero-row">
+
+    <input
+      id="aiPrompt"
+      placeholder="Ex.: crie uma arte para Instagram sobre inteligência artificial..."
+    >
+
+    <button class="primary-btn" onclick="generateFromAI()">
+      ✨ Criar com IA
+    </button>
+
+  </div>
+
+</div>
+
+<div class="stats">
+
+  <div class="stat-card">
+    <div class="stat-label">Projetos</div>
+    <div id="countProjects" class="stat-value">0</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Documentos</div>
+    <div id="countDocs" class="stat-value">0</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">Última criação</div>
+    <div id="lastType" class="stat-value">—</div>
+  </div>
+
+</div>
+
+<div class="section-header">
+  <h2>Comece por aqui</h2>
+</div>
+
+<div class="cards-grid">
+
+  <div class="template-card" onclick="newDoc()">
+    <div class="template-emoji">📄</div>
+    <h3>Documento</h3>
+    <div class="muted">
+      Relatos, textos e relatórios.
+    </div>
+  </div>
+
+  <div class="template-card" onclick="newSheet()">
+    <div class="template-emoji">📊</div>
+    <h3>Planilha</h3>
+    <div class="muted">
+      Dados, orçamento e cálculos.
+    </div>
+  </div>
+
+  <div class="template-card" onclick="newSlide()">
+    <div class="template-emoji">🎨</div>
+    <h3>Apresentação</h3>
+    <div class="muted">
+      Slides para aula, reunião ou pitch.
+    </div>
+  </div>
+
+  <div class="template-card" onclick="openPhotoEditor()">
+    <div class="template-emoji">🖼️</div>
+    <h3>Criar arte</h3>
+    <div class="muted">
+      Fotos, posts, capas e designs.
+    </div>
+  </div>
+
+</div>
+
+</section>
+
+<!-- ================= DOCUMENTOS ================= -->
+
+<section id="docs" class="view">
+
+<div class="officebar">
+  <div class="brand-mini word">W</div>
+  <div class="header">
+    <div class="office-title">Documentos</div>
+    <div class="muted">Editor de texto</div>
+  </div>
+</div>
+
+<div class="toolbar">
+
+  <button onclick="execDoc('bold')">Negrito</button>
+  <button onclick="execDoc('italic')">Itálico</button>
+  <button onclick="execDoc('underline')">Sublinhado</button>
+  <button onclick="execDoc('insertUnorderedList')">Lista</button>
+  <button onclick="execDoc('formatBlock','h1')">Título</button>
+  <button onclick="newDoc()">Novo</button>
+
+</div>
+
+<div class="workspace">
+
+<div class="doc-panel doc-shell">
+
+  <div class="doc-editor" contenteditable="true" id="docEditor">
+
+    <h1>Seu novo documento</h1>
+
+    <p>
+      Escreva aqui e transforme seu texto em conteúdo de qualidade.
+    </p>
+
+  </div>
+
+</div>
+
+<div>
+
+  <div class="mini-card">
+    <div class="muted">Palavras</div>
+    <div class="counter" id="wordCount">0</div>
+  </div>
+
+  <div class="mini-card">
+    <div class="muted">Status</div>
+    <div class="counter" style="font-size:1.2rem">
+      Pronto
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= PLANILHAS ================= -->
+
+<section id="sheets" class="view">
+
+<div class="officebar">
+
+  <div class="brand-mini sheet">S</div>
+
+  <div class="header">
+    <div class="office-title">Planilhas</div>
+    <div class="muted">Dados e fórmulas</div>
+  </div>
+
+</div>
+
+<div class="toolbar">
+
+  <button onclick="addRow()">+ Linha</button>
+  <button onclick="addColumn()">+ Coluna</button>
+  <button onclick="sumSelected()">Somar</button>
+  <button onclick="newSheet()">Nova planilha</button>
+
+</div>
+
+<div class="sheet-panel">
+
+<div class="formula-bar">
+
+  <div class="cell-indicator" id="activeCellLabel">
+    A1
+  </div>
+
+  <input
+    id="formulaInput"
+    value="=SUM(A1:A3)"
+  >
+
+</div>
+
+<div class="table-wrap">
+
+<table class="sheet" id="sheetTable">
+
+<tbody>
+
+<tr>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+</tr>
+
+<tr>
+<td>10</td>
+<td>20</td>
+<td>30</td>
+</tr>
+
+<tr>
+<td>40</td>
+<td>50</td>
+<td>60</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= SLIDES ================= -->
+
+<section id="slides" class="view">
+
+<div class="officebar">
+
+  <div class="brand-mini slide">P</div>
+
+  <div class="header">
+
+    <div class="office-title">
+      Apresentação
+    </div>
+
+    <div class="muted">
+      Slides
+    </div>
+
+  </div>
+
+</div>
+
+<div class="toolbar">
+
+  <button onclick="newSlide()">Novo slide</button>
+  <button onclick="addSlideText()">Adicionar texto</button>
+  <button onclick="addSlideShape()">Adicionar bloco</button>
+
+</div>
+
+<div class="ppt-workspace">
+
+<div>
+
+  <div class="mini-card">
+
+    <div class="muted">
+      Slides
+    </div>
+
+    <div class="thumb-list" id="slideThumbs"></div>
+
+  </div>
+
+</div>
+
+<div class="slide-stage">
+
+  <div
+    class="slide-canvas"
+    contenteditable="true"
+    id="slideCanvas"
+  >
+
+    <h1>Título do slide</h1>
+
+    <p>
+      Apresentação criativa, leve e moderna para contar sua história.
+    </p>
+
+  </div>
+
+  <div>
+
+    <button class="small-btn" onclick="newSlide()">
+      Criar novo
+    </button>
+
+    <button class="small-btn" onclick="downloadSlide()">
+      Exportar
+    </button>
+
+  </div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     EDITOR DE FOTOS / CANVA
+===================================================== -->
+
+<section id="photos" class="view">
+
+<div class="section-header">
+
+  <div>
+
+    <h2>🖼️ Editor de fotos</h2>
+
+    <div class="muted">
+      Crie artes, edite imagens e monte seus próprios designs.
+    </div>
+
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+
+    <button class="small-btn" onclick="undoPhoto()">
+      ↶ Desfazer
+    </button>
+
+    <button class="small-btn" onclick="redoPhoto()">
+      ↷ Refazer
+    </button>
+
+    <button class="primary-btn" onclick="downloadDesign()">
+      💾 Baixar PNG
+    </button>
+
+  </div>
+
+</div>
+
+<div class="photo-layout">
+
+<!-- PAINEL ESQUERDO -->
+
+<div class="photo-sidebar">
+
+<div>
+
+<label class="upload-box" for="photoInput">
+
+  <div style="font-size:2rem">
+    📤
+  </div>
+
+  <strong>Importar foto</strong>
+
+  <div class="muted" style="font-size:.8rem;margin-top:5px">
+    Celular ou computador
+  </div>
+
+</label>
+
+<input
+  type="file"
+  id="photoInput"
+  accept="image/*"
+>
+
+</div>
+
+<div class="tool-group">
+
+<div class="tool-group-title">
+Adicionar
+</div>
+
+<button class="tool-btn" onclick="addTextElement()">
+📝 Adicionar texto
+</button>
+
+<button class="tool-btn" onclick="addRectangle()">
+🔷 Adicionar quadrado
+</button>
+
+<button class="tool-btn" onclick="addCircle()">
+⭕ Adicionar círculo
+</button>
+
+</div>
+
+<div class="tool-group">
+
+<div class="tool-group-title">
+Imagem
+</div>
+
+<button class="tool-btn" onclick="rotateSelected()">
+🔄 Girar
+</button>
+
+<button class="tool-btn" onclick="deleteSelected()">
+🗑️ Excluir
+</button>
+
+<button class="tool-btn" onclick="clearDesign()">
+🧹 Limpar arte
+</button>
+
+</div>
+
+<div class="tool-group">
+
+<div class="tool-group-title">
+IA
+</div>
+
+<button class="tool-btn" onclick="openPhotoAI()">
+✨ Criar com prompt
+</button>
+
+</div>
+
+</div>
+
+<!-- CANVAS -->
+
+<div class="canvas-area">
+
+<div id="designCanvas">
+
+<div class="empty-canvas" id="emptyCanvas">
+
+<div>
+
+<div style="font-size:3rem">
+🖼️
+</div>
+
+<strong>
+Comece importando uma foto
+</strong>
+
+<div style="margin-top:5px">
+ou adicione texto e formas
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FERRAMENTAS -->
+
+<div class="photo-tools">
+
+<h3>Editar</h3>
+
+<div class="photo-preview" id="photoPreview">
+  Nenhuma imagem
+</div>
+
+<div class="tool-group">
+
+<div class="tool-group-title">
+Ajustes
+</div>
+
+<div class="range-row">
+
+<label>
+<span>Brilho</span>
+<span id="brightnessValue">100%</span>
+</label>
+
+<input
+  type="range"
+  id="brightness"
+  min="0"
+  max="200"
+  value="100"
+  oninput="applyImageAdjustments()"
+>
+
+</div>
+
+<div class="range-row">
+
+<label>
+<span>Contraste</span>
+<span id="contrastValue">100%</span>
+</label>
+
+<input
+  type="range"
+  id="contrast"
+  min="0"
+  max="200"
+  value="100"
+  oninput="applyImageAdjustments()"
+>
+
+</div>
+
+<div class="range-row">
+
+<label>
+<span>Saturação</span>
+<span id="saturationValue">100%</span>
+</label>
+
+<input
+  type="range"
+  id="saturation"
+  min="0"
+  max="200"
+  value="100"
+  oninput="applyImageAdjustments()"
+>
+
+</div>
+
+</div>
+
+<div class="tool-group">
+
+<div class="tool-group-title">
+Filtros
+</div>
+
+<div class="filter-buttons">
+
+<button onclick="setFilter('none')">
+Original
+</button>
+
+<button onclick="setFilter('grayscale')">
+P&B
+</button>
+
+<button onclick="setFilter('sepia')">
+Sépia
+</button>
+
+<button onclick="setFilter('vintage')">
+Vintage
+</button>
+
+<button onclick="setFilter('cool')">
+Frio
+</button>
+
+<button onclick="setFilter('warm')">
+Quente
+</button>
+
+</div>
+
+</div>
+
+<div class="tool-group">
+
+<div class="tool-group-title">
+Tamanho
+</div>
+
+<button class="tool-btn" onclick="resizeSelected(1.15)">
+➕ Aumentar
+</button>
+
+<button class="tool-btn" onclick="resizeSelected(.87)">
+➖ Diminuir
+</button>
+
+</div>
+
+<div class="editor-status" id="editorStatus">
+Nenhum elemento selecionado
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= PROJETOS ================= -->
+
+<section id="projects" class="view">
+
+<div class="section-header">
+
+<h2>Projetos recentes</h2>
+
+<button class="ghost-btn" onclick="newProject()">
+Novo projeto
+</button>
+
+</div>
+
+<div class="project-grid" id="projectGrid">
+
+<div class="project-card">
+
+<div class="emoji">🖼️</div>
+
+<h3>Meu primeiro design</h3>
+
+<div class="muted">
+Comece criando uma nova arte.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= CONFIGURAÇÕES ================= -->
+
+<section id="settings" class="view">
+
+<div class="settings-box">
+
+<h2>Configurações</h2>
+
+<div class="field">
+
+<label>Nome do perfil</label>
+
+<input
+  id="displayName"
+  value="Usuário Lunexia"
+>
+
+</div>
+
+<div class="field">
+
+<label>Nome do workspace</label>
+
+<input
+  id="workspaceName"
+  value="Lunexia Studio"
+>
+
+</div>
+
+<div class="field">
+
+<label>Descrição</label>
+
+<textarea id="bio">
+Crio conteúdo, apresentações e materiais com velocidade e clareza.
+</textarea>
+
+</div>
+
+<button class="primary-btn" onclick="saveSettings()">
+Salvar
+</button>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<!-- ================= MODAL IA ================= -->
+
+<div class="modal" id="aiModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h3>✨ Criação com IA</h3>
+
+<button class="icon-btn" onclick="closeAI()">
+✕
+</button>
+
+</div>
+
+<textarea
+  id="aiOutput"
+  placeholder="Descreva o que deseja criar..."
+></textarea>
+
+<button class="primary-btn" onclick="generateFromAI()">
+Gerar
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= MODAL IA FOTO ================= -->
+
+<div class="modal" id="photoAIModal">
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h3>✨ Criar arte com IA</h3>
+
+<button class="icon-btn" onclick="closePhotoAI()">
+✕
+</button>
+
+</div>
+
+<p class="muted">
+Descreva a arte que você deseja criar.
+</p>
+
+<textarea
+  id="photoAIPrompt"
+  placeholder="Ex.: post moderno para Instagram sobre tecnologia..."
+></textarea>
+
+<button class="primary-btn" onclick="generatePhotoDesign()">
+Criar arte
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= LOGIN ================= -->
+
+<div class="login" id="loginModal">
+
+<div class="login-box">
+
+<h2>Entrar</h2>
+
+<p class="muted">
+Acesse sua conta Lunexia.
+</p>
+
+<div class="field">
+
+<label>Email</label>
+
+<input
+  type="email"
+  placeholder="seu@email.com"
+>
+
+</div>
+
+<div class="field">
+
+<label>Senha</label>
+
+<input
+  type="password"
+  placeholder="••••••••"
+>
+
+</div>
+
+<button
+  class="primary-btn"
+  style="width:100%"
+  onclick="closeLogin()"
+>
+Entrar
+</button>
+
+</div>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+const navButtons=document.querySelectorAll(".nav-btn");
+const views=document.querySelectorAll(".view");
+
+const docEditor=document.getElementById("docEditor");
+const wordCount=document.getElementById("wordCount");
+
+const slideCanvas=document.getElementById("slideCanvas");
+const slideThumbs=document.getElementById("slideThumbs");
+
+const designCanvas=document.getElementById("designCanvas");
+const photoInput=document.getElementById("photoInput");
+
+let selectedElement=null;
+let history=[];
+let redoHistory=[];
+
+let projects=0;
+let documents=0;
+
+/* ================= NAVEGAÇÃO ================= */
+
+navButtons.forEach(btn=>{
+
+  btn.addEventListener("click",()=>{
+
+    navButtons.forEach(b=>{
+      b.classList.toggle("active",b===btn);
+    });
+
+    const target=btn.dataset.view;
+
+    views.forEach(v=>{
+      v.classList.toggle("active",v.id===target);
+    });
+
+    if(target==="photos"){
+      updateEditorPreview();
+    }
+
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("mobileBackdrop").classList.remove("show");
+
+  });
+
+});
+
+/* ================= TOAST ================= */
+
+function showToast(message){
+
+  const toast=document.getElementById("toast");
+
+  toast.textContent=message;
+  toast.style.display="block";
+
+  clearTimeout(showToast.timer);
+
+  showToast.timer=setTimeout(()=>{
+    toast.style.display="none";
+  },2200);
+
+}
+
+/* ================= LOGIN ================= */
+
+function openLogin(){
+  document.getElementById("loginModal").classList.add("show");
+}
+
+function closeLogin(){
+
+  document.getElementById("loginModal").classList.remove("show");
+
+  showToast("Conta atualizada.");
+
+}
+
+/* ================= IA DOCUMENTO ================= */
+
+function openAI(){
+  document.getElementById("aiModal").classList.add("show");
+}
+
+function closeAI(){
+  document.getElementById("aiModal").classList.remove("show");
+}
+
+function generateFromAI(){
+
+  const input=document.getElementById("aiPrompt");
+  const modalInput=document.getElementById("aiOutput");
+
+  const prompt=(input?.value || modalInput?.value || "").trim();
+
+  if(!prompt){
+
+    showToast("Descreva o que deseja criar.");
+
+    return;
+  }
+
+  closeAI();
+
+  if(docEditor){
+
+    docEditor.innerHTML=`
+      <h1>Resultado da IA</h1>
+      <p>${escapeHTML(prompt)}</p>
+      <p>
+        Este conteúdo foi estruturado a partir da sua solicitação.
+        Você pode editar livremente o resultado.
+      </p>
+    `;
+
+  }
+
+  documents++;
+
+  updateStats();
+
+  showToast("Conteúdo criado.");
+
+}
+
+/* ================= DOCUMENTOS ================= */
+
+function execDoc(command,value=null){
+
+  document.execCommand(command,false,value);
+
+  updateWordCount();
+
+}
+
+function updateWordCount(){
+
+  if(!docEditor)return;
+
+  const text=docEditor.innerText.trim();
+
+  wordCount.textContent=
+    text ? text.split(/\s+/).length : 0;
+
+}
+
+docEditor.addEventListener("input",updateWordCount);
+
+function newDoc(){
+
+  documents++;
+
+  updateStats();
+
+  docEditor.innerHTML=`
+    <h1>Seu novo documento</h1>
+    <p>Escreva aqui...</p>
+  `;
+
+  goTo("docs");
+
+  updateWordCount();
+
+  showToast("Novo documento criado.");
+
+}
+
+/* ================= PLANILHAS ================= */
+
+function newSheet(){
+
+  goTo("sheets");
+
+  showToast("Nova planilha criada.");
+
+}
+
+function addRow(){
+
+  const table=document.getElementById("sheetTable");
+  const tbody=table.querySelector("tbody");
+
+  const row=document.createElement("tr");
+
+  for(let i=0;i<3;i++){
+
+    const cell=document.createElement("td");
+
+    cell.contentEditable=true;
+
+    row.appendChild(cell);
+
+  }
+
+  tbody.appendChild(row);
+
+  showToast("Linha adicionada.");
+
+}
+
+function addColumn(){
+
+  const table=document.getElementById("sheetTable");
+
+  for(const row of table.rows){
+
+    const cell=document.createElement(
+      row.rowIndex===0 ? "th" : "td"
+    );
+
+    cell.contentEditable=true;
+
+    row.appendChild(cell);
+
+  }
+
+  showToast("Coluna adicionada.");
+
+}
+
+function sumSelected(){
+
+  const cells=[...document.querySelectorAll("#sheetTable td")];
+
+  let total=0;
+
+  cells.forEach(cell=>{
+
+    const number=parseFloat(cell.textContent.replace(",","."));
+
+    if(!isNaN(number)) total+=number;
+
+  });
+
+  showToast("Soma: "+total);
+
+}
+
+/* ================= SLIDES ================= */
+
+function newSlide(){
+
+  goTo("slides");
+
+  renderSlideThumbs();
+
+  showToast("Novo slide criado.");
+
+}
+
+function addSlideText(){
+
+  slideCanvas.innerHTML+=
+    "<p>Nova linha de conteúdo.</p>";
+
+  showToast("Texto adicionado.");
+
+}
+
+function addSlideShape(){
+
+  const block=document.createElement("div");
+
+  block.style.width="160px";
+  block.style.height="100px";
+  block.style.borderRadius="18px";
+  block.style.background=
+    "linear-gradient(135deg,#7c6cff,#4dd4c5)";
+  block.style.marginTop="20px";
+
+  slideCanvas.appendChild(block);
+
+  showToast("Bloco adicionado.");
+
+}
+
+function renderSlideThumbs(){
+
+  slideThumbs.innerHTML="";
+
+  for(let i=0;i<4;i++){
+
+    const thumb=document.createElement("div");
+
+    thumb.className="thumb";
+
+    thumb.innerHTML=`
+      <div class="thumb-preview">
+        <strong>Slide ${i+1}</strong>
+        <br><br>
+        Design Lunexia
+      </div>
+    `;
+
+    slideThumbs.appendChild(thumb);
+
+  }
+
+}
+
+function downloadSlide(){
+
+  showToast("Exportação de slide preparada.");
+
+}
+
+/* =====================================================
+   EDITOR DE FOTOS
+===================================================== */
+
+/* IMPORTAR IMAGEM */
+
+photoInput.addEventListener("change",function(e){
+
+  const file=e.target.files[0];
+
+  if(!file)return;
+
+  const reader=new FileReader();
+
+  reader.onload=function(event){
+
+    addImageElement(event.target.result);
+
+  };
+
+  reader.readAsDataURL(file);
+
+});
+
+/* ADICIONAR IMAGEM */
+
+function addImageElement(src){
+
+  const img=document.createElement("img");
+
+  img.src=src;
+
+  img.className="design-element design-image";
+
+  img.style.left="50px";
+  img.style.top="50px";
+  img.style.width="400px";
+  img.style.transform="rotate(0deg)";
+  img.dataset.rotation="0";
+
+  designCanvas.appendChild(img);
+
+  makeDraggable(img);
+
+  selectElement(img);
+
+  hideEmptyCanvas();
+
+  saveHistory();
+
+  updateEditorPreview();
+
+  showToast("Foto adicionada.");
+
+}
+
+/* DRAG */
+
+function makeDraggable(element){
+
+  let startX=0;
+  let startY=0;
+  let startLeft=0;
+  let startTop=0;
+  let dragging=false;
+
+  element.addEventListener("pointerdown",function(e){
+
+    e.preventDefault();
+
+    dragging=true;
+
+    selectElement(element);
+
+    startX=e.clientX;
+    startY=e.clientY;
+
+    startLeft=parseFloat(element.style.left)||0;
+    startTop=parseFloat(element.style.top)||0;
+
+    element.setPointerCapture(e.pointerId);
+
+  });
+
+  element.addEventListener("pointermove",function(e){
+
+    if(!dragging)return;
+
+    const dx=e.clientX-startX;
+    const dy=e.clientY-startY;
+
+    element.style.left=(startLeft+dx)+"px";
+    element.style.top=(startTop+dy)+"px";
+
+  });
+
+  element.addEventListener("pointerup",function(){
+
+    if(dragging){
+
+      dragging=false;
+
+      saveHistory();
+
+    }
+
+  });
+
+}
+
+/* SELECIONAR */
+
+function selectElement(element){
+
+  if(selectedElement){
+    selectedElement.classList.remove("selected");
+  }
+
+  selectedElement=element;
+
+  if(element){
+
+    element.classList.add("selected");
+
+    document.getElementById("editorStatus").textContent=
+      "Elemento selecionado";
+
+  }
+
+  updateEditorPreview();
+
+}
+
+/* CLICK NO CANVAS */
+
+designCanvas.addEventListener("pointerdown",function(e){
+
+  if(e.target===designCanvas){
+
+    if(selectedElement){
+
+      selectedElement.classList.remove("selected");
+
+    }
+
+    selectedElement=null;
+
+    document.getElementById("editorStatus").textContent=
+      "Nenhum elemento selecionado";
+
+  }
+
+});
+
+/* TEXTO */
+
+function addTextElement(){
+
+  const text=document.createElement("div");
+
+  text.className="design-element design-text";
+
+  text.textContent="Digite seu texto";
+
+  text.contentEditable=true;
+
+  text.style.left="80px";
+  text.style.top="80px";
+  text.style.fontSize="32px";
+  text.style.color="#111827";
+
+  designCanvas.appendChild(text);
+
+  makeDraggable(text);
+
+  selectElement(text);
+
+  text.focus();
+
+  saveHistory();
+
+  hideEmptyCanvas();
+
+}
+
+/* QUADRADO */
+
+function addRectangle(){
+
+  const shape=document.createElement("div");
+
+  shape.className=
+    "design-element design-shape";
+
+  shape.style.left="100px";
+  shape.style.top="100px";
+
+  designCanvas.appendChild(shape);
+
+  makeDraggable(shape);
+
+  selectElement(shape);
+
+  saveHistory();
+
+  hideEmptyCanvas();
+
+}
+
+/* CÍRCULO */
+
+function addCircle(){
+
+  const circle=document.createElement("div");
+
+  circle.className=
+    "design-element design-circle";
+
+  circle.style.left="120px";
+  circle.style.top="120px";
+
+  designCanvas.appendChild(circle);
+
+  makeDraggable(circle);
+
+  selectElement(circle);
+
+  saveHistory();
+
+  hideEmptyCanvas();
+
+}
+
+/* EXCLUIR */
+
+function deleteSelected(){
+
+  if(!selectedElement){
+
+    showToast("Selecione um elemento.");
+
+    return;
+
+  }
+
+  selectedElement.remove();
+
+  selectedElement=null;
+
+  document.getElementById("editorStatus").textContent=
+    "Nenhum elemento selecionado";
+
+  saveHistory();
+
+  updateEditorPreview();
+
+  showToast("Elemento excluído.");
+
+}
+
+/* GIRAR */
+
+function rotateSelected(){
+
+  if(!selectedElement){
+
+    showToast("Selecione um elemento.");
+
+    return;
+
+  }
+
+  let rotation=
+    parseFloat(selectedElement.dataset.rotation||0);
+
+  rotation+=90;
+
+  selectedElement.dataset.rotation=rotation;
+
+  selectedElement.style.transform=
+    `rotate(${rotation}deg)`;
+
+  saveHistory();
+
+}
+
+/* REDIMENSIONAR */
+
+function resizeSelected(multiplier){
+
+  if(!selectedElement){
+
+    showToast("Selecione um elemento.");
+
+    return;
+
+  }
+
+  const rect=selectedElement.getBoundingClientRect();
+
+  const parentRect=designCanvas.getBoundingClientRect();
+
+  const currentWidth=
+    parseFloat(selectedElement.style.width) ||
+    (rect.width / parentRect.width*100)+"%";
+
+  let numeric;
+
+  if(typeof currentWidth==="string" &&
+     currentWidth.includes("%")){
+
+    numeric=
+      parseFloat(currentWidth)*multiplier;
+
+    selectedElement.style.width=
+      numeric+"%";
+
+  }else{
+
+    numeric=
+      parseFloat(currentWidth)*multiplier;
+
+    selectedElement.style.width=
+      numeric+"px";
+
+  }
+
+  saveHistory();
+
+}
+
+/* FILTROS */
+
+function setFilter(type){
+
+  if(!selectedElement ||
+     selectedElement.tagName!=="IMG"){
+
+    showToast("Selecione uma foto.");
+
+    return;
+
+  }
+
+  let filter="";
+
+  switch(type){
+
+    case "grayscale":
+      filter="grayscale(100%)";
+      break;
+
+    case "sepia":
+      filter="sepia(90%)";
+      break;
+
+    case "vintage":
+      filter=
+        "sepia(35%) saturate(125%) contrast(105%)";
+      break;
+
+    case "cool":
+      filter=
+        "saturate(110%) contrast(105%) hue-rotate(12deg)";
+      break;
+
+    case "warm":
+      filter=
+        "sepia(20%) saturate(130%) contrast(105%)";
+      break;
+
+    default:
+      filter="none";
+
+  }
+
+  selectedElement.dataset.filter=filter;
+
+  applyImageAdjustments();
+
+}
+
+/* AJUSTES */
+
+function applyImageAdjustments(){
+
+  if(!selectedElement ||
+     selectedElement.tagName!=="IMG"){
+
+    return;
+
+  }
+
+  const brightness=
+    document.getElementById("brightness").value;
+
+  const contrast=
+    document.getElementById("contrast").value;
+
+  const saturation=
+    document.getElementById("saturation").value;
+
+  document.getElementById("brightnessValue").textContent=
+    brightness+"%";
+
+  document.getElementById("contrastValue").textContent=
+    contrast+"%";
+
+  document.getElementById("saturationValue").textContent=
+    saturation+"%";
+
+  const extra=
+    selectedElement.dataset.filter || "none";
+
+  selectedElement.style.filter=
+    `${extra} brightness(${brightness}%)
+     contrast(${contrast}%)
+     saturate(${saturation}%)`;
+
+  updateEditorPreview();
+
+}
+
+/* PREVIEW */
+
+function updateEditorPreview(){
+
+  const preview=document.getElementById("photoPreview");
+
+  if(!selectedElement ||
+     selectedElement.tagName!=="IMG"){
+
+    preview.innerHTML=
+      "Nenhuma imagem selecionada";
+
+    return;
+
+  }
+
+  preview.innerHTML="";
+
+  const clone=selectedElement.cloneNode(true);
+
+  clone.classList.remove("selected");
+
+  clone.style.position="relative";
+  clone.style.left="auto";
+  clone.style.top="auto";
+  clone.style.width="100%";
+  clone.style.height="auto";
+
+  preview.appendChild(clone);
+
+}
+
+/* ESCONDER EMPTY */
+
+function hideEmptyCanvas(){
+
+  const empty=document.getElementById("emptyCanvas");
+
+  if(empty){
+
+    empty.style.display="none";
+
+  }
+
+}
+
+/* LIMPAR */
+
+function clearDesign(){
+
+  if(!confirm("Limpar toda a arte?"))return;
+
+  designCanvas.querySelectorAll(
+    ".design-element"
+  ).forEach(el=>el.remove());
+
+  selectedElement=null;
+
+  document.getElementById("emptyCanvas").style.display=
+    "grid";
+
+  document.getElementById("editorStatus").textContent=
+    "Nenhum elemento selecionado";
+
+  saveHistory();
+
+  showToast("Arte limpa.");
+
+}
+
+/* =====================================================
+   DESFAZER / REFAZER
+===================================================== */
+
+function getCanvasState(){
+
+  return designCanvas.innerHTML;
+
+}
+
+function restoreCanvasState(state){
+
+  designCanvas.innerHTML=state;
+
+  selectedElement=null;
+
+  designCanvas
+    .querySelectorAll(".design-element")
+    .forEach(el=>{
+
+      makeDraggable(el);
+
+      el.addEventListener("click",function(e){
+
+        e.stopPropagation();
+
+        selectElement(el);
+
+      });
+
+    });
+
+  const hasElements=
+    designCanvas.querySelector(".design-element");
+
+  document.getElementById("emptyCanvas").style.display=
+    hasElements ? "none":"grid";
+
+}
+
+function saveHistory(){
+
+  const state=getCanvasState();
+
+  if(history.length===0 ||
+     history[history.length-1]!==state){
+
+    history.push(state);
+
+    if(history.length>30){
+
+      history.shift();
+
+    }
+
+  }
+
+  redoHistory=[];
+
+}
+
+function undoPhoto(){
+
+  if(history.length<=1){
+
+    showToast("Nada para desfazer.");
+
+    return;
+
+  }
+
+  const current=history.pop();
+
+  redoHistory.push(current);
+
+  const previous=
+    history[history.length-1];
+
+  restoreCanvasState(previous);
+
+  showToast("Desfeito.");
+
+}
+
+function redoPhoto(){
+
+  if(!redoHistory.length){
+
+    showToast("Nada para refazer.");
+
+    return;
+
+  }
+
+  const state=redoHistory.pop();
+
+  history.push(state);
+
+  restoreCanvasState(state);
+
+  showToast("Refeito.");
+
+}
+
+/* =====================================================
+   EXPORTAR PNG
+===================================================== */
+
+async function downloadDesign(){
+
+  const canvas=document.getElementById("designCanvas");
+
+  showToast("Preparando PNG...");
+
+  /*
+   A exportação abaixo usa SVG + foreignObject.
+   Funciona em navegadores modernos.
+  */
+
+  const clone=canvas.cloneNode(true);
+
+  clone.querySelectorAll(".selected")
+    .forEach(el=>el.classList.remove("selected"));
+
+  clone.querySelectorAll(".empty-canvas")
+    .forEach(el=>el.remove());
+
+  const width=canvas.offsetWidth;
+  const height=canvas.offsetHeight;
+
+  const serializer=
+    new XMLSerializer();
+
+  const html=
+    serializer.serializeToString(clone);
+
+  const svg=`
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="${width}"
+         height="${height}">
+      <foreignObject
+        width="100%"
+        height="100%">
+        <div xmlns="http://www.w3.org/1999/xhtml">
+          ${html}
+        </div>
+      </foreignObject>
+    </svg>
+  `;
+
+  const blob=
+    new Blob([svg],{
+      type:"image/svg+xml;charset=utf-8"
+    });
+
+  const url=
+    URL.createObjectURL(blob);
+
+  const image=new Image();
+
+  image.onload=function(){
+
+    const output=
+      document.createElement("canvas");
+
+    output.width=width*2;
+    output.height=height*2;
+
+    const ctx=
+      output.getContext("2d");
+
+    ctx.scale(2,2);
+
+    ctx.drawImage(
+      image,
+      0,
+      0,
+      width,
+      height
+    );
+
+    URL.revokeObjectURL(url);
+
+    output.toBlob(function(png){
+
+      const link=
+        document.createElement("a");
+
+      link.download=
+        "lunexia-design.png";
+
+      link.href=
+        URL.createObjectURL(png);
+
+      link.click();
+
+      showToast("PNG baixado.");
+
+    },"image/png");
+
+  };
+
+  image.onerror=function(){
+
+    showToast(
+      "O navegador não conseguiu exportar esta arte."
+    );
+
+  };
+
+  image.src=url;
+
+}
+
+/* =====================================================
+   IA PARA DESIGN
+===================================================== */
+
+function openPhotoAI(){
+
+  document
+    .getElementById("photoAIModal")
+    .classList.add("show");
+
+}
+
+function closePhotoAI(){
+
+  document
+    .getElementById("photoAIModal")
+    .classList.remove("show");
+
+}
+
+function generatePhotoDesign(){
+
+  const prompt=
+    document
+      .getElementById("photoAIPrompt")
+      .value.trim();
+
+  if(!prompt){
+
+    showToast("Descreva sua arte.");
+
+    return;
+
+  }
+
+  closePhotoAI();
+
+  clearDesignWithoutConfirm();
+
+  const background=
+    document.createElement("div");
+
+  background.className=
+    "design-element";
+
+  background.style.left="0";
+  background.style.top="0";
+  background.style.width="100%";
+  background.style.height="100%";
+
+  background.style.background=
+    "linear-gradient(135deg,#17122d,#4b3c9d 50%,#1b7f83)";
+
+  background.style.cursor="default";
+
+  designCanvas.appendChild(background);
+
+  const title=
+    document.createElement("div");
+
+  title.className=
+    "design-element design-text";
+
+  title.textContent=
+    prompt;
+
+  title.style.left="60px";
+  title.style.top="150px";
+  title.style.width="70%";
+  title.style.fontSize="42px";
+  title.style.lineHeight="1.15";
+  title.style.color="#fff";
+  title.style.fontWeight="900";
+
+  designCanvas.appendChild(title);
+
+  makeDraggable(title);
+
+  selectElement(title);
+
+  hideEmptyCanvas();
+
+  saveHistory();
+
+  showToast("Arte criada a partir do prompt.");
+
+}
+
+/* LIMPAR SEM CONFIRMAÇÃO */
+
+function clearDesignWithoutConfirm(){
+
+  designCanvas
+    .querySelectorAll(".design-element")
+    .forEach(el=>el.remove());
+
+  selectedElement=null;
+
+}
+
+/* =====================================================
+   PROJETOS
+===================================================== */
+
+function newProject(){
+
+  projects++;
+
+  updateStats();
+
+  goTo("projects");
+
+  showToast("Projeto criado.");
+
+}
+
+/* =====================================================
+   CONFIGURAÇÕES
+===================================================== */
+
+function saveSettings(){
+
+  const name=
+    document.getElementById("displayName").value;
+
+  const firstLetter=
+    name.trim().charAt(0).toUpperCase() || "L";
+
+  document.getElementById("avatarInitial")
+    .textContent=firstLetter;
+
+  document.getElementById("appTitle")
+    .textContent=
+      "Olá, "+(name.split(" ")[0]||"")+"! 👋";
+
+  showToast("Configurações salvas.");
+
+}
+
+/* =====================================================
+   UTILIDADES
+===================================================== */
+
+function goTo(view){
+
+  navButtons.forEach(btn=>{
+    btn.classList.toggle(
+      "active",
+      btn.dataset.view===view
+    );
+  });
+
+  views.forEach(v=>{
+    v.classList.toggle(
+      "active",
+      v.id===view
+    );
+  });
+
+}
+
+function updateStats(){
+
+  document.getElementById("countProjects")
+    .textContent=projects;
+
+  document.getElementById("countDocs")
+    .textContent=documents;
+
+  document.getElementById("lastType")
+    .textContent=
+      documents ? "Documento" : "—";
+
+}
+
+function escapeHTML(text){
+
+  const div=document.createElement("div");
+
+  div.textContent=text;
+
+  return div.innerHTML;
+
+}
+
+/* =====================================================
+   MENU MOBILE
+===================================================== */
+
+document
+  .getElementById("menuToggle")
+  .addEventListener("click",()=>{
+
+    document
+      .getElementById("sidebar")
+      .classList.toggle("open");
+
+    document
+      .getElementById("mobileBackdrop")
+      .classList.toggle("show");
+
+  });
+
+document
+  .getElementById("mobileBackdrop")
+  .addEventListener("click",()=>{
+
+    document
+      .getElementById("sidebar")
+      .classList.remove("open");
+
+    document
+      .getElementById("mobileBackdrop")
+      .classList.remove("show");
+
+  });
+
+/* =====================================================
+   CLICK DOS ELEMENTOS DO EDITOR
+===================================================== */
+
+designCanvas.addEventListener("click",function(e){
+
+  const element=
+    e.target.closest(".design-element");
+
+  if(element){
+
+    e.stopPropagation();
+
+    selectElement(element);
+
+  }
+
+});
+
+/* =====================================================
+   ATALHO DELETE
+===================================================== */
+
+document.addEventListener("keydown",function(e){
+
+  if(
+    e.key==="Delete" &&
+    selectedElement &&
+    document.getElementById("photos")
+      .classList.contains("active")
+  ){
+
+    deleteSelected();
+
+  }
+
+});
+
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
+
+updateWordCount();
+
+renderSlideThumbs();
+
+saveHistory();
+
+</script>
+
+</body>
+</html>
