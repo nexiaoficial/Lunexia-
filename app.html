@@ -1402,9 +1402,7 @@
       });
     });
 
-    if (!window.LunexiaAuth.requireAuth({ redirectTo: 'app.html' })) {
-      showToast('Proteja sua conta para acessar o aplicativo');
-    }
+    window.LunexiaAuth.requireAuth({ redirectTo: 'app.html' });
   </script>
 </body>
 </html>

@@ -3,6 +3,7 @@
   const SESSION_KEY = 'lunexia.authSession';
   const REDIRECT_KEY = 'lunexia.authRedirect';
   const ALLOWED_REDIRECTS = new Set(['index.html', 'app.html']);
+  const PASSWORD_ITERATIONS = 120000;
   const listeners = new Set();
 
   let elements;
@@ -54,18 +55,50 @@
   }
 
   function ensureSecureHashing() {
-    if (!window.crypto?.subtle || !window.TextEncoder) {
+    if (!window.crypto?.subtle || !window.crypto?.getRandomValues || !window.TextEncoder) {
       throw new Error('Este navegador não oferece o nível mínimo de segurança para proteger a sua conta.');
     }
   }
 
-  async function hashPassword(email, password) {
+  function bytesToHex(bytes) {
+    return Array.from(bytes).map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  }
+
+  function hexToBytes(value) {
+    const pairs = value.match(/.{1,2}/g) || [];
+    return new Uint8Array(pairs.map((pair) => parseInt(pair, 16)));
+  }
+
+  function createSalt() {
+    ensureSecureHashing();
+    const salt = new Uint8Array(16);
+    window.crypto.getRandomValues(salt);
+    return bytesToHex(salt);
+  }
+
+  async function hashPassword(email, password, salt) {
     ensureSecureHashing();
 
     const normalized = `${normalizeEmail(email)}::${password}`;
-    const bytes = new TextEncoder().encode(normalized);
-    const digest = await window.crypto.subtle.digest('SHA-256', bytes);
-    return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, '0')).join('');
+    const keyMaterial = await window.crypto.subtle.importKey(
+      'raw',
+      new TextEncoder().encode(normalized),
+      'PBKDF2',
+      false,
+      ['deriveBits']
+    );
+    const derivedBits = await window.crypto.subtle.deriveBits(
+      {
+        name: 'PBKDF2',
+        salt: hexToBytes(salt),
+        iterations: PASSWORD_ITERATIONS,
+        hash: 'SHA-256'
+      },
+      keyMaterial,
+      256
+    );
+
+    return bytesToHex(new Uint8Array(derivedBits));
   }
 
   function setRedirect(url) {
@@ -473,9 +506,11 @@
     const account = {
       name: payload.name.trim(),
       email: normalizeEmail(payload.email),
-      passwordHash: await hashPassword(payload.email, payload.password),
+      passwordSalt: createSalt(),
       createdAt: new Date().toISOString()
     };
+
+    account.passwordHash = await hashPassword(payload.email, payload.password, account.passwordSalt);
 
     writeJson(ACCOUNT_KEY, account);
     writeJson(SESSION_KEY, { email: account.email, authenticatedAt: new Date().toISOString() });
@@ -487,16 +522,16 @@
     const account = getStoredAccount();
 
     if (!account) {
-      throw new Error('Crie sua conta segura antes de entrar.');
+      throw new Error('Não foi possível autenticar com as credenciais informadas.');
     }
 
-    if (normalizeEmail(payload.email) !== normalizeEmail(account.email)) {
-      throw new Error('Use o e-mail cadastrado para acessar.');
+    if (normalizeEmail(payload.email) !== normalizeEmail(account.email) || !account.passwordSalt) {
+      throw new Error('Não foi possível autenticar com as credenciais informadas.');
     }
 
-    const receivedHash = await hashPassword(payload.email, payload.password);
+    const receivedHash = await hashPassword(payload.email, payload.password, account.passwordSalt);
     if (receivedHash !== account.passwordHash) {
-      throw new Error('Senha incorreta. Tente novamente.');
+      throw new Error('Não foi possível autenticar com as credenciais informadas.');
     }
 
     writeJson(SESSION_KEY, { email: account.email, authenticatedAt: new Date().toISOString() });
@@ -575,7 +610,7 @@
           throw new Error('Digite sua senha para confirmar a exclusão.');
         }
 
-        const expectedHash = await hashPassword(account.email, password);
+        const expectedHash = await hashPassword(account.email, password, account.passwordSalt);
         if (expectedHash !== account.passwordHash) {
           throw new Error('Senha incorreta. A conta não foi excluída.');
         }
