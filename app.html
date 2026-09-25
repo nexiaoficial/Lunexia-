@@ -1018,15 +1018,15 @@
         <div class="stats">
           <div class="stat-card">
             <div class="stat-label">Projetos</div>
-            <div id="countProjects" class="stat-value">0,aumenta o número de projeto de acordo com as suas criações.</div>
+            <div id="countProjects" class="stat-value">0</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Documentos</div>
-            <div id="countDocs" class="stat-value">0,conta a quantidade de acordo com os documentos que você coloca no app.</div>
+            <div id="countDocs" class="stat-value">0</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Última criação</div>
-            <div id="lastType" class="stat-value">Slide</div>
+            <div id="lastType" class="stat-value">Nenhuma</div>
           </div>
         </div>
 
@@ -1035,7 +1035,7 @@
         </div>
 
         <div class="cards-grid">
-          <div class="template-card" onclick="newDoc()">
+          <div class="template-card" onclick="openDocumentCreator()">
             <div class="template-emoji">📄</div>
             <h3>Documento</h3>
             <div class="muted">Relatos, textos, relatórios e conteúdo inteligente.</div>
@@ -1075,19 +1075,32 @@
           <button onclick="document.execCommand('underline')">Sublinhado</button>
           <button onclick="document.execCommand('insertUnorderedList')">Lista</button>
           <button onclick="document.execCommand('formatBlock', false, 'h1')">Título</button>
-          <button onclick="newDoc()">Novo</button>
+          <select id="documentTypeSelect" aria-label="Selecionar tipo de documento">
+            <option value="curriculo">Currículo</option>
+            <option value="slide">Slide</option>
+            <option value="foto">Foto</option>
+            <option value="convite">Convite</option>
+            <option value="carta">Carta</option>
+            <option value="email">Email</option>
+            <option value="mensagem">Mensagem</option>
+          </select>
+          <button onclick="newDoc()">Criar</button>
         </div>
         <div class="workspace">
           <div class="doc-panel doc-shell">
             <div class="doc-editor" contenteditable="true">
-              <h1>Seu novo documento</h1>
-              <p>Escreva aqui e transforme seu texto em conteúdo de qualidade.</p>
+              <h1>Escolha um tipo de documento</h1>
+              <p>Selecione Currículo, Slide, Foto, Convite, Carta, Email ou Mensagem e clique em criar.</p>
             </div>
           </div>
           <div class="side-panel">
             <div class="mini-card">
-              <div class="muted">Palavras</div>
-              <div class="counter" id="wordCount">0</div>
+              <div class="muted">Caracteres</div>
+              <div class="counter" id="charCount">0</div>
+            </div>
+            <div class="mini-card">
+              <div class="muted">Tipo selecionado</div>
+              <div class="counter" id="currentDocumentType" style="font-size:1.2rem;">Currículo</div>
             </div>
             <div class="mini-card">
               <div class="muted">Status</div>
@@ -1229,9 +1242,50 @@
     const navButtons = document.querySelectorAll('.nav-btn');
     const views = document.querySelectorAll('.view');
     const docEditor = document.querySelector('.doc-editor');
-    const wordCount = document.getElementById('wordCount');
+    const charCount = document.getElementById('charCount');
+    const documentTypeSelect = document.getElementById('documentTypeSelect');
+    const currentDocumentType = document.getElementById('currentDocumentType');
+    const countDocs = document.getElementById('countDocs');
+    const lastType = document.getElementById('lastType');
     const slideThumbs = document.getElementById('slideThumbs');
     const slideCanvas = document.getElementById('slideCanvas');
+    const DOCUMENT_STORAGE_KEY = 'lunexia-documents';
+    const ACTIVE_DOCUMENT_KEY = 'lunexia-active-document-id';
+
+    // A seleção centraliza todos os novos tipos no editor existente, trocando apenas o template inicial
+    // e permitindo que cada criação atualize o contador e a última criação sem duplicar interfaces.
+    const documentTemplates = {
+      curriculo: {
+        label: 'Currículo',
+        content: '<h1>Novo Currículo</h1><p>Adicione seu resumo profissional, experiências, formação e habilidades principais.</p>'
+      },
+      slide: {
+        label: 'Slide',
+        content: '<h1>Novo Slide</h1><p>Defina o título do slide, os pontos-chave e o apoio visual da apresentação.</p>'
+      },
+      foto: {
+        label: 'Foto',
+        content: '<h1>Nova Foto</h1><p>Descreva a legenda, o contexto da imagem e as observações visuais importantes.</p>'
+      },
+      convite: {
+        label: 'Convite',
+        content: '<h1>Novo Convite</h1><p>Informe o evento, a data, o local e a mensagem especial para os convidados.</p>'
+      },
+      carta: {
+        label: 'Carta',
+        content: '<h1>Nova Carta</h1><p>Escreva a saudação, a mensagem principal e a despedida da carta.</p>'
+      },
+      email: {
+        label: 'Email',
+        content: '<h1>Novo Email</h1><p>Preencha o assunto, a abertura e a mensagem principal do email.</p>'
+      },
+      mensagem: {
+        label: 'Mensagem',
+        content: '<h1>Nova Mensagem</h1><p>Digite a mensagem rápida que deseja enviar e ajuste o tom do texto.</p>'
+      }
+    };
+    let documents = readStoredDocuments();
+    let activeDocumentId = readStoredActiveDocumentId();
 
     navButtons.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1241,15 +1295,115 @@
       });
     });
 
-    function updateWordCount() {
-      if (!docEditor) return;
-      const text = docEditor.innerText.trim();
-      const count = text ? text.split(/\s+/).length : 0;
-      wordCount.textContent = count;
+    function readStoredDocuments() {
+      try {
+        return JSON.parse(localStorage.getItem(DOCUMENT_STORAGE_KEY) || '[]');
+      } catch (error) {
+        return [];
+      }
     }
 
-    docEditor.addEventListener('input', updateWordCount);
-    updateWordCount();
+    function readStoredActiveDocumentId() {
+      return localStorage.getItem(ACTIVE_DOCUMENT_KEY);
+    }
+
+    function saveDocuments() {
+      try {
+        localStorage.setItem(DOCUMENT_STORAGE_KEY, JSON.stringify(documents));
+      } catch (error) {}
+    }
+
+    function saveActiveDocumentId() {
+      if (!activeDocumentId) return;
+      try {
+        localStorage.setItem(ACTIVE_DOCUMENT_KEY, activeDocumentId);
+      } catch (error) {}
+    }
+
+    function setActiveView(viewId) {
+      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === viewId));
+      views.forEach(v => v.classList.toggle('active', v.id === viewId));
+    }
+
+    function updateDashboardStats() {
+      if (countDocs) countDocs.textContent = String(documents.length);
+      if (lastType) lastType.textContent = documents.length ? documents[documents.length - 1].typeLabel : 'Nenhuma';
+    }
+
+    // O contador passa a medir caracteres visíveis do conteúdo normalizado, deixando explícito na interface
+    // que o progresso considera tamanho em caracteres, e não quantidade de palavras.
+    function updateCharacterCount() {
+      if (!docEditor || !charCount) return;
+      const editorText = docEditor.innerText || docEditor.textContent || '';
+      const text = editorText.replace(/\u00A0/g, ' ').replace(/\s+/g, ' ').trim();
+      charCount.textContent = text.length;
+    }
+
+    function getActiveDocument() {
+      return documents.find(doc => doc.id === activeDocumentId) || null;
+    }
+
+    function renderDocument(documentData) {
+      if (!docEditor || !documentData) return;
+      docEditor.innerHTML = documentData.content;
+      activeDocumentId = documentData.id;
+      if (documentTypeSelect) {
+        documentTypeSelect.value = documentData.type;
+      }
+      if (currentDocumentType) {
+        currentDocumentType.textContent = documentData.typeLabel;
+      }
+      saveActiveDocumentId();
+      updateCharacterCount();
+    }
+
+    function persistEditorChanges() {
+      const activeDocument = getActiveDocument();
+      if (!activeDocument || !docEditor) return;
+      activeDocument.content = docEditor.innerHTML;
+      saveDocuments();
+      updateCharacterCount();
+    }
+
+    function createDocument() {
+      const selectedType = documentTypeSelect?.value || 'curriculo';
+      const template = documentTemplates[selectedType];
+      if (!template) return;
+
+      const newDocument = {
+        id: String(Date.now()) + '-' + Math.random().toString(16).slice(2),
+        type: selectedType,
+        typeLabel: template.label,
+        content: template.content
+      };
+
+      documents.push(newDocument);
+      activeDocumentId = newDocument.id;
+      saveDocuments();
+      saveActiveDocumentId();
+      renderDocument(newDocument);
+      updateDashboardStats();
+      setActiveView('docs');
+      showToast(template.label + ' criado com sucesso.');
+    }
+
+    function loadInitialDocumentState() {
+      updateDashboardStats();
+      const initialDocument = getActiveDocument() || documents[documents.length - 1];
+      if (initialDocument) {
+        renderDocument(initialDocument);
+        return;
+      }
+      if (currentDocumentType) {
+        currentDocumentType.textContent = documentTemplates[documentTypeSelect?.value || 'curriculo'].label;
+      }
+      updateCharacterCount();
+    }
+
+    docEditor.addEventListener('input', persistEditorChanges);
+    documentTypeSelect?.addEventListener('change', event => {
+      currentDocumentType.textContent = documentTemplates[event.target.value].label;
+    });
 
     function showToast(message) {
       const toast = document.getElementById('toast');
@@ -1286,29 +1440,27 @@
       if (docEditor) {
         docEditor.innerHTML = `<h1>Resultado da IA</h1><p>${prompt}</p><p>Este conteúdo foi gerado a partir da sua solicitação e pode ser ajustado a qualquer momento.</p>`;
       }
+      persistEditorChanges();
+      setActiveView('docs');
       showToast('Conteúdo gerado com IA.');
     }
 
+    function openDocumentCreator() {
+      setActiveView('docs');
+    }
+
     function newDoc() {
-      showToast('Novo documento criado.');
-      if (docEditor) {
-        docEditor.innerHTML = '<h1>Seu novo documento</h1><p>Escreva aqui...</p>';
-      }
-      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'docs'));
-      views.forEach(v => v.classList.toggle('active', v.id === 'docs'));
-      updateWordCount();
+      createDocument();
     }
 
     function newSheet() {
       showToast('Nova planilha criada.');
-      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'sheets'));
-      views.forEach(v => v.classList.toggle('active', v.id === 'sheets'));
+      setActiveView('sheets');
     }
 
     function newSlide() {
       showToast('Novo slide criado.');
-      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'slides'));
-      views.forEach(v => v.classList.toggle('active', v.id === 'slides'));
+      setActiveView('slides');
       renderSlideThumbs();
     }
 
@@ -1347,8 +1499,7 @@
 
     function newProject() {
       showToast('Projeto novo criado.');
-      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'projects'));
-      views.forEach(v => v.classList.toggle('active', v.id === 'projects'));
+      setActiveView('projects');
     }
 
     function saveSettings() {
@@ -1381,6 +1532,7 @@
       showToast('Função de soma aplicada.');
     }
 
+    loadInitialDocumentState();
     renderSlideThumbs();
     document.getElementById('menuToggle')?.addEventListener('click', () => {
       document.getElementById('sidebar').classList.toggle('open');
