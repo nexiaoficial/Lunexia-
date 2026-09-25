@@ -2,6 +2,7 @@
   const ACCOUNT_KEY = 'lunexia.secureAccount';
   const SESSION_KEY = 'lunexia.authSession';
   const REDIRECT_KEY = 'lunexia.authRedirect';
+  const ALLOWED_REDIRECTS = new Set(['/', '/index.html', '/app.html']);
   const listeners = new Set();
 
   let elements;
@@ -65,13 +66,35 @@
   }
 
   function setRedirect(url) {
-    if (url) localStorage.setItem(REDIRECT_KEY, url);
+    const safeUrl = sanitizeRedirect(url);
+    if (safeUrl) localStorage.setItem(REDIRECT_KEY, safeUrl);
   }
 
   function consumeRedirect(fallbackUrl) {
-    const stored = localStorage.getItem(REDIRECT_KEY);
+    const stored = sanitizeRedirect(localStorage.getItem(REDIRECT_KEY));
     localStorage.removeItem(REDIRECT_KEY);
-    return stored || fallbackUrl || 'app.html';
+    return stored || sanitizeRedirect(fallbackUrl) || '/app.html';
+  }
+
+  function sanitizeRedirect(url) {
+    if (!url) return null;
+
+    try {
+      const parsed = new URL(url, window.location.origin);
+      const normalizedPath = parsed.pathname || '/';
+
+      if (parsed.origin !== window.location.origin || !ALLOWED_REDIRECTS.has(normalizedPath)) {
+        return null;
+      }
+
+      return `${normalizedPath}${parsed.search}${parsed.hash}`;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function getCurrentLocationTarget() {
+    return `${window.location.pathname || '/'}${window.location.search}${window.location.hash}`;
   }
 
   function emitAuthState() {
@@ -187,6 +210,10 @@
       .auth-submit {
         color: white;
         background: linear-gradient(135deg, #7657ff, #a77bff);
+      }
+      .auth-submit:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
       }
       .auth-secondary {
         margin-top: 10px;
@@ -336,9 +363,11 @@
 
     if (mode === 'create') {
       ui.title.textContent = 'Criar conta segura';
-      ui.subtitle.textContent = 'Cadastre seu nome, e-mail e senha para liberar o acesso.';
-      ui.submit.textContent = 'Criar conta';
-      ui.secondary.textContent = account ? 'Já tenho conta' : 'Entrar com conta existente';
+      ui.subtitle.textContent = account
+        ? 'Já existe uma conta protegida neste navegador. Entre com ela ou exclua a conta atual para cadastrar outra.'
+        : 'Cadastre seu nome, e-mail e senha para liberar o acesso.';
+      ui.submit.textContent = account ? 'Conta já cadastrada' : 'Criar conta';
+      ui.secondary.textContent = 'Entrar com conta existente';
       ui.switchLine.innerHTML = `Já possui uma conta?<button type="button" data-mode="login">Entrar</button>`;
       ui.nameField.hidden = false;
       ui.emailField.hidden = false;
@@ -346,6 +375,7 @@
       ui.nameInput.required = true;
       ui.emailInput.required = true;
       ui.passwordInput.required = true;
+      ui.submit.disabled = Boolean(account);
       ui.passwordInput.autocomplete = 'new-password';
       if (account) {
         ui.nameInput.value = account.name || '';
@@ -364,6 +394,7 @@
       ui.nameInput.value = account?.name || '';
       ui.emailInput.required = true;
       ui.passwordInput.required = true;
+      ui.submit.disabled = false;
       ui.passwordInput.autocomplete = 'current-password';
       ui.emailInput.value = account?.email || '';
     } else {
@@ -379,6 +410,7 @@
       ui.nameInput.required = false;
       ui.emailInput.required = false;
       ui.passwordInput.required = false;
+      ui.submit.disabled = false;
       ui.emailInput.value = user?.email || '';
       ui.metaName.textContent = user?.name || 'Conta protegida';
       ui.metaEmail.textContent = user?.email || '';
@@ -410,6 +442,10 @@
   }
 
   async function createAccount(payload) {
+    if (getStoredAccount()) {
+      throw new Error('Já existe uma conta protegida neste navegador. Exclua a conta atual antes de criar outra.');
+    }
+
     const account = {
       name: payload.name.trim(),
       email: normalizeEmail(payload.email),
@@ -461,7 +497,7 @@
 
   function redirectAfterAuth(fallbackUrl) {
     const target = consumeRedirect(fallbackUrl);
-    if (target && !window.location.pathname.endsWith(target)) {
+    if (target && getCurrentLocationTarget() !== target) {
       window.location.href = target;
     }
   }
@@ -524,8 +560,25 @@
     });
   }
 
-  function handleDeleteAccount() {
+  async function handleDeleteAccount() {
+    const account = getStoredAccount();
+    if (!account) {
+      ensureModal().message.textContent = 'Nenhuma conta protegida foi encontrada neste navegador.';
+      return;
+    }
+
     if (!window.confirm('Excluir a conta remove o acesso salvo neste navegador. Deseja continuar?')) {
+      return;
+    }
+
+    const password = window.prompt('Digite sua senha para confirmar a exclusão da conta.');
+    if (password === null) {
+      return;
+    }
+
+    const expectedHash = await hashPassword(account.email, password);
+    if (expectedHash !== account.passwordHash) {
+      ensureModal().message.textContent = 'Senha incorreta. A conta não foi excluída.';
       return;
     }
 
