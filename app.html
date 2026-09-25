@@ -1099,7 +1099,7 @@
               <div class="counter" id="charCount">0</div>
             </div>
             <div class="mini-card">
-              <div class="muted">Tipo selecionado</div>
+              <div class="muted">Próxima criação</div>
               <div class="counter" id="currentDocumentType" style="font-size:1.2rem;">Currículo</div>
             </div>
             <div class="mini-card">
@@ -1297,10 +1297,15 @@
 
     function readStoredDocuments() {
       try {
-        return JSON.parse(localStorage.getItem(DOCUMENT_STORAGE_KEY) || '[]').map((documentData, index) => ({
-          ...documentData,
-          createdAt: typeof documentData.createdAt === 'number' ? documentData.createdAt : index + 1
-        }));
+        return JSON.parse(localStorage.getItem(DOCUMENT_STORAGE_KEY) || '[]').map((documentData, index) => {
+          const normalizedType = documentTemplates[documentData.type] ? documentData.type : 'curriculo';
+          return {
+            ...documentData,
+            type: normalizedType,
+            typeLabel: documentData.typeLabel || getDocumentTypeLabel(normalizedType),
+            createdAt: typeof documentData.createdAt === 'number' ? documentData.createdAt : index + 1
+          };
+        });
       } catch (error) {
         return [];
       }
@@ -1330,6 +1335,10 @@
       } catch (error) {}
     }
 
+    function getDocumentTypeLabel(type) {
+      return documentTemplates[type]?.label || 'Documento';
+    }
+
     function setActiveView(viewId) {
       navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === viewId));
       views.forEach(v => v.classList.toggle('active', v.id === viewId));
@@ -1339,7 +1348,7 @@
       if (countDocs) countDocs.textContent = String(documents.length);
       const lastCreatedDocument = documents.reduce((latestDocument, documentData) => {
         if (!latestDocument) return documentData;
-        return (documentData.createdAt || 0) > (latestDocument.createdAt || 0) ? documentData : latestDocument;
+        return (documentData.createdAt || 0) >= (latestDocument.createdAt || 0) ? documentData : latestDocument;
       }, null);
       if (lastType) lastType.textContent = lastCreatedDocument ? lastCreatedDocument.typeLabel : 'Nenhuma';
     }
@@ -1371,8 +1380,55 @@
       updateCharacterCount();
     }
 
+    function previewSelectedDocumentType() {
+      if (!docEditor) return;
+      const selectedType = documentTypeSelect?.value || 'curriculo';
+      const template = documentTemplates[selectedType];
+      if (!template) return;
+      docEditor.innerHTML = template.content;
+      if (currentDocumentType) {
+        currentDocumentType.textContent = template.label;
+      }
+      updateCharacterCount();
+    }
+
+    function createDocumentRecord(content) {
+      const selectedType = documentTypeSelect?.value || 'curriculo';
+      const template = documentTemplates[selectedType];
+      if (!template) return null;
+      return {
+        id: String(Date.now()) + '-' + Math.random().toString(16).slice(2),
+        type: selectedType,
+        typeLabel: getDocumentTypeLabel(selectedType),
+        content,
+        createdAt: Date.now() + documents.length
+      };
+    }
+
+    function storeDocumentRecord(documentData, { renderEditor = true, showFeedback = true } = {}) {
+      if (!documentData) return null;
+      documents.push(documentData);
+      activeDocumentId = documentData.id;
+      saveDocuments();
+      saveActiveDocumentId();
+      if (renderEditor) {
+        renderDocument(documentData);
+      }
+      updateDashboardStats();
+      if (showFeedback) {
+        showToast(documentData.typeLabel + ' criado com sucesso.');
+      }
+      return documentData;
+    }
+
     function persistEditorChanges() {
-      const activeDocument = getActiveDocument();
+      let activeDocument = getActiveDocument();
+      if (!activeDocument && docEditor) {
+        activeDocument = storeDocumentRecord(createDocumentRecord(docEditor.innerHTML), {
+          renderEditor: false,
+          showFeedback: false
+        });
+      }
       if (!activeDocument || !docEditor) return;
       activeDocument.content = docEditor.innerHTML;
       saveDocuments();
@@ -1383,23 +1439,8 @@
       const selectedType = documentTypeSelect?.value || 'curriculo';
       const template = documentTemplates[selectedType];
       if (!template) return;
-
-      const newDocument = {
-        id: String(Date.now()) + '-' + Math.random().toString(16).slice(2),
-        type: selectedType,
-        typeLabel: template.label,
-        content: template.content,
-        createdAt: Date.now()
-      };
-
-      documents.push(newDocument);
-      activeDocumentId = newDocument.id;
-      saveDocuments();
-      saveActiveDocumentId();
-      renderDocument(newDocument);
-      updateDashboardStats();
+      storeDocumentRecord(createDocumentRecord(template.content));
       setActiveView('docs');
-      showToast(template.label + ' criado com sucesso.');
     }
 
     function loadInitialDocumentState() {
@@ -1412,7 +1453,7 @@
       if (currentDocumentType) {
         currentDocumentType.textContent = documentTemplates[documentTypeSelect?.value || 'curriculo'].label;
       }
-      updateCharacterCount();
+      previewSelectedDocumentType();
     }
 
     docEditor.addEventListener('input', persistEditorChanges);
@@ -1420,6 +1461,9 @@
       const selectedTemplate = documentTemplates[event.target.value];
       if (currentDocumentType) {
         currentDocumentType.textContent = selectedTemplate.label;
+      }
+      if (!getActiveDocument()) {
+        previewSelectedDocumentType();
       }
     });
 
@@ -1455,15 +1499,28 @@
         return;
       }
       closeAI();
+      const safePrompt = escapeHTML(prompt);
       if (docEditor) {
-        docEditor.innerHTML = `<h1>Resultado da IA</h1><p>${prompt}</p><p>Este conteúdo foi gerado a partir da sua solicitação e pode ser ajustado a qualquer momento.</p>`;
+        docEditor.innerHTML = `<h1>Resultado da IA</h1><p>${safePrompt}</p><p>Este conteúdo foi gerado a partir da sua solicitação e pode ser ajustado a qualquer momento.</p>`;
       }
       persistEditorChanges();
       setActiveView('docs');
       showToast('Conteúdo gerado com IA.');
     }
 
+    function escapeHTML(value) {
+      return value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
     function openDocumentCreator() {
+      if (!documents.length && !getActiveDocument()) {
+        previewSelectedDocumentType();
+      }
       setActiveView('docs');
     }
 
