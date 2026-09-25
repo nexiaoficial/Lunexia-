@@ -1297,14 +1297,21 @@
 
     function readStoredDocuments() {
       try {
-        return JSON.parse(localStorage.getItem(DOCUMENT_STORAGE_KEY) || '[]');
+        return JSON.parse(localStorage.getItem(DOCUMENT_STORAGE_KEY) || '[]').map((documentData, index) => ({
+          ...documentData,
+          createdAt: typeof documentData.createdAt === 'number' ? documentData.createdAt : index + 1
+        }));
       } catch (error) {
         return [];
       }
     }
 
     function readStoredActiveDocumentId() {
-      return localStorage.getItem(ACTIVE_DOCUMENT_KEY);
+      try {
+        return localStorage.getItem(ACTIVE_DOCUMENT_KEY);
+      } catch (error) {
+        return null;
+      }
     }
 
     function saveDocuments() {
@@ -1330,7 +1337,11 @@
 
     function updateDashboardStats() {
       if (countDocs) countDocs.textContent = String(documents.length);
-      if (lastType) lastType.textContent = documents.length ? documents[documents.length - 1].typeLabel : 'Nenhuma';
+      const lastCreatedDocument = documents.reduce((latestDocument, documentData) => {
+        if (!latestDocument) return documentData;
+        return (documentData.createdAt || 0) > (latestDocument.createdAt || 0) ? documentData : latestDocument;
+      }, null);
+      if (lastType) lastType.textContent = lastCreatedDocument ? lastCreatedDocument.typeLabel : 'Nenhuma';
     }
 
     // O contador passa a medir caracteres visíveis do conteúdo normalizado, deixando explícito na interface
@@ -1377,7 +1388,8 @@
         id: String(Date.now()) + '-' + Math.random().toString(16).slice(2),
         type: selectedType,
         typeLabel: template.label,
-        content: template.content
+        content: template.content,
+        createdAt: Date.now()
       };
 
       documents.push(newDocument);
@@ -1406,7 +1418,9 @@
     docEditor.addEventListener('input', persistEditorChanges);
     documentTypeSelect?.addEventListener('change', event => {
       const selectedTemplate = documentTemplates[event.target.value];
-      currentDocumentType.textContent = selectedTemplate.label;
+      if (currentDocumentType) {
+        currentDocumentType.textContent = selectedTemplate.label;
+      }
     });
 
     function showToast(message) {
