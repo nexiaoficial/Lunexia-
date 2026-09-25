@@ -243,7 +243,9 @@
     .top-actions {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 10px;
+      justify-content: flex-end;
     }
 
     .pill-btn {
@@ -266,6 +268,82 @@
       color: white;
       font-weight: 800;
       box-shadow: 0 12px 30px rgba(124,108,255,0.38);
+    }
+
+    .avatar-trigger {
+      border: none;
+      padding: 0;
+    }
+
+    .home-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.95fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .account-card {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      color: var(--brand-3);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .account-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .account-card h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      letter-spacing: -0.04em;
+    }
+
+    .account-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .account-link {
+      width: 100%;
+      justify-content: space-between;
+      display: inline-flex;
+      align-items: center;
+      text-align: left;
+    }
+
+    .account-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .client-link {
+      flex: 1;
+      justify-content: center;
+      display: inline-flex;
+      align-items: center;
+      min-width: 180px;
+    }
+
+    .stat-caption {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.45;
     }
 
     .view {
@@ -451,6 +529,11 @@
       padding: 22px 18px;
       cursor: pointer;
       transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .template-card {
+      width: 100%;
+      text-align: left;
     }
 
     .template-card:hover,
@@ -901,6 +984,9 @@
         opacity: 1;
         pointer-events: auto;
       }
+      .home-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 850px) {
@@ -910,6 +996,9 @@
       }
       .stats {
         grid-template-columns: 1fr;
+      }
+      .account-head {
+        flex-direction: column;
       }
       .workspace {
         grid-template-columns: 1fr;
@@ -943,6 +1032,14 @@
       .topbar {
         align-items: flex-start;
         flex-direction: column;
+      }
+      .top-actions {
+        width: 100%;
+      }
+      .pill-btn,
+      .account-actions .small-btn,
+      .client-link {
+        width: 100%;
       }
       .hero-row {
         flex-direction: column;
@@ -999,34 +1096,65 @@
           </div>
         </div>
         <div class="top-actions">
-          <button class="pill-btn" onclick="openLogin()">Conta,email,data de nascimento, segurança, excluir conta.</button>
-          <div class="avatar" id="avatarInitial">crie avatar, espaço do cliente.</div>
+          <button class="pill-btn" onclick="openSettingsView('displayName')">Conta</button>
+          <button class="pill-btn" onclick="openClientSpace()">Espaço do cliente</button>
+          <button class="avatar avatar-trigger" id="avatarInitial" onclick="editAvatar()" aria-label="Criar ou editar avatar">LU</button>
         </div>
       </div>
 
+      <!-- Dashboard principal: boas-vindas, conta do usuário, métricas e atalhos para iniciar criações. -->
       <section id="home" class="view active">
-        <div class="hero">
-          <h2>O que você quer criar hoje?</h2>
-          <p>Documentos, planilhas, apresentações e fluxos inteligentes em uma interface moderna para a produtividade de 2026.</p>
+        <div class="home-grid">
+          <div class="hero">
+            <h2>O que você quer criar hoje?</h2>
+            <p>Documentos, planilhas, apresentações e fluxos inteligentes em uma interface moderna para a produtividade de 2026.</p>
 
-          <div class="hero-row">
-            <input id="aiPrompt" placeholder="Ex.: apresentação para pitch de IA com 5 slides e gráfico de crescimento...">
-            <button class="primary-btn" onclick="generateFromAI()">✨ Criar com IA</button>
+            <div class="hero-row">
+              <input id="aiPrompt" placeholder="Ex.: apresentação para pitch de IA com 5 slides e gráfico de crescimento...">
+              <button class="primary-btn" onclick="generateFromAI()">✨ Criar com IA</button>
+            </div>
           </div>
+
+          <aside class="account-card card">
+            <div class="account-head">
+              <div>
+                <span class="eyebrow">Área da conta</span>
+                <h2>Conta do usuário</h2>
+                <div class="muted">Conta, e-mail, data de nascimento, segurança e exclusão reunidos em um só lugar.</div>
+              </div>
+              <button class="avatar avatar-trigger" id="accountAvatar" onclick="editAvatar()" aria-label="Criar ou editar avatar">LU</button>
+            </div>
+
+            <div class="account-list">
+              <button class="ghost-btn account-link" onclick="openSettingsView('displayName')"><span>Conta</span><span>→</span></button>
+              <button class="ghost-btn account-link" onclick="openSettingsView('accountEmail')"><span>E-mail</span><span>→</span></button>
+              <button class="ghost-btn account-link" onclick="openSettingsView('birthDate')"><span>Data de nascimento</span><span>→</span></button>
+              <button class="ghost-btn account-link" onclick="openLogin()"><span>Segurança</span><span>→</span></button>
+              <button class="danger-btn account-link" onclick="openDeleteAccountFlow()"><span>Excluir conta</span><span>→</span></button>
+            </div>
+
+            <div class="account-actions">
+              <button class="small-btn" onclick="editAvatar()">Criar/editar avatar</button>
+              <button class="primary-btn client-link" onclick="openClientSpace()">Espaço do cliente</button>
+            </div>
+          </aside>
         </div>
 
         <div class="stats">
           <div class="stat-card">
             <div class="stat-label">Projetos</div>
-            <div id="countProjects" class="stat-value">0,aumenta o número de projeto de acordo com as suas criações.</div>
+            <div id="countProjects" class="stat-value">0</div>
+            <div class="stat-caption">Aumenta o número de projetos de acordo com as suas criações.</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Documentos</div>
-            <div id="countDocs" class="stat-value">0,conta a quantidade de acordo com os documentos que você coloca no app.</div>
+            <div id="countDocs" class="stat-value">0</div>
+            <div class="stat-caption">Conta a quantidade de acordo com os documentos que você coloca no app.</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Última criação</div>
-            <div id="lastType" class="stat-value">Slide</div>
+            <div id="lastType" class="stat-value">Nenhuma criação ainda</div>
+            <div class="stat-caption">Atualizado automaticamente com a criação mais recente.</div>
           </div>
         </div>
 
@@ -1035,29 +1163,29 @@
         </div>
 
         <div class="cards-grid">
-          <div class="template-card" onclick="newDoc()">
+          <button class="template-card" type="button" onclick="newDoc()">
             <div class="template-emoji">📄</div>
             <h3>Documento</h3>
             <div class="muted">Relatos, textos, relatórios e conteúdo inteligente.</div>
-          </div>
+          </button>
 
-          <div class="template-card" onclick="newSheet()">
+          <button class="template-card" type="button" onclick="newSheet()">
             <div class="template-emoji">📊</div>
             <h3>Planilha</h3>
             <div class="muted">Dados, orçamento, cálculos e análise rápida.</div>
-          </div>
+          </button>
 
-          <div class="template-card" onclick="newSlide()">
+          <button class="template-card" type="button" onclick="newSlide()">
             <div class="template-emoji">🎨</div>
             <h3>Apresentação</h3>
             <div class="muted">Slides bonitos para reunião, aula ou pitch,ou trabalho,ou apresentação.</div>
-          </div>
+          </button>
 
-          <div class="template-card" onclick="openAI()">
+          <button class="template-card" type="button" onclick="openAI()">
             <div class="template-emoji">🤖</div>
             <h3>Assistente IA</h3>
             <div class="muted">Transforme ideias em estrutura pronta.</div>
-          </div>
+          </button>
         </div>
       </section>
 
@@ -1176,11 +1304,19 @@
       </section>
 
       <section id="settings" class="view">
-        <div class="settings-box card">
+        <div class="settings-box card" id="settingsPanel" tabindex="-1">
           <h2 style="margin-top:0;">Configurações</h2>
           <div class="field">
             <label for="displayName">Nome do perfil</label>
             <input id="displayName" value="Usuário Lunexia" />
+          </div>
+          <div class="field">
+            <label for="accountEmail">E-mail</label>
+            <input id="accountEmail" type="email" value="usuario@lunexia.app" />
+          </div>
+          <div class="field">
+            <label for="birthDate">Data de nascimento</label>
+            <input id="birthDate" type="date" value="1998-08-18" />
           </div>
           <div class="field">
             <label for="workspaceName">Nome do workspace</label>
@@ -1190,7 +1326,15 @@
             <label for="bio">Descrição</label>
             <textarea id="bio">Crio conteúdo, apresentações e materiais com velocidade e clareza.</textarea>
           </div>
-          <button class="primary-btn" onclick="saveSettings()">Salvar</button>
+          <div class="field">
+            <label for="securityHint">Segurança</label>
+            <input id="securityHint" value="Verificação em duas etapas disponível" />
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:10px;">
+            <button class="primary-btn" onclick="saveSettings()">Salvar</button>
+            <button class="ghost-btn" onclick="openLogin()">Segurança</button>
+            <button class="danger-btn" id="deleteAccountAction" onclick="confirmDeleteAccount()">Excluir conta</button>
+          </div>
         </div>
       </section>
     </main>
@@ -1228,16 +1372,165 @@
   <script>
     const navButtons = document.querySelectorAll('.nav-btn');
     const views = document.querySelectorAll('.view');
+    const supportedViews = new Set(Array.from(views, view => view.id));
     const docEditor = document.querySelector('.doc-editor');
     const wordCount = document.getElementById('wordCount');
     const slideThumbs = document.getElementById('slideThumbs');
     const slideCanvas = document.getElementById('slideCanvas');
+    const projectGrid = document.getElementById('projectGrid');
+    const dashboardStorageKey = 'lunexia-dashboard-state';
+    const initialDashboardState = {
+      projectCount: 0,
+      documentCount: 0,
+      lastCreation: '',
+      avatarLabel: 'LU',
+      avatarCustom: false,
+      creations: [],
+      profile: {
+        displayName: 'Usuário Lunexia',
+        accountEmail: 'usuario@lunexia.app',
+        birthDate: '1998-08-18',
+        workspaceName: 'Lunexia Studio',
+        bio: 'Crio conteúdo, apresentações e materiais com velocidade e clareza.',
+        securityHint: 'Verificação em duas etapas disponível'
+      }
+    };
+
+    function createDefaultDashboardState() {
+      return {
+        ...initialDashboardState,
+        creations: [],
+        profile: { ...initialDashboardState.profile }
+      };
+    }
+
+    // Estado principal do dashboard: mantém métricas, avatar e histórico recente no navegador,
+    // permitindo que a tela continue dinâmica mesmo publicada como site estático no GitHub Pages.
+    function loadDashboardState() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(dashboardStorageKey) || '{}');
+        return {
+          ...createDefaultDashboardState(),
+          ...stored,
+          profile: {
+            ...initialDashboardState.profile,
+            ...(stored.profile || {})
+          },
+          creations: Array.isArray(stored.creations) ? stored.creations : []
+        };
+      } catch (error) {
+        return createDefaultDashboardState();
+      }
+    }
+
+    const dashboardState = loadDashboardState();
+
+    function saveDashboardState() {
+      localStorage.setItem(dashboardStorageKey, JSON.stringify(dashboardState));
+    }
+
+    function setActiveView(target) {
+      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === target));
+      views.forEach(v => v.classList.toggle('active', v.id === target));
+    }
+
+    function renderDashboardStats() {
+      document.getElementById('countProjects').textContent = dashboardState.projectCount;
+      document.getElementById('countDocs').textContent = dashboardState.documentCount;
+      document.getElementById('lastType').textContent = dashboardState.lastCreation || 'Nenhuma criação ainda';
+      document.getElementById('avatarInitial').textContent = dashboardState.avatarLabel;
+      document.getElementById('accountAvatar').textContent = dashboardState.avatarLabel;
+    }
+
+    function renderSettingsForm() {
+      const profile = dashboardState.profile;
+      document.getElementById('displayName').value = profile.displayName;
+      document.getElementById('accountEmail').value = profile.accountEmail;
+      document.getElementById('birthDate').value = profile.birthDate;
+      document.getElementById('workspaceName').value = profile.workspaceName;
+      document.getElementById('bio').value = profile.bio;
+      document.getElementById('securityHint').value = profile.securityHint;
+    }
+
+    function getGraphemes(value) {
+      const text = String(value || '');
+      if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+        return Array.from(new Intl.Segmenter('pt-BR', { granularity: 'grapheme' }).segment(text), segment => segment.segment);
+      }
+      return Array.from(text);
+    }
+
+    function getAvatarLabelFromText(value) {
+      return getGraphemes(value).slice(0, 2).join('').toUpperCase();
+    }
+
+    function renderProjectGrid() {
+      if (!projectGrid) return;
+      projectGrid.innerHTML = '';
+
+      if (!dashboardState.creations.length) {
+        const emptyBox = document.createElement('div');
+        emptyBox.className = 'empty-box';
+        emptyBox.style.padding = '24px';
+        emptyBox.textContent = 'Seus projetos criados aparecerão aqui assim que você começar.';
+        projectGrid.appendChild(emptyBox);
+        return;
+      }
+
+      dashboardState.creations.slice(0, 6).forEach(item => {
+        const targetView = supportedViews.has(item.view) ? item.view : 'projects';
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'project-card';
+        const emoji = document.createElement('span');
+        emoji.className = 'emoji';
+        emoji.textContent = item.emoji || '📁';
+        const title = document.createElement('h3');
+        title.textContent = item.title || 'Projeto';
+        const summary = document.createElement('div');
+        summary.className = 'muted';
+        summary.textContent = item.summary || 'Criação recente do usuário.';
+        card.append(emoji, title, summary);
+        card.addEventListener('click', () => setActiveView(targetView));
+        projectGrid.appendChild(card);
+      });
+    }
+
+    function buildMultilineParagraph(text) {
+      const paragraph = document.createElement('p');
+      text.split('\n').forEach((line, index) => {
+        if (index > 0) {
+          paragraph.appendChild(document.createElement('br'));
+        }
+        paragraph.append(line);
+      });
+      return paragraph;
+    }
+
+    // Os fluxos de criação reutilizam este helper para manter a dashboard sincronizada com
+    // documentos, projetos e a última criação realizada pelo usuário.
+    function registerCreation({ type, title, summary, emoji, view, countsAsDocument = false }) {
+      dashboardState.projectCount += 1;
+      if (countsAsDocument) {
+        dashboardState.documentCount += 1;
+      }
+      dashboardState.lastCreation = title || type;
+      dashboardState.creations.unshift({
+        type,
+        title,
+        summary,
+        emoji,
+        view
+      });
+      dashboardState.creations = dashboardState.creations.slice(0, 12);
+      saveDashboardState();
+      renderDashboardStats();
+      renderProjectGrid();
+    }
 
     navButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        navButtons.forEach(b => b.classList.toggle('active', b === btn));
-        const target = btn.dataset.view;
-        views.forEach(v => v.classList.toggle('active', v.id === target));
+        setActiveView(btn.dataset.view);
       });
     });
 
@@ -1268,6 +1561,54 @@
       showToast('Conta atualizada');
     }
 
+    function openSettingsView(fieldId) {
+      setActiveView('settings');
+      requestAnimationFrame(() => {
+        const panel = document.getElementById('settingsPanel');
+        panel?.focus({ preventScroll: true });
+        if (!fieldId) return;
+        const field = document.getElementById(fieldId);
+        field?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        setTimeout(() => field?.focus({ preventScroll: true }), 60);
+      });
+    }
+
+    function openClientSpace() {
+      setActiveView('projects');
+      showToast('Espaço do cliente aberto.');
+    }
+
+    function editAvatar() {
+      const nextLabel = window.prompt('Defina até 2 letras para o avatar.', dashboardState.avatarLabel);
+      if (!nextLabel) return;
+      const trimmedLabel = nextLabel.trim();
+      if (!trimmedLabel) return;
+      if (getGraphemes(trimmedLabel).length > 2) {
+        showToast('Use no máximo 2 caracteres no avatar.');
+        return;
+      }
+      dashboardState.avatarLabel = getAvatarLabelFromText(trimmedLabel);
+      dashboardState.avatarCustom = true;
+      saveDashboardState();
+      renderDashboardStats();
+      showToast('Avatar atualizado.');
+    }
+
+    function openDeleteAccountFlow() {
+      showToast('Fluxo de exclusão disponível na área da conta.');
+      openSettingsView('deleteAccountAction');
+    }
+
+    function confirmDeleteAccount() {
+      const confirmed = window.confirm('Tem certeza de que deseja iniciar a exclusão da conta?');
+      if (!confirmed) {
+        showToast('Exclusão cancelada.');
+        return;
+      }
+      localStorage.removeItem(dashboardStorageKey);
+      window.location.reload();
+    }
+
     function openAI() {
       document.getElementById('aiModal').classList.add('show');
     }
@@ -1284,8 +1625,24 @@
       }
       closeAI();
       if (docEditor) {
-        docEditor.innerHTML = `<h1>Resultado da IA</h1><p>${prompt}</p><p>Este conteúdo foi gerado a partir da sua solicitação e pode ser ajustado a qualquer momento.</p>`;
+        docEditor.innerHTML = '';
+        const title = document.createElement('h1');
+        title.textContent = 'Resultado da IA';
+        const content = buildMultilineParagraph(prompt);
+        const helper = document.createElement('p');
+        helper.textContent = 'Este conteúdo foi gerado a partir da sua solicitação e pode ser ajustado a qualquer momento.';
+        docEditor.append(title, content, helper);
       }
+      registerCreation({
+        type: 'ai',
+        title: 'Assistente IA',
+        summary: prompt.trim().slice(0, 72),
+        emoji: '🤖',
+        view: 'docs',
+        countsAsDocument: true
+      });
+      setActiveView('docs');
+      updateWordCount();
       showToast('Conteúdo gerado com IA.');
     }
 
@@ -1294,21 +1651,40 @@
       if (docEditor) {
         docEditor.innerHTML = '<h1>Seu novo documento</h1><p>Escreva aqui...</p>';
       }
-      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'docs'));
-      views.forEach(v => v.classList.toggle('active', v.id === 'docs'));
+      registerCreation({
+        type: 'document',
+        title: 'Documento',
+        summary: 'Relatos, textos, relatórios e conteúdo inteligente.',
+        emoji: '📄',
+        view: 'docs',
+        countsAsDocument: true
+      });
+      setActiveView('docs');
       updateWordCount();
     }
 
     function newSheet() {
       showToast('Nova planilha criada.');
-      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'sheets'));
-      views.forEach(v => v.classList.toggle('active', v.id === 'sheets'));
+      registerCreation({
+        type: 'sheet',
+        title: 'Planilha',
+        summary: 'Dados, orçamento, cálculos e análise rápida.',
+        emoji: '📊',
+        view: 'sheets'
+      });
+      setActiveView('sheets');
     }
 
     function newSlide() {
       showToast('Novo slide criado.');
-      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'slides'));
-      views.forEach(v => v.classList.toggle('active', v.id === 'slides'));
+      registerCreation({
+        type: 'slide',
+        title: 'Slide',
+        summary: 'Slides bonitos para reunião, aula ou pitch.',
+        emoji: '🎨',
+        view: 'slides'
+      });
+      setActiveView('slides');
       renderSlideThumbs();
     }
 
@@ -1347,11 +1723,39 @@
 
     function newProject() {
       showToast('Projeto novo criado.');
-      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'projects'));
-      views.forEach(v => v.classList.toggle('active', v.id === 'projects'));
+      registerCreation({
+        type: 'project',
+        title: 'Projeto',
+        summary: 'Novo projeto criado para acompanhar sua próxima entrega.',
+        emoji: '📁',
+        view: 'projects'
+      });
+      setActiveView('projects');
     }
 
     function saveSettings() {
+      const profile = {
+        displayName: document.getElementById('displayName')?.value.trim() ?? '',
+        accountEmail: document.getElementById('accountEmail')?.value.trim() ?? '',
+        birthDate: document.getElementById('birthDate')?.value ?? '',
+        workspaceName: document.getElementById('workspaceName')?.value.trim() ?? '',
+        bio: document.getElementById('bio')?.value.trim() ?? '',
+        securityHint: document.getElementById('securityHint')?.value.trim() ?? ''
+      };
+      dashboardState.profile = profile;
+      const displayName = profile.displayName;
+      if (displayName && !dashboardState.avatarCustom) {
+        dashboardState.avatarLabel = displayName
+          .split(/\s+/)
+          .filter(Boolean)
+          .slice(0, 2)
+          .map(part => getGraphemes(part)[0] || '')
+          .join('')
+          .toUpperCase();
+      }
+      saveDashboardState();
+      renderDashboardStats();
+      renderSettingsForm();
       showToast('Configurações salvas.');
     }
 
@@ -1381,6 +1785,9 @@
       showToast('Função de soma aplicada.');
     }
 
+    renderDashboardStats();
+    renderSettingsForm();
+    renderProjectGrid();
     renderSlideThumbs();
     document.getElementById('menuToggle')?.addEventListener('click', () => {
       document.getElementById('sidebar').classList.toggle('open');
