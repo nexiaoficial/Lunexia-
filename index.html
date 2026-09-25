@@ -97,9 +97,18 @@ footer{padding:35px 7%;border-top:1px solid var(--line);color:#8988a4;text-align
     <h2>Pronto para começar?</h2>
     <p>Entre no universo Nexia e tenha sua produtividade em um só lugar.</p>
   </div>
-  <div style="text-align:center"><a class="btn" href="app.html">Abrir o aplicativo</a></div>
+  <div style="text-align:center"><a class="btn" href="app.html" id="secureAppEntry">Acessar com conta segura</a></div>
 </section>
 
 <footer>© 2026 Nexia. Todos os direitos reservados.</footer>
+<script src="auth.js"></script>
+<script>
+  window.LunexiaAuth.init();
+
+  document.getElementById('secureAppEntry').addEventListener('click', function (event) {
+    event.preventDefault();
+    window.LunexiaAuth.launchProtectedExperience('app.html');
+  });
+</script>
 </body>
 </html>

@@ -805,6 +805,10 @@
       color: var(--ink);
     }
 
+    .auth-guard .app {
+      visibility: hidden;
+    }
+
     .mobile-toggle {
       display: none;
     }
@@ -905,7 +909,7 @@
     }
   </style>
 </head>
-<body>
+<body class="auth-guard">
   <div class="mobile-backdrop" id="mobileBackdrop"></div>
 
   <div class="app">
@@ -935,8 +939,8 @@
           </div>
         </div>
         <div class="top-actions">
-          <button class="pill-btn" onclick="openLogin()">Conta,email,data de nascimento, segurança, excluir conta.</button>
-          <div class="avatar" id="avatarInitial">crie avatar, espaço do cliente.</div>
+          <button class="pill-btn" id="accountSecurityButton" type="button">Conta e segurança</button>
+          <div class="avatar" id="avatarInitial" aria-label="Avatar do usuário">?</div>
         </div>
       </div>
 
@@ -1204,23 +1208,6 @@
     </main>
   </div>
 
-  <div id="loginModal" class="login">
-    <div class="login-box">
-      <h2>Entrar</h2>
-      <div class="field">
-        <label>E-mail</label>
-        <input type="email" value="lunexia@workspace.com">
-      </div>
-      <div class="field">
-        <label>Senha</label>
-        <input type="password" value="••••••••">
-      </div>
-      <button class="primary-btn" onclick="close
-Create an accountLogin()">Criar</button>
-      <button class="primary-btn" onclick="closeLogin()">Entrar</button>
-    </div>
-  </div>
-
   <div id="aiModal"
     class="modal">
     <div class="modal-box">
@@ -1235,6 +1222,7 @@ Create an accountLogin()">Criar</button>
 
   <div id="toast" class="toast"></div>
 
+  <script src="auth.js"></script>
   <script>
     const sidebar = document.getElementById('sidebar');
     const backdrop = document.getElementById('mobileBackdrop');
@@ -1269,13 +1257,17 @@ Create an accountLogin()">Criar</button>
       button.addEventListener('click', () => showView(button.dataset.view));
     });
 
-    function openLogin() {
-      document.getElementById('loginModal').classList.add('show');
-    }
+    function updateAuthHeader(state) {
+      const userName = state.user?.name?.trim() || 'Visitante';
+      const initial = userName.charAt(0).toUpperCase() || '?';
+      const title = document.getElementById('appTitle');
+      const avatar = document.getElementById('avatarInitial');
+      const accountButton = document.getElementById('accountSecurityButton');
 
-    function closeLogin() {
-      document.getElementById('loginModal').classList.remove('show');
-      showToast('Login concluído');
+      title.textContent = `Olá, ${userName}! 👋`;
+      avatar.textContent = initial;
+      accountButton.textContent = state.authenticated ? 'Conta protegida' : 'Conta e segurança';
+      document.body.classList.toggle('auth-guard', !state.authenticated);
     }
 
     function openAI() {
@@ -1398,6 +1390,19 @@ Create an accountLogin()">Criar</button>
 
     document.getElementById('doc')?.addEventListener('input', updateWordCount);
     updateWordCount();
+
+    window.LunexiaAuth.init();
+    window.LunexiaAuth.addAuthListener(updateAuthHeader);
+
+    document.getElementById('accountSecurityButton').addEventListener('click', function () {
+      window.LunexiaAuth.openAuth(window.LunexiaAuth.isAuthenticated() ? 'manage' : 'login', {
+        redirectTo: 'app.html'
+      });
+    });
+
+    if (!window.LunexiaAuth.requireAuth({ redirectTo: 'app.html' })) {
+      showToast('Proteja sua conta para acessar o aplicativo');
+    }
   </script>
 </body>
 </html>
