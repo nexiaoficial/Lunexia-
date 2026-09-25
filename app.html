@@ -1383,7 +1383,15 @@
       documentCount: 0,
       lastCreation: '',
       avatarLabel: 'LU',
-      creations: []
+      creations: [],
+      profile: {
+        displayName: 'Usuário Lunexia',
+        accountEmail: 'usuario@lunexia.app',
+        birthDate: '1998-08-18',
+        workspaceName: 'Lunexia Studio',
+        bio: 'Crio conteúdo, apresentações e materiais com velocidade e clareza.',
+        securityHint: 'Verificação em duas etapas disponível'
+      }
     };
 
     // Estado principal do dashboard: mantém métricas, avatar e histórico recente no navegador,
@@ -1394,6 +1402,10 @@
         return {
           ...initialDashboardState,
           ...stored,
+          profile: {
+            ...initialDashboardState.profile,
+            ...(stored.profile || {})
+          },
           creations: Array.isArray(stored.creations) ? stored.creations : []
         };
       } catch (error) {
@@ -1429,6 +1441,16 @@
       document.getElementById('accountAvatar').textContent = dashboardState.avatarLabel;
     }
 
+    function renderSettingsForm() {
+      const profile = dashboardState.profile;
+      document.getElementById('displayName').value = profile.displayName;
+      document.getElementById('accountEmail').value = profile.accountEmail;
+      document.getElementById('birthDate').value = profile.birthDate;
+      document.getElementById('workspaceName').value = profile.workspaceName;
+      document.getElementById('bio').value = profile.bio;
+      document.getElementById('securityHint').value = profile.securityHint;
+    }
+
     function renderProjectGrid() {
       if (!projectGrid) return;
       projectGrid.innerHTML = '';
@@ -1450,6 +1472,17 @@
         card.addEventListener('click', () => setActiveView(item.view));
         projectGrid.appendChild(card);
       });
+    }
+
+    function buildMultilineParagraph(text) {
+      const paragraph = document.createElement('p');
+      text.split('\n').forEach((line, index) => {
+        if (index > 0) {
+          paragraph.appendChild(document.createElement('br'));
+        }
+        paragraph.append(line);
+      });
+      return paragraph;
     }
 
     // Os fluxos de criação reutilizam este helper para manter a dashboard sincronizada com
@@ -1550,7 +1583,13 @@
       }
       closeAI();
       if (docEditor) {
-        docEditor.innerHTML = `<h1>Resultado da IA</h1><p>${escapeHTML(prompt)}</p><p>Este conteúdo foi gerado a partir da sua solicitação e pode ser ajustado a qualquer momento.</p>`;
+        docEditor.innerHTML = '';
+        const title = document.createElement('h1');
+        title.textContent = 'Resultado da IA';
+        const content = buildMultilineParagraph(prompt);
+        const helper = document.createElement('p');
+        helper.textContent = 'Este conteúdo foi gerado a partir da sua solicitação e pode ser ajustado a qualquer momento.';
+        docEditor.append(title, content, helper);
       }
       registerCreation({
         type: 'ai',
@@ -1653,7 +1692,16 @@
     }
 
     function saveSettings() {
-      const displayName = document.getElementById('displayName')?.value.trim();
+      const profile = {
+        displayName: document.getElementById('displayName')?.value.trim() || initialDashboardState.profile.displayName,
+        accountEmail: document.getElementById('accountEmail')?.value.trim() || initialDashboardState.profile.accountEmail,
+        birthDate: document.getElementById('birthDate')?.value || initialDashboardState.profile.birthDate,
+        workspaceName: document.getElementById('workspaceName')?.value.trim() || initialDashboardState.profile.workspaceName,
+        bio: document.getElementById('bio')?.value.trim() || initialDashboardState.profile.bio,
+        securityHint: document.getElementById('securityHint')?.value.trim() || initialDashboardState.profile.securityHint
+      };
+      dashboardState.profile = profile;
+      const displayName = profile.displayName;
       if (displayName) {
         dashboardState.avatarLabel = displayName
           .split(/\s+/)
@@ -1661,9 +1709,10 @@
           .map(part => part[0])
           .join('')
           .toUpperCase();
-        saveDashboardState();
-        renderDashboardStats();
       }
+      saveDashboardState();
+      renderDashboardStats();
+      renderSettingsForm();
       showToast('Configurações salvas.');
     }
 
@@ -1694,6 +1743,7 @@
     }
 
     renderDashboardStats();
+    renderSettingsForm();
     renderProjectGrid();
     renderSlideThumbs();
     document.getElementById('menuToggle')?.addEventListener('click', () => {
