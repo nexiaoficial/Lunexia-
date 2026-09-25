@@ -22,6 +22,8 @@
     .brand-tag{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#cabdff;line-height:1.2}
     .orbit-ring{fill:none;stroke:rgba(199,166,255,.65);stroke-width:2.2;stroke-dasharray:6 7}
     .moon-core{filter:drop-shadow(0 0 14px rgba(199,166,255,.55))}
+    .moon-shape{fill:#a78bff;stroke:#f0e4ff;stroke-width:1.4;stroke-linejoin:round}
+    .moon-highlight{fill:#dbc3ff;opacity:.78}
     .moon-halo{animation:brandHalo 4.8s ease-in-out infinite}
     .orbit-nodes{animation:brandOrbit 18s linear infinite;transform-origin:70px 70px;transform-box:fill-box}
     .orbit-node{filter:drop-shadow(0 0 8px rgba(199,166,255,.28))}
@@ -96,26 +98,11 @@
       <div class="brand" role="img" aria-label="Lunexia, logotipo com lua crescente roxa e elementos criativos orbitando ao redor">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 140 140" focusable="false">
-            <defs>
-              <linearGradient id="lunexiaMoonGradient" x1="38" y1="30" x2="89" y2="95" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#f2dcff"></stop>
-                <stop offset="0.48" stop-color="#c7a6ff"></stop>
-                <stop offset="1" stop-color="#7c6cff"></stop>
-              </linearGradient>
-              <radialGradient id="lunexiaHaloGradient" cx="50%" cy="50%" r="50%">
-                <stop offset="0" stop-color="#c7a6ff" stop-opacity="0.55"></stop>
-                <stop offset="1" stop-color="#c7a6ff" stop-opacity="0"></stop>
-              </radialGradient>
-              <mask id="lunexiaCrescentMask">
-                <rect width="140" height="140" fill="black"></rect>
-                <circle cx="61" cy="69" r="31" fill="white"></circle>
-                <circle cx="77" cy="60" r="27" fill="black"></circle>
-              </mask>
-            </defs>
-            <circle class="moon-halo" cx="61" cy="69" r="41" fill="url(#lunexiaHaloGradient)"></circle>
+            <circle class="moon-halo" cx="61" cy="69" r="41" fill="rgba(199,166,255,.35)"></circle>
             <ellipse class="orbit-ring" cx="70" cy="70" rx="50" ry="38" transform="rotate(-18 70 70)"></ellipse>
             <g class="moon-core">
-              <circle cx="61" cy="69" r="31" fill="url(#lunexiaMoonGradient)" mask="url(#lunexiaCrescentMask)"></circle>
+              <path class="moon-shape" fill-rule="evenodd" d="M61 38a31 31 0 1 0 0 62a31 31 0 1 0 0-62M77 33a27 27 0 1 1 0 54a27 27 0 1 1 0-54"></path>
+              <path class="moon-highlight" fill-rule="evenodd" d="M57 43a24 24 0 1 0 0 48a24 24 0 1 0 0-48M69 40a20 20 0 1 1 0 40a20 20 0 1 1 0-40"></path>
             </g>
             <g class="orbit-nodes">
               <g class="orbit-node orbit-star" transform="translate(103 33)">
