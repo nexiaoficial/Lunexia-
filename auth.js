@@ -53,16 +53,19 @@
     return Boolean(getCurrentUser());
   }
 
-  async function hashPassword(email, password) {
-    const normalized = `${normalizeEmail(email)}::${password}`;
-
-    if (window.crypto?.subtle && window.TextEncoder) {
-      const bytes = new TextEncoder().encode(normalized);
-      const digest = await window.crypto.subtle.digest('SHA-256', bytes);
-      return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  function ensureSecureHashing() {
+    if (!window.crypto?.subtle || !window.TextEncoder) {
+      throw new Error('Este navegador não oferece o nível mínimo de segurança para proteger a sua conta.');
     }
+  }
 
-    return btoa(unescape(encodeURIComponent(normalized)));
+  async function hashPassword(email, password) {
+    ensureSecureHashing();
+
+    const normalized = `${normalizeEmail(email)}::${password}`;
+    const bytes = new TextEncoder().encode(normalized);
+    const digest = await window.crypto.subtle.digest('SHA-256', bytes);
+    return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, '0')).join('');
   }
 
   function setRedirect(url) {
@@ -283,7 +286,7 @@
           </div>
           <button type="button" class="auth-close" id="authPortalClose" aria-label="Fechar">✕</button>
         </div>
-        <p class="auth-message" id="authPortalMessage"></p>
+        <p class="auth-message" id="authPortalMessage" role="alert" aria-live="assertive"></p>
         <form id="authPortalForm">
           <div class="auth-grid">
             <label class="auth-field" id="authNameField">
@@ -482,12 +485,14 @@
 
   function logout() {
     localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(REDIRECT_KEY);
     emitAuthState();
   }
 
   function deleteAccount() {
     localStorage.removeItem(ACCOUNT_KEY);
     localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(REDIRECT_KEY);
     emitAuthState();
   }
 
