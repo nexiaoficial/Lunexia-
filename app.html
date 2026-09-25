@@ -1130,7 +1130,7 @@
               <button class="ghost-btn account-link" onclick="openSettingsView('accountEmail')"><span>E-mail</span><span>→</span></button>
               <button class="ghost-btn account-link" onclick="openSettingsView('birthDate')"><span>Data de nascimento</span><span>→</span></button>
               <button class="ghost-btn account-link" onclick="openLogin()"><span>Segurança</span><span>→</span></button>
-              <button class="danger-btn account-link" onclick="confirmDeleteAccount()"><span>Excluir conta</span><span>→</span></button>
+              <button class="danger-btn account-link" onclick="openDeleteAccountFlow()"><span>Excluir conta</span><span>→</span></button>
             </div>
 
             <div class="account-actions">
@@ -1419,15 +1419,6 @@
       localStorage.setItem(dashboardStorageKey, JSON.stringify(dashboardState));
     }
 
-    function escapeHTML(value) {
-      return value
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-    }
-
     function setActiveView(target) {
       navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === target));
       views.forEach(v => v.classList.toggle('active', v.id === target));
@@ -1464,11 +1455,15 @@
         const card = document.createElement('button');
         card.type = 'button';
         card.className = 'project-card';
-        card.innerHTML = `
-          <span class="emoji">${item.emoji}</span>
-          <h3>${escapeHTML(item.title)}</h3>
-          <div class="muted">${escapeHTML(item.summary)}</div>
-        `;
+        const emoji = document.createElement('span');
+        emoji.className = 'emoji';
+        emoji.textContent = item.emoji || '📁';
+        const title = document.createElement('h3');
+        title.textContent = item.title || 'Projeto';
+        const summary = document.createElement('div');
+        summary.className = 'muted';
+        summary.textContent = item.summary || 'Criação recente do usuário.';
+        card.append(emoji, title, summary);
         card.addEventListener('click', () => setActiveView(item.view));
         projectGrid.appendChild(card);
       });
@@ -1542,7 +1537,11 @@
     function openSettingsView(fieldId) {
       setActiveView('settings');
       if (fieldId) {
-        requestAnimationFrame(() => document.getElementById(fieldId)?.focus());
+        requestAnimationFrame(() => {
+          const field = document.getElementById(fieldId);
+          field?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          field?.focus({ preventScroll: true });
+        });
       }
     }
 
@@ -1562,9 +1561,14 @@
       showToast('Avatar atualizado.');
     }
 
-    function confirmDeleteAccount() {
+    function openDeleteAccountFlow() {
       showToast('Fluxo de exclusão disponível na área da conta.');
       openSettingsView('deleteAccountAction');
+    }
+
+    function confirmDeleteAccount() {
+      const confirmed = window.confirm('Tem certeza de que deseja iniciar a exclusão da conta?');
+      showToast(confirmed ? 'Solicitação de exclusão iniciada.' : 'Exclusão cancelada.');
     }
 
     function openAI() {
