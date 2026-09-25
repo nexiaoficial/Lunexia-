@@ -1407,12 +1407,6 @@
     documentTypeSelect?.addEventListener('change', event => {
       const selectedTemplate = documentTemplates[event.target.value];
       currentDocumentType.textContent = selectedTemplate.label;
-      const activeDocument = getActiveDocument();
-      if (!activeDocument) return;
-      activeDocument.type = event.target.value;
-      activeDocument.typeLabel = selectedTemplate.label;
-      saveDocuments();
-      updateDashboardStats();
     });
 
     function showToast(message) {
