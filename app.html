@@ -1333,7 +1333,7 @@
           <div style="display:flex; flex-wrap:wrap; gap:10px;">
             <button class="primary-btn" onclick="saveSettings()">Salvar</button>
             <button class="ghost-btn" onclick="openLogin()">Segurança</button>
-            <button class="danger-btn" onclick="confirmDeleteAccount()">Excluir conta</button>
+            <button class="danger-btn" id="deleteAccountAction" onclick="confirmDeleteAccount()">Excluir conta</button>
           </div>
         </div>
       </section>
@@ -1521,7 +1521,9 @@
     function editAvatar() {
       const nextLabel = window.prompt('Defina até 2 letras para o avatar.', dashboardState.avatarLabel);
       if (!nextLabel) return;
-      dashboardState.avatarLabel = nextLabel.trim().slice(0, 2).toUpperCase() || dashboardState.avatarLabel;
+      const trimmedLabel = nextLabel.trim();
+      if (!trimmedLabel) return;
+      dashboardState.avatarLabel = trimmedLabel.slice(0, 2).toUpperCase();
       saveDashboardState();
       renderDashboardStats();
       showToast('Avatar atualizado.');
@@ -1529,7 +1531,7 @@
 
     function confirmDeleteAccount() {
       showToast('Fluxo de exclusão disponível na área da conta.');
-      openSettingsView();
+      openSettingsView('deleteAccountAction');
     }
 
     function openAI() {
@@ -1651,6 +1653,17 @@
     }
 
     function saveSettings() {
+      const displayName = document.getElementById('displayName')?.value.trim();
+      if (displayName) {
+        dashboardState.avatarLabel = displayName
+          .split(/\s+/)
+          .slice(0, 2)
+          .map(part => part[0])
+          .join('')
+          .toUpperCase();
+        saveDashboardState();
+        renderDashboardStats();
+      }
       showToast('Configurações salvas.');
     }
 
