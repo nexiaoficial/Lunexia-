@@ -1314,8 +1314,11 @@
     }
 
     function saveActiveDocumentId() {
-      if (!activeDocumentId) return;
       try {
+        if (!activeDocumentId) {
+          localStorage.removeItem(ACTIVE_DOCUMENT_KEY);
+          return;
+        }
         localStorage.setItem(ACTIVE_DOCUMENT_KEY, activeDocumentId);
       } catch (error) {}
     }
@@ -1402,7 +1405,14 @@
 
     docEditor.addEventListener('input', persistEditorChanges);
     documentTypeSelect?.addEventListener('change', event => {
-      currentDocumentType.textContent = documentTemplates[event.target.value].label;
+      const selectedTemplate = documentTemplates[event.target.value];
+      currentDocumentType.textContent = selectedTemplate.label;
+      const activeDocument = getActiveDocument();
+      if (!activeDocument) return;
+      activeDocument.type = event.target.value;
+      activeDocument.typeLabel = selectedTemplate.label;
+      saveDocuments();
+      updateDashboardStats();
     });
 
     function showToast(message) {
