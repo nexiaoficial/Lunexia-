@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nexia Design Studio</title>
+  <style>
+    :root{--bg:#0b1020;--panel:#111827;--panel2:#172036;--line:rgba(148,163,184,.2);--ink:#eef4ff;--muted:#9aaac3;--brand:#7c6cff;--brand2:#a393ff}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#0b1020,#111827);color:var(--ink);font-family:Inter,"Segoe UI",system-ui,sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer;border:0;color:inherit}.studio{min-height:100vh;display:grid;grid-template-columns:270px minmax(0,1fr) 260px}.panel{background:rgba(17,24,39,.94);border-color:var(--line);border-style:solid}.left,.right{padding:20px;border-width:0 1px;overflow:auto}.left{border-right-width:1px}.right{border-left-width:1px}.brand{font-size:24px;font-weight:900;letter-spacing:-.05em;margin-bottom:24px}.brand b{color:var(--brand2)}h2,h3,p{margin-top:0}.muted{color:var(--muted);font-size:.88rem}.section{margin-bottom:24px}.section h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:12px}.templates{display:grid;grid-template-columns:1fr 1fr;gap:9px}.template{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:left;transition:.2s}.template:hover{border-color:var(--brand);transform:translateY(-2px)}.template strong{display:block;margin-top:7px;font-size:.86rem}.tool-list{display:grid;gap:8px}.tool,.export{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px;text-align:left}.tool:hover,.export:hover{background:rgba(124,108,255,.18);border-color:rgba(124,108,255,.5)}.work{min-width:0;display:flex;flex-direction:column}.top{height:72px;padding:14px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}.top h1{font-size:1.2rem;margin:0}.actions{display:flex;gap:8px;flex-wrap:wrap}.primary,.secondary{padding:10px 14px;border-radius:10px;font-weight:700}.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:white}.secondary{background:var(--panel2);border:1px solid var(--line)}.stage{flex:1;display:grid;place-items:center;padding:28px;overflow:auto;background:radial-gradient(circle at 50% 10%,rgba(124,108,255,.12),transparent 45%)}.canvas-wrap{width:min(100%,900px);display:grid;place-items:center}.canvas{position:relative;width:min(100%,760px);aspect-ratio:1.6;background:#fff;box-shadow:0 25px 65px rgba(0,0,0,.4);overflow:hidden;color:#161b2b}.canvas[data-ratio="square"]{aspect-ratio:1}.canvas[data-ratio="story"]{aspect-ratio:9/16;max-width:420px}.element{position:absolute;min-width:30px;min-height:24px;padding:5px;cursor:move;user-select:none;outline:1px dashed transparent}.element.selected{outline:2px solid var(--brand)}.text-element{font-weight:800;font-size:38px;line-height:1.1;max-width:80%}.shape{width:150px;height:100px;border-radius:18px;background:#7c6cff}.image-element{max-width:55%;max-height:55%;object-fit:contain}.field{display:grid;gap:7px;margin-bottom:14px}.field label{font-size:.82rem;color:var(--muted)}.field input,.field select{width:100%;padding:10px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}.swatches{display:flex;gap:8px;flex-wrap:wrap}.swatch{width:30px;height:30px;border-radius:50%;border:2px solid transparent}.swatch.active{border-color:#fff}.hint{padding:12px;background:rgba(124,108,255,.1);border:1px solid rgba(124,108,255,.25);border-radius:12px;font-size:.8rem;color:var(--muted)}#imageInput{display:none}@media(max-width:1050px){.studio{grid-template-columns:220px minmax(0,1fr)}.right{display:none}}@media(max-width:700px){.studio{display:block}.left{border-right:0;border-bottom:1px solid var(--line);padding:14px}.brand{margin-bottom:14px}.section{margin-bottom:14px}.templates{grid-template-columns:repeat(4,minmax(100px,1fr));overflow:auto}.template{min-width:100px}.tool-list{display:flex;overflow:auto}.tool{min-width:125px}.top{height:auto;align-items:flex-start;flex-direction:column;padding:14px}.stage{padding:18px 10px;min-height:65vh}.canvas{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="studio">
+    <aside class="left panel">
+      <div class="brand">Nexia<b>.</b></div>
+      <div class="section"><h3>Modelos</h3><div class="templates">
+        <button class="template" data-template="post">📱<strong>Post</strong></button>
+        <button class="template" data-template="story">📲<strong>Story</strong></button>
+        <button class="template" data-template="presentation">🖥️<strong>Apresentação</strong></button>
+        <button class="template" data-template="flyer">📰<strong>Flyer</strong></button>
+      </div></div>
+      <div class="section"><h3>Elementos</h3><div class="tool-list">
+        <button class="tool" id="addText">T&nbsp; Adicionar texto</button>
+        <button class="tool" id="addShape">⬡ Adicionar forma</button>
+        <button class="tool" id="uploadButton">🖼️ Enviar imagem</button>
+        <button class="tool" id="removeElement">🗑️ Remover selecionado</button>
+      </div></div>
+      <div class="hint">Dica: selecione um elemento e arraste para reposicionar. No celular, toque para selecionar e use os controles à direita.</div>
+      <input id="imageInput" type="file" accept="image/*">
+    </aside>
+
+    <main class="work">
+      <header class="top"><div><h1>Design Studio</h1><span class="muted">Crie imagens como no Canva</span></div><div class="actions"><button class="secondary" id="clearCanvas">Limpar</button><button class="primary" id="download">⬇ Exportar PNG</button></div></header>
+      <section class="stage"><div class="canvas-wrap"><div class="canvas" id="canvas"></div></div></section>
+    </main>
+
+    <aside class="right panel"><h2>Propriedades</h2><p class="muted">Personalize o elemento selecionado.</p>
+      <div class="field"><label for="canvasSize">Formato</label><select id="canvasSize"><option value="post">Post 1.6:1</option><option value="square">Quadrado 1:1</option><option value="story">Story 9:16</option></select></div>
+      <div class="field"><label>Fundo</label><div class="swatches"><button class="swatch active" style="background:#ffffff" data-color="#ffffff"></button><button class="swatch" style="background:#111827" data-color="#111827"></button><button class="swatch" style="background:#7c6cff" data-color="#7c6cff"></button><button class="swatch" style="background:#f7b955" data-color="#f7b955"></button><button class="swatch" style="background:#4dd4c5" data-color="#4dd4c5"></button></div></div>
+      <div class="field"><label for="textColor">Cor do texto</label><input id="textColor" type="color" value="#161b2b"></div>
+      <div class="field"><label for="fontSize">Tamanho do texto</label><input id="fontSize" type="range" min="14" max="100" value="38"></div>
+      <div class="field"><label for="elementOpacity">Opacidade</label><input id="elementOpacity" type="range" min="0.1" max="1" step="0.05" value="1"></div>
+      <button class="export" id="downloadJson">💾 Salvar projeto</button>
+    </aside>
+  </div>
+  <script>
+    const canvas=document.getElementById('canvas');let selected=null;let drag=null;
+    const templates={post:{ratio:'post',bg:'#ffffff',items:[['Nexia Design',30,35,'#161b2b',38]]},story:{ratio:'story',bg:'#7c6cff',items:[['Sua história começa aqui',12,35,'#ffffff',30]]},presentation:{ratio:'post',bg:'#111827',items:[['Ideia. Impacto. Futuro.',10,32,'#ffffff',42]]},flyer:{ratio:'post',bg:'#f7b955',items:[['OFERTA ESPECIAL',12,35,'#111827',42]]}};
+    function select(el){if(selected)selected.classList.remove('selected');selected=el;if(selected)selected.classList.add('selected');syncControls()}
+    function addText(text='Novo título',x=12,y=12,color='#161b2b',size=38){const el=document.createElement('div');el.className='element text-element';el.contentEditable=true;el.textContent=text;el.style.left=x+'%';el.style.top=y+'%';el.style.color=color;el.style.fontSize=size+'px';el.addEventListener('click',e=>{e.stopPropagation();select(el)});makeDraggable(el);canvas.appendChild(el);select(el);return el}
+    function addShape(){const el=document.createElement('div');el.className='element shape';el.style.left='15%';el.style.top='55%';el.addEventListener('click',e=>{e.stopPropagation();select(el)});makeDraggable(el);canvas.appendChild(el);select(el)}
+    function makeDraggable(el){el.addEventListener('pointerdown',e=>{if(e.target.isContentEditable&&document.activeElement===el)return;select(el);drag={el,startX:e.clientX,startY:e.clientY,left:parseFloat(el.style.left)||0,top:parseFloat(el.style.top)||0};el.setPointerCapture(e.pointerId)});el.addEventListener('pointermove',e=>{if(!drag||drag.el!==el)return;const r=canvas.getBoundingClientRect();el.style.left=Math.max(0,Math.min(90,drag.left+(e.clientX-drag.startX)/r.width*100))+'%';el.style.top=Math.max(0,Math.min(90,drag.top+(e.clientY-drag.startY)/r.height*100))+'%'});el.addEventListener('pointerup',()=>drag=null)}
+    function syncControls(){if(!selected)return;document.getElementById('elementOpacity').value=getComputedStyle(selected).opacity||1;if(selected.classList.contains('text-element')){document.getElementById('fontSize').value=parseInt(getComputedStyle(selected).fontSize)||38;document.getElementById('textColor').value=rgbToHex(getComputedStyle(selected).color)}}
+    function rgbToHex(rgb){const m=rgb.match(/\d+/g);return m?'#'+m.slice(0,3).map(x=>(+x).toString(16).padStart(2,'0')).join(''): '#161b2b'}
+    function loadTemplate(name){const t=templates[name];canvas.dataset.ratio=t.ratio;canvas.style.background=t.bg;canvas.innerHTML='';t.items.forEach(i=>addText(...i));select(null)}
+    document.querySelectorAll('.template').forEach(b=>b.onclick=()=>loadTemplate(b.dataset.template));document.getElementById('addText').onclick=()=>addText();document.getElementById('addShape').onclick=addShape;document.getElementById('removeElement').onclick=()=>{if(selected){selected.remove();selected=null}};document.getElementById('uploadButton').onclick=()=>document.getElementById('imageInput').click();
+    document.getElementById('imageInput').onchange=e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{const img=document.createElement('img');img.className='element image-element';img.src=reader.result;img.style.left='25%';img.style.top='25%';img.addEventListener('click',x=>{x.stopPropagation();select(img)});makeDraggable(img);canvas.appendChild(img);select(img)};reader.readAsDataURL(file)};
+    canvas.onclick=()=>select(null);document.querySelectorAll('.swatch').forEach(b=>b.onclick=()=>{canvas.style.background=b.dataset.color;document.querySelectorAll('.swatch').forEach(x=>x.classList.remove('active'));b.classList.add('active')});document.getElementById('canvasSize').onchange=e=>canvas.dataset.ratio=e.target.value;document.getElementById('fontSize').oninput=e=>{if(selected?.classList.contains('text-element'))selected.style.fontSize=e.target.value+'px'};document.getElementById('textColor').oninput=e=>{if(selected?.classList.contains('text-element'))selected.style.color=e.target.value};document.getElementById('elementOpacity').oninput=e=>{if(selected)selected.style.opacity=e.target.value};document.getElementById('clearCanvas').onclick=()=>{canvas.innerHTML='';select(null)};
+    function saveJson(){const data={ratio:canvas.dataset.ratio,bg:canvas.style.background,html:canvas.innerHTML};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'}));a.download='nexia-design.json';a.click()};document.getElementById('downloadJson').onclick=saveJson;
+    document.getElementById('download').onclick=()=>{showToast('Exportação PNG preparada — use Ctrl+P ou integre html2canvas para rasterização completa.');window.print()};function showToast(msg){alert(msg)}loadTemplate('post');
+  </script>
+</body>
+</html>
