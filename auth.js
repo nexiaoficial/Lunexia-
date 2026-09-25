@@ -10,6 +10,7 @@
   let modalLocked = false;
   let currentMode = 'login';
   let currentRedirect = 'app.html';
+  let lastFocusedElement = null;
 
   function normalizeEmail(value) {
     return String(value || '').trim().toLowerCase();
@@ -136,6 +137,10 @@
       ? 'index.html'
       : window.location.pathname.split('/').filter(Boolean).pop() || 'index.html';
     return `${pathname}${window.location.search}${window.location.hash}`;
+  }
+
+  function isAppPage() {
+    return getCurrentLocationTarget().startsWith('app.html');
   }
 
   function emitAuthState() {
@@ -316,7 +321,7 @@
     container.id = 'secureAuthPortal';
     container.className = 'auth-portal';
     container.innerHTML = `
-      <div class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authPortalTitle">
+      <div class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authPortalTitle" tabindex="-1">
         <div class="auth-top">
           <div>
             <h2 id="authPortalTitle">Conta segura</h2>
@@ -373,7 +378,8 @@
       passwordInput: container.querySelector('#authPasswordInput'),
       meta: container.querySelector('#authPortalMeta'),
       metaName: container.querySelector('#authMetaName'),
-      metaEmail: container.querySelector('#authMetaEmail')
+      metaEmail: container.querySelector('#authMetaEmail'),
+      card: container.querySelector('.auth-card')
     };
 
     elements.close.addEventListener('click', () => {
@@ -382,6 +388,13 @@
 
     elements.container.addEventListener('click', (event) => {
       if (event.target === elements.container && !modalLocked) closeAuth();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && elements?.container.classList.contains('show') && !modalLocked) {
+        event.preventDefault();
+        closeAuth();
+      }
     });
 
     elements.form.addEventListener('submit', handleSubmit);
@@ -484,6 +497,9 @@
 
     modalLocked = Boolean(config.locked);
     currentRedirect = config.redirectTo || currentRedirect || 'app.html';
+    if (!ui.container.classList.contains('show')) {
+      lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    }
 
     if (config.redirectTo) {
       setRedirect(config.redirectTo);
@@ -491,11 +507,26 @@
 
     renderAuth(mode || 'login', config.message || '');
     ui.container.classList.add('show');
+
+    requestAnimationFrame(() => {
+      const focusTarget = !ui.nameField.hidden
+        ? ui.nameInput
+        : !ui.emailField.hidden
+          ? ui.emailInput
+          : !ui.passwordField.hidden
+            ? ui.passwordInput
+            : ui.secondary;
+      focusTarget?.focus();
+    });
   }
 
   function closeAuth() {
-    ensureModal().container.classList.remove('show');
+    const ui = ensureModal();
+    ui.container.classList.remove('show');
     modalLocked = false;
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus();
+    }
   }
 
   async function createAccount(payload) {
@@ -618,7 +649,7 @@
         deleteAccount();
         openAuth('create', {
           redirectTo: currentRedirect,
-          locked: window.location.pathname.endsWith('app.html'),
+          locked: isAppPage(),
           message: 'Conta excluída. Crie uma nova conta para continuar.'
         });
         return;
@@ -626,7 +657,7 @@
 
       logout();
       closeAuth();
-      if (window.location.pathname.endsWith('app.html')) {
+      if (isAppPage()) {
         requireAuth({ redirectTo: 'app.html', message: 'Entre novamente para acessar o aplicativo.' });
       }
     } catch (error) {
