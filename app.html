@@ -1368,6 +1368,7 @@
 
     function renderDocument(documentData) {
       if (!docEditor || !documentData) return;
+      docEditor.setAttribute('contenteditable', 'true');
       docEditor.innerHTML = documentData.content;
       activeDocumentId = documentData.id;
       if (documentTypeSelect) {
@@ -1382,6 +1383,7 @@
 
     function previewSelectedDocumentType() {
       if (!docEditor) return;
+      docEditor.setAttribute('contenteditable', 'false');
       const selectedType = documentTypeSelect?.value || 'curriculo';
       const template = documentTemplates[selectedType];
       if (!template) return;
@@ -1422,13 +1424,7 @@
     }
 
     function persistEditorChanges() {
-      let activeDocument = getActiveDocument();
-      if (!activeDocument && docEditor) {
-        activeDocument = storeDocumentRecord(createDocumentRecord(docEditor.innerHTML), {
-          renderEditor: false,
-          showFeedback: false
-        });
-      }
+      const activeDocument = getActiveDocument();
       if (!activeDocument || !docEditor) return;
       activeDocument.content = docEditor.innerHTML;
       saveDocuments();
