@@ -21,12 +21,13 @@
   bindEntryPoints();
   syncAccess();
 
-  window.openLogin = function (mode) {
-    showModal(mode || preferredMode());
-  };
-
-  window.closeLogin = function () {
-    hideModal();
+  window.lunexiaAuth = {
+    open(mode) {
+      showModal(mode || preferredMode());
+    },
+    close() {
+      hideModal();
+    }
   };
 
   function injectStyles() {
@@ -86,21 +87,15 @@
     overlay.innerHTML = `
       <div class="secure-auth-card" role="dialog" aria-modal="true" aria-labelledby="secureAuthTitle">
         <h2 id="secureAuthTitle">Conta segura Lunexia</h2>
-        <p id="secureAuthDescription">Crie sua conta segura com nome, e-mail, senha e código de segurança para acessar o site e o app.</p>
+        <p id="secureAuthDescription">Crie sua conta segura com nome, e-mail, senha e código de segurança para continuar com segurança.</p>
         <div class="secure-auth-tabs">
           <button type="button" class="secure-auth-tab" data-mode="signup">Criar conta</button>
           <button type="button" class="secure-auth-tab" data-mode="login">Entrar</button>
         </div>
         <form id="secureAuthForm" class="secure-auth-grid" novalidate>
-          <div class="secure-auth-grid two-cols">
-            <div class="secure-auth-field" data-signup-only="true">
-              <label for="secureAuthName">Nome completo</label>
-              <input id="secureAuthName" name="name" type="text" autocomplete="name" placeholder="Seu nome">
-            </div>
-            <div class="secure-auth-field" data-signup-only="true">
-              <label for="secureAuthBirthDate">Data de nascimento</label>
-              <input id="secureAuthBirthDate" name="birthDate" type="date" autocomplete="bday">
-            </div>
+          <div class="secure-auth-field" data-signup-only="true">
+            <label for="secureAuthName">Nome completo</label>
+            <input id="secureAuthName" name="name" type="text" autocomplete="name" placeholder="Seu nome">
           </div>
           <div class="secure-auth-field">
             <label for="secureAuthEmail">E-mail</label>
@@ -142,7 +137,6 @@
       signupFields: Array.from(overlay.querySelectorAll("[data-signup-only='true']")),
       inputs: {
         name: overlay.querySelector("#secureAuthName"),
-        birthDate: overlay.querySelector("#secureAuthBirthDate"),
         email: overlay.querySelector("#secureAuthEmail"),
         password: overlay.querySelector("#secureAuthPassword"),
         securityCode: overlay.querySelector("#secureAuthSecurityCode")
@@ -158,6 +152,18 @@
     authNodes.form.addEventListener("submit", handleSubmit);
     authNodes.close.addEventListener("click", function () {
       if (hasSession()) {
+        hideModal();
+      }
+    });
+
+    authNodes.overlay.addEventListener("click", function (event) {
+      if (event.target === authNodes.overlay && hasSession()) {
+        hideModal();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && authNodes.overlay.classList.contains("show") && hasSession()) {
         hideModal();
       }
     });
@@ -203,10 +209,9 @@
       if (error) return setMessage(error);
       const account = {
         name: payload.name.trim(),
-        birthDate: payload.birthDate,
         email: payload.email.trim().toLowerCase(),
-        passwordHash: await hashValue(payload.password),
-        securityCodeHash: await hashValue(payload.securityCode),
+        password: await createProtectedSecret(payload.password),
+        securityCode: await createProtectedSecret(payload.securityCode),
         createdAt: new Date().toISOString()
       };
       localStorage.setItem(ACCOUNT_KEY, JSON.stringify(account));
@@ -227,9 +232,9 @@
     }
 
     const email = payload.email.trim().toLowerCase();
-    const passwordHash = await hashValue(payload.password);
-    const securityCodeHash = await hashValue(payload.securityCode);
-    if (email !== account.email || passwordHash !== account.passwordHash || securityCodeHash !== account.securityCodeHash) {
+    const passwordMatches = await verifySecret(payload.password, account.password);
+    const securityCodeMatches = await verifySecret(payload.securityCode, account.securityCode);
+    if (email !== account.email || !passwordMatches || !securityCodeMatches) {
       return setMessage("Dados de acesso inválidos. Confira e tente novamente.");
     }
 
@@ -243,7 +248,6 @@
   function readForm() {
     return {
       name: authNodes.inputs.name.value || "",
-      birthDate: authNodes.inputs.birthDate.value || "",
       email: authNodes.inputs.email.value || "",
       password: authNodes.inputs.password.value || "",
       securityCode: authNodes.inputs.securityCode.value || ""
@@ -252,7 +256,6 @@
 
   function validateSignup(payload) {
     if (!payload.name.trim()) return "Informe o nome completo.";
-    if (!payload.birthDate) return "Informe a data de nascimento.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email.trim())) return "Informe um e-mail válido.";
     if (payload.password.length < 6) return "Crie uma senha com pelo menos 6 caracteres.";
     if (!/^\d{4,}$/.test(payload.securityCode.trim())) return "Use um código de segurança com pelo menos 4 números.";
@@ -267,11 +270,10 @@
       field.hidden = currentMode !== "signup";
     });
     authNodes.inputs.name.required = currentMode === "signup";
-    authNodes.inputs.birthDate.required = currentMode === "signup";
     authNodes.submit.textContent = currentMode === "signup" ? "Criar conta segura" : "Entrar com segurança";
     authNodes.title.textContent = currentMode === "signup" ? "Conta segura Lunexia" : "Entrar com conta segura";
     authNodes.description.textContent = currentMode === "signup"
-      ? "Crie sua conta segura com nome, e-mail, senha e código de segurança para acessar o site e o app."
+      ? "Crie sua conta segura com nome, e-mail, senha e código de segurança para continuar com segurança."
       : "Digite seu e-mail, senha e código de segurança para liberar o acesso.";
     authNodes.close.hidden = !hasSession();
     authNodes.lockNote.hidden = hasSession();
@@ -288,13 +290,11 @@
     }
 
     const name = account.name || "Cliente";
-    const birthDate = formatDate(account.birthDate);
     authNodes.summary.hidden = false;
     authNodes.summary.innerHTML = `
       <strong>Conta cadastrada</strong>
       <span>${escapeHtml(name)}</span>
       <span>${escapeHtml(account.email)}</span>
-      <span>Nascimento: ${escapeHtml(birthDate)}</span>
       <div class="secure-auth-actions" style="margin-top:14px;">
         <button type="button" class="secure-auth-secondary" id="secureAuthLogout">Sair</button>
         <button type="button" class="secure-auth-secondary" id="secureAuthDelete">Excluir conta</button>
@@ -323,9 +323,13 @@
       body.classList.remove("secure-auth-locked");
       hideModal();
       updateIdentity(account);
-    } else {
+    } else if (page.isApp) {
       body.classList.add("secure-auth-locked");
       showModal(preferredMode());
+      resetIdentity();
+    } else {
+      body.classList.remove("secure-auth-locked");
+      hideModal();
       resetIdentity();
     }
 
@@ -372,7 +376,7 @@
   }
 
   function hideModal() {
-    if (!hasSession()) return;
+    if (!hasSession() && page.isApp) return;
     authNodes.overlay.classList.remove("show");
     authNodes.overlay.setAttribute("aria-hidden", "true");
     clearMessage();
@@ -434,17 +438,52 @@
     authNodes.message.classList.toggle("success", Boolean(success));
   }
 
-  async function hashValue(value) {
-    const data = new TextEncoder().encode(value.trim());
-    const digest = await crypto.subtle.digest("SHA-256", data);
-    return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  async function createProtectedSecret(value) {
+    const salt = randomSalt();
+    return {
+      salt,
+      hash: await deriveSecretHash(value, salt)
+    };
   }
 
-  function formatDate(value) {
-    if (!value) return "Não informado";
-    const [year, month, day] = value.split("-");
-    if (!year || !month || !day) return value;
-    return `${day}/${month}/${year}`;
+  async function verifySecret(value, storedSecret) {
+    if (!storedSecret?.salt || !storedSecret?.hash) return false;
+    const candidateHash = await deriveSecretHash(value, storedSecret.salt);
+    return candidateHash === storedSecret.hash;
+  }
+
+  async function deriveSecretHash(value, salt) {
+    const keyMaterial = await crypto.subtle.importKey(
+      "raw",
+      new TextEncoder().encode(value.trim()),
+      "PBKDF2",
+      false,
+      ["deriveBits"]
+    );
+    const derivedBits = await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        salt: base64ToBytes(salt),
+        iterations: 120000,
+        hash: "SHA-256"
+      },
+      keyMaterial,
+      256
+    );
+    return Array.from(new Uint8Array(derivedBits)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  }
+
+  function randomSalt() {
+    const bytes = crypto.getRandomValues(new Uint8Array(16));
+    return bytesToBase64(bytes);
+  }
+
+  function bytesToBase64(bytes) {
+    return btoa(String.fromCharCode(...bytes));
+  }
+
+  function base64ToBytes(value) {
+    return Uint8Array.from(atob(value), (char) => char.charCodeAt(0));
   }
 
   function escapeHtml(value) {
