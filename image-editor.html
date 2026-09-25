@@ -5,14 +5,140 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Lunexia Design Studio</title>
   <style>
-    :root{--bg:#0b1020;--panel:#111827;--panel2:#172036;--line:rgba(148,163,184,.2);--ink:#eef4ff;--muted:#9aaac3;--brand:#7c6cff;--brand2:#a393ff}
-    *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#0b1020,#111827);color:var(--ink);font-family:Inter,"Segoe UI",system-ui,sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}.studio{display:grid;grid-template-columns:280px 1fr 320px;min-height:100vh;gap:0}.panel{background:rgba(15,23,42,.9);border-right:1px solid var(--line);padding:22px 18px}.left{padding:18px 14px}.right{padding:18px 18px;border-left:1px solid var(--line);border-right:none}.brand{font-size:2rem;font-weight:800;letter-spacing:-.08em;margin:8px 10px 18px}.brand b{color:var(--brand2)}.section{margin-bottom:18px}.section h3{margin:0 0 10px;font-size:.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.templates,.tool-list{display:grid;gap:10px}.template,.tool{display:flex;align-items:center;gap:10px;width:100%;background:rgba(17,24,39,.8);border:1px solid var(--line);color:var(--ink);border-radius:14px;padding:12px 12px;text-align:left;transition:.2s ease}.template:hover,.tool:hover,.swatch:hover,.action:hover{transform:translateY(-1px);border-color:rgba(124,108,255,.45)}.template strong{font-size:1rem}.work{padding:22px 18px}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px}.top h1{margin:0;font-size:2rem;letter-spacing:-.06em}.muted{color:var(--muted)}.actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.secondary,.export{border:1px solid var(--line);background:rgba(17,24,39,.8);color:var(--ink);border-radius:12px;padding:10px 14px}.secondary{min-width:110px}.stage{background:rgba(11,16,32,.8);border:1px solid var(--line);border-radius:24px;padding:14px;min-height:72vh}.canvas-wrap{display:grid;place-items:center;background:linear-gradient(180deg,rgba(15,23,42,.6),rgba(15,23,42,.4));border-radius:18px;min-height:68vh;padding:12px}.canvas{position:relative;width:min(100%,900px);aspect-ratio:1.6/1;background:#fff;border-radius:18px;overflow:hidden;border:1px solid rgba(148,163,184,.25);box-shadow:0 30px 50px rgba(2,6,23,.45)}.element{position:absolute;display:flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:12px;user-select:none;touch-action:none;min-width:40px;min-height:40px}.element.text-element{font-weight:700;line-height:1.05;white-space:pre-wrap;outline:none;cursor:text}.element.shape{background:linear-gradient(135deg,#7c6cff,#a393ff);min-width:160px;min-height:120px;border-radius:22px;box-shadow:0 15px 30px rgba(124,108,255,.35)}.element.selected{outline:2px solid #a393ff;box-shadow:0 0 0 4px rgba(163,147,255,.18)}.element img{display:block;max-width:100%;max-height:100%;object-fit:cover;border-radius:12px}.field{margin-bottom:16px}.field label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:8px}.field select,.field input[type="color"]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0f172a;color:var(--ink)}.field input[type="range"]{width:100%}.swatches{display:flex;gap:8px;flex-wrap:wrap}.swatch{width:32px;height:32px;border-radius:50%;border:2px solid transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}.swatch.active{border-color:var(--brand2);box-shadow:0 0 0 2px rgba(163,147,255,.5),inset 0 0 0 1px rgba(255,255,255,.25)}.export{width:100%;padding:12px 14px;background:linear-gradient(135deg,var(--brand),var(--brand2));border:none;color:#fff;font-weight:700;border-radius:12px}.mini-user{display:flex;align-items:center;gap:10px}.avatar{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7c6cff,#a393ff);color:#fff;font-weight:700}.#accountButton{min-width:160px}.hint{margin-top:12px;color:var(--muted);font-size:.82rem;line-height:1.5;border-top:1px solid var(--line);padding-top:14px}#imageInput{display:none}.toast{position:fixed;right:18px;bottom:18px;background:rgba(2,6,23,.92);color:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translateY(0)}@media (max-width:980px){.studio{grid-template-columns:1fr}.panel,.right{border:none;border-bottom:1px solid var(--line)}.canvas{width:100%;aspect-ratio:1/1.2}.top{flex-direction:column;align-items:flex-start}.actions{width:100%}} 
+    :root{--bg:#0b1020;--panel:#111827;--panel2:#172036;--line:rgba(148,163,184,.2);--ink:#eef4ff;--muted:#9aaac3;--brand:#7c6cff;--brand2:#c7a6ff;--brand3:#8e7dff}
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(135deg,#0b1020,#111827);color:var(--ink);font-family:Inter,"Segoe UI",system-ui,sans-serif;min-height:100vh}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .studio{display:grid;grid-template-columns:280px 1fr 320px;min-height:100vh;gap:0}
+    .panel{background:rgba(15,23,42,.9);border-right:1px solid var(--line);padding:22px 18px}
+    .left{padding:18px 14px}
+    .right{padding:18px 18px;border-left:1px solid var(--line);border-right:none}
+    .brand{display:flex;align-items:center;gap:14px;margin:8px 10px 18px;padding:6px 0;max-width:100%}
+    .brand-mark{width:72px;flex:none;filter:drop-shadow(0 0 18px rgba(163,147,255,.22))}
+    .brand svg{display:block;width:100%;height:auto;overflow:visible}
+    .brand-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+    .brand-wordmark{font-size:2rem;font-weight:800;letter-spacing:-.08em;line-height:1;color:#f5f3ff}
+    .brand-tag{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#cabdff;line-height:1.2}
+    .orbit-ring{fill:none;stroke:rgba(199,166,255,.65);stroke-width:2.2;stroke-dasharray:6 7}
+    .moon-core{filter:drop-shadow(0 0 14px rgba(199,166,255,.55))}
+    .moon-halo{animation:brandHalo 4.8s ease-in-out infinite}
+    .orbit-nodes{animation:brandOrbit 18s linear infinite;transform-origin:70px 70px;transform-box:fill-box}
+    .orbit-node{filter:drop-shadow(0 0 8px rgba(199,166,255,.28))}
+    .orbit-star .spark{animation:brandPulse 3s ease-in-out infinite}
+    .orbit-image .frame{fill:rgba(255,255,255,.08);stroke:rgba(241,232,255,.7);stroke-width:1.6}
+    .orbit-image .sun{fill:#f4c6ff}
+    .orbit-image .mountain-a{fill:#c7a6ff}
+    .orbit-image .mountain-b{fill:#8e7dff}
+    .orbit-text .bubble{fill:rgba(255,255,255,.08);stroke:rgba(241,232,255,.72);stroke-width:1.6}
+    .orbit-text .line{stroke:#efe8ff;stroke-width:2;stroke-linecap:round}
+    .section{margin-bottom:18px}
+    .section h3{margin:0 0 10px;font-size:.9rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .templates,.tool-list{display:grid;gap:10px}
+    .template,.tool{display:flex;align-items:center;gap:10px;width:100%;background:rgba(17,24,39,.8);border:1px solid var(--line);color:var(--ink);border-radius:14px;padding:12px 12px;text-align:left;transition:.2s ease}
+    .template:hover,.tool:hover,.swatch:hover,.action:hover{transform:translateY(-1px);border-color:rgba(124,108,255,.45)}
+    .template strong{font-size:1rem}
+    .work{padding:22px 18px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px}
+    .top h1{margin:0;font-size:2rem;letter-spacing:-.06em}
+    .muted{color:var(--muted)}
+    .actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .secondary,.export{border:1px solid var(--line);background:rgba(17,24,39,.8);color:var(--ink);border-radius:12px;padding:10px 14px}
+    .secondary{min-width:110px}
+    .stage{background:rgba(11,16,32,.8);border:1px solid var(--line);border-radius:24px;padding:14px;min-height:72vh}
+    .canvas-wrap{display:grid;place-items:center;background:linear-gradient(180deg,rgba(15,23,42,.6),rgba(15,23,42,.4));border-radius:18px;min-height:68vh;padding:12px}
+    .canvas{position:relative;width:min(100%,900px);aspect-ratio:1.6/1;background:#fff;border-radius:18px;overflow:hidden;border:1px solid rgba(148,163,184,.25);box-shadow:0 30px 50px rgba(2,6,23,.45)}
+    .element{position:absolute;display:flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:12px;user-select:none;touch-action:none;min-width:40px;min-height:40px}
+    .element.text-element{font-weight:700;line-height:1.05;white-space:pre-wrap;outline:none;cursor:text}
+    .element.shape{background:linear-gradient(135deg,#7c6cff,#a393ff);min-width:160px;min-height:120px;border-radius:22px;box-shadow:0 15px 30px rgba(124,108,255,.35)}
+    .element.selected{outline:2px solid #a393ff;box-shadow:0 0 0 4px rgba(163,147,255,.18)}
+    .element img{display:block;max-width:100%;max-height:100%;object-fit:cover;border-radius:12px}
+    .field{margin-bottom:16px}
+    .field label{display:block;font-size:.8rem;color:var(--muted);margin-bottom:8px}
+    .field select,.field input[type="color"]{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0f172a;color:var(--ink)}
+    .field input[type="range"]{width:100%}
+    .swatches{display:flex;gap:8px;flex-wrap:wrap}
+    .swatch{width:32px;height:32px;border-radius:50%;border:2px solid transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+    .swatch.active{border-color:var(--brand2);box-shadow:0 0 0 2px rgba(163,147,255,.5),inset 0 0 0 1px rgba(255,255,255,.25)}
+    .export{width:100%;padding:12px 14px;background:linear-gradient(135deg,var(--brand),var(--brand2));border:none;color:#fff;font-weight:700;border-radius:12px}
+    .mini-user{display:flex;align-items:center;gap:10px}
+    .avatar{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#7c6cff,#a393ff);color:#fff;font-weight:700}
+    #accountButton{min-width:160px}
+    .hint{margin-top:12px;color:var(--muted);font-size:.82rem;line-height:1.5;border-top:1px solid var(--line);padding-top:14px}
+    #imageInput{display:none}
+    .toast{position:fixed;right:18px;bottom:18px;background:rgba(2,6,23,.92);color:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none}
+    .toast.show{opacity:1;transform:translateY(0)}
+    @keyframes brandOrbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes brandPulse{0%,100%{transform:scale(1);opacity:.95}50%{transform:scale(1.08);opacity:1}}
+    @keyframes brandHalo{0%,100%{opacity:.32;transform:scale(1)}50%{opacity:.48;transform:scale(1.06)}}
+    @media (max-width:980px){
+      .studio{grid-template-columns:1fr}
+      .panel,.right{border:none;border-bottom:1px solid var(--line)}
+      .canvas{width:100%;aspect-ratio:1/1.2}
+      .top{flex-direction:column;align-items:flex-start}
+      .actions{width:100%}
+    }
+    @media (max-width:560px){
+      .brand{gap:12px}
+      .brand-mark{width:64px}
+      .brand-wordmark{font-size:1.72rem}
+      .brand-tag{font-size:.66rem;letter-spacing:.14em}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{scroll-behavior:auto}
+      .moon-halo,.orbit-nodes,.orbit-star .spark{animation:none}
+    }
   </style>
 </head>
 <body>
   <div class="studio">
     <aside class="left panel">
-      <div class="brand">Lunexia<b>.</b></div>
+      <div class="brand" role="img" aria-label="Lunexia, logotipo com lua crescente roxa e elementos criativos orbitando ao redor">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 140 140" focusable="false">
+            <defs>
+              <linearGradient id="moonGradient" x1="38" y1="30" x2="89" y2="95" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#f2dcff"></stop>
+                <stop offset="0.48" stop-color="#c7a6ff"></stop>
+                <stop offset="1" stop-color="#7c6cff"></stop>
+              </linearGradient>
+              <radialGradient id="haloGradient" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#c7a6ff" stop-opacity="0.55"></stop>
+                <stop offset="1" stop-color="#c7a6ff" stop-opacity="0"></stop>
+              </radialGradient>
+              <mask id="crescentMask">
+                <rect width="140" height="140" fill="black"></rect>
+                <circle cx="61" cy="69" r="31" fill="white"></circle>
+                <circle cx="77" cy="60" r="27" fill="black"></circle>
+              </mask>
+            </defs>
+            <circle class="moon-halo" cx="61" cy="69" r="41" fill="url(#haloGradient)"></circle>
+            <ellipse class="orbit-ring" cx="70" cy="70" rx="50" ry="38" transform="rotate(-18 70 70)"></ellipse>
+            <g class="moon-core">
+              <circle cx="61" cy="69" r="31" fill="url(#moonGradient)" mask="url(#crescentMask)"></circle>
+            </g>
+            <g class="orbit-nodes">
+              <g class="orbit-node orbit-star" transform="translate(103 33)">
+                <path class="spark" d="M8 0l2.2 5.6L16 8l-5.8 2.4L8 16l-2.2-5.6L0 8l5.8-2.4L8 0z" fill="#f8ecff"></path>
+              </g>
+              <g class="orbit-node orbit-text" transform="translate(94 89)">
+                <rect class="bubble" x="0" y="0" width="22" height="16" rx="6"></rect>
+                <path class="line" d="M6 6h10M6 10h7"></path>
+              </g>
+              <g class="orbit-node orbit-image" transform="translate(19 85)">
+                <rect class="frame" x="0" y="0" width="24" height="18" rx="5"></rect>
+                <circle class="sun" cx="18" cy="5" r="2.2"></circle>
+                <path class="mountain-a" d="M4 14l5-5 4 4 3-3 4 4z"></path>
+                <path class="mountain-b" d="M4 14l4-4 3 3 2-2 5 3z"></path>
+              </g>
+            </g>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-wordmark">Lunexia</span>
+          <span class="brand-tag">Criação em órbita</span>
+        </span>
+      </div>
       <div class="section"><h3>Modelos</h3><div class="templates">
         <button class="template" data-template="post">📱<strong>Post</strong></button>
         <button class="template" data-template="story">📲<strong>Story</strong></button>
