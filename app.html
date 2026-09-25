@@ -1394,13 +1394,21 @@
       }
     };
 
+    function createDefaultDashboardState() {
+      return {
+        ...initialDashboardState,
+        creations: [],
+        profile: { ...initialDashboardState.profile }
+      };
+    }
+
     // Estado principal do dashboard: mantém métricas, avatar e histórico recente no navegador,
     // permitindo que a tela continue dinâmica mesmo publicada como site estático no GitHub Pages.
     function loadDashboardState() {
       try {
         const stored = JSON.parse(localStorage.getItem(dashboardStorageKey) || '{}');
         return {
-          ...initialDashboardState,
+          ...createDefaultDashboardState(),
           ...stored,
           profile: {
             ...initialDashboardState.profile,
@@ -1409,7 +1417,7 @@
           creations: Array.isArray(stored.creations) ? stored.creations : []
         };
       } catch (error) {
-        return { ...initialDashboardState };
+        return createDefaultDashboardState();
       }
     }
 
@@ -1447,7 +1455,11 @@
       projectGrid.innerHTML = '';
 
       if (!dashboardState.creations.length) {
-        projectGrid.innerHTML = '<div class="empty-box" style="padding:24px;">Seus projetos criados aparecerão aqui assim que você começar.</div>';
+        const emptyBox = document.createElement('div');
+        emptyBox.className = 'empty-box';
+        emptyBox.style.padding = '24px';
+        emptyBox.textContent = 'Seus projetos criados aparecerão aqui assim que você começar.';
+        projectGrid.appendChild(emptyBox);
         return;
       }
 
@@ -1568,7 +1580,17 @@
 
     function confirmDeleteAccount() {
       const confirmed = window.confirm('Tem certeza de que deseja iniciar a exclusão da conta?');
-      showToast(confirmed ? 'Solicitação de exclusão iniciada.' : 'Exclusão cancelada.');
+      if (!confirmed) {
+        showToast('Exclusão cancelada.');
+        return;
+      }
+      Object.assign(dashboardState, createDefaultDashboardState());
+      saveDashboardState();
+      renderDashboardStats();
+      renderSettingsForm();
+      renderProjectGrid();
+      setActiveView('home');
+      showToast('Conta excluída localmente.');
     }
 
     function openAI() {
@@ -1709,6 +1731,7 @@
       if (displayName) {
         dashboardState.avatarLabel = displayName
           .split(/\s+/)
+          .filter(Boolean)
           .slice(0, 2)
           .map(part => part[0])
           .join('')
