@@ -2,7 +2,7 @@
   const ACCOUNT_KEY = 'lunexia.secureAccount';
   const SESSION_KEY = 'lunexia.authSession';
   const REDIRECT_KEY = 'lunexia.authRedirect';
-  const ALLOWED_REDIRECTS = new Set(['/', '/index.html', '/app.html']);
+  const ALLOWED_REDIRECTS = new Set(['index.html', 'app.html']);
   const listeners = new Set();
 
   let elements;
@@ -76,28 +76,33 @@
   function consumeRedirect(fallbackUrl) {
     const stored = sanitizeRedirect(localStorage.getItem(REDIRECT_KEY));
     localStorage.removeItem(REDIRECT_KEY);
-    return stored || sanitizeRedirect(fallbackUrl) || '/app.html';
+    return stored || sanitizeRedirect(fallbackUrl) || 'app.html';
   }
 
   function sanitizeRedirect(url) {
     if (!url) return null;
 
     try {
-      const parsed = new URL(url, window.location.origin);
-      const normalizedPath = parsed.pathname || '/';
+      const parsed = new URL(url, window.location.href);
+      const pathname = parsed.pathname.endsWith('/')
+        ? 'index.html'
+        : parsed.pathname.split('/').filter(Boolean).pop();
 
-      if (parsed.origin !== window.location.origin || !ALLOWED_REDIRECTS.has(normalizedPath)) {
+      if (parsed.origin !== window.location.origin || !pathname || !ALLOWED_REDIRECTS.has(pathname)) {
         return null;
       }
 
-      return `${normalizedPath}${parsed.search}${parsed.hash}`;
+      return `${pathname}${parsed.search}${parsed.hash}`;
     } catch (error) {
       return null;
     }
   }
 
   function getCurrentLocationTarget() {
-    return `${window.location.pathname || '/'}${window.location.search}${window.location.hash}`;
+    const pathname = window.location.pathname.endsWith('/')
+      ? 'index.html'
+      : window.location.pathname.split('/').filter(Boolean).pop() || 'index.html';
+    return `${pathname}${window.location.search}${window.location.hash}`;
   }
 
   function emitAuthState() {
@@ -360,7 +365,7 @@
 
     ui.message.textContent = message || '';
     ui.close.hidden = modalLocked;
-    ui.meta.hidden = mode !== 'manage' || !account;
+    ui.meta.hidden = (mode !== 'manage' && mode !== 'delete-confirm') || !account;
     ui.deleteButton.hidden = mode !== 'manage';
     ui.passwordInput.value = '';
 
@@ -400,7 +405,7 @@
       ui.submit.disabled = false;
       ui.passwordInput.autocomplete = 'current-password';
       ui.emailInput.value = account?.email || '';
-    } else {
+    } else if (mode === 'manage') {
       const user = getCurrentUser() || account;
       ui.title.textContent = 'Conta e segurança';
       ui.subtitle.textContent = 'Gerencie o acesso protegido do aplicativo.';
@@ -415,6 +420,22 @@
       ui.passwordInput.required = false;
       ui.submit.disabled = false;
       ui.emailInput.value = user?.email || '';
+      ui.metaName.textContent = user?.name || 'Conta protegida';
+      ui.metaEmail.textContent = user?.email || '';
+    } else {
+      const user = getCurrentUser() || account;
+      ui.title.textContent = 'Confirmar exclusão da conta';
+      ui.subtitle.textContent = 'Digite a senha da conta protegida para remover o acesso salvo neste navegador.';
+      ui.submit.textContent = 'Excluir conta';
+      ui.secondary.textContent = 'Voltar para conta';
+      ui.switchLine.innerHTML = '';
+      ui.nameField.hidden = true;
+      ui.emailField.hidden = true;
+      ui.passwordField.hidden = false;
+      ui.nameInput.required = false;
+      ui.emailInput.required = false;
+      ui.passwordInput.required = true;
+      ui.submit.disabled = false;
       ui.metaName.textContent = user?.name || 'Conta protegida';
       ui.metaEmail.textContent = user?.email || '';
     }
@@ -543,6 +564,31 @@
         return;
       }
 
+      if (currentMode === 'delete-confirm') {
+        const account = getStoredAccount();
+        if (!account) {
+          throw new Error('Nenhuma conta protegida foi encontrada neste navegador.');
+        }
+
+        const password = ui.passwordInput.value;
+        if (!password) {
+          throw new Error('Digite sua senha para confirmar a exclusão.');
+        }
+
+        const expectedHash = await hashPassword(account.email, password);
+        if (expectedHash !== account.passwordHash) {
+          throw new Error('Senha incorreta. A conta não foi excluída.');
+        }
+
+        deleteAccount();
+        openAuth('create', {
+          redirectTo: currentRedirect,
+          locked: window.location.pathname.endsWith('app.html'),
+          message: 'Conta excluída. Crie uma nova conta para continuar.'
+        });
+        return;
+      }
+
       logout();
       closeAuth();
       if (window.location.pathname.endsWith('app.html')) {
@@ -559,6 +605,14 @@
       return;
     }
 
+    if (currentMode === 'delete-confirm') {
+      openAuth('manage', {
+        redirectTo: currentRedirect,
+        locked: modalLocked
+      });
+      return;
+    }
+
     openAuth(currentMode === 'create' ? 'login' : 'create', {
       redirectTo: currentRedirect,
       locked: modalLocked
@@ -572,26 +626,10 @@
       return;
     }
 
-    if (!window.confirm('Excluir a conta remove o acesso salvo neste navegador. Deseja continuar?')) {
-      return;
-    }
-
-    const password = window.prompt('Digite sua senha para confirmar a exclusão da conta.');
-    if (password === null) {
-      return;
-    }
-
-    const expectedHash = await hashPassword(account.email, password);
-    if (expectedHash !== account.passwordHash) {
-      ensureModal().message.textContent = 'Senha incorreta. A conta não foi excluída.';
-      return;
-    }
-
-    deleteAccount();
-    openAuth('create', {
+    openAuth('delete-confirm', {
       redirectTo: currentRedirect,
-      locked: window.location.pathname.endsWith('app.html'),
-      message: 'Conta excluída. Crie uma nova conta para continuar.'
+      locked: modalLocked,
+      message: `Confirme a senha da conta ${account.email} para concluir a exclusão.`
     });
   }
 

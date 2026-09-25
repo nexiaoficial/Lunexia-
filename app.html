@@ -1263,9 +1263,11 @@
       const title = document.getElementById('appTitle');
       const avatar = document.getElementById('avatarInitial');
       const accountButton = document.getElementById('accountSecurityButton');
+      const avatarLabel = state.authenticated ? `Avatar de ${userName}` : 'Avatar do usuário';
 
       title.textContent = `Olá, ${userName}! 👋`;
       avatar.textContent = initial;
+      avatar.setAttribute('aria-label', avatarLabel);
       accountButton.textContent = state.authenticated ? 'Conta protegida' : 'Conta e segurança';
       document.body.classList.toggle('auth-guard', !state.authenticated);
     }
