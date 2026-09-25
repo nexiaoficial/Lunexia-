@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Luexia 2026</title>
+  <title>Lunexia 2026</title>
   <style>
     :root {
       --bg: #0b1020;
@@ -76,15 +76,75 @@
     }
 
     .brand-mark {
+      position: relative;
       width: 42px;
       height: 42px;
-      border-radius: 14px;
+      border-radius: 50%;
       display: grid;
       place-items: center;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      box-shadow: 0 12px 28px rgba(124,108,255,0.35);
+      background: radial-gradient(circle at 35% 30%, #f9f7ff 0%, #efe8ff 16%, #d9d2ff 36%, #b7a8ff 62%, #7c6cff 100%);
+      box-shadow: 0 12px 28px rgba(124,108,255,0.35), inset -10px -10px 16px rgba(51, 34, 118, 0.35);
       color: #fff;
       font-weight: 900;
+      overflow: visible;
+      flex-shrink: 0;
+      transform: translateY(-1px);
+    }
+
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgba(11,16,32,0.7);
+      transform: translateX(9px);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.14);
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(184,172,255,0.6);
+      transform: scale(1.16);
+    }
+
+    .brand-mark .orbit-dot,
+    .brand-mark .orbit-star,
+    .brand-mark .orbit-card {
+      position: absolute;
+      display: block;
+      border-radius: 50%;
+    }
+
+    .brand-mark .orbit-dot {
+      width: 7px;
+      height: 7px;
+      right: 6px;
+      top: 8px;
+      background: #a393ff;
+      box-shadow: 0 0 12px rgba(163,147,255,0.9);
+    }
+
+    .brand-mark .orbit-star {
+      width: 9px;
+      height: 9px;
+      left: 20px;
+      top: -3px;
+      background: #f7d87a;
+      box-shadow: 0 0 12px rgba(247,216,122,0.9);
+    }
+
+    .brand-mark .orbit-card {
+      width: 14px;
+      height: 8px;
+      left: 4px;
+      bottom: 8px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 12px rgba(164,175,255,0.7);
+      border: 1px solid rgba(124,108,255,0.35);
     }
 
     .brand span { color: var(--brand-2); }
@@ -911,7 +971,11 @@
   <div class="app">
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="brand-mark">N</div>
+        <div class="brand-mark" aria-label="Logotipo Lunexia">
+          <span class="orbit-star" aria-hidden="true"></span>
+          <span class="orbit-card" aria-hidden="true"></span>
+          <span class="orbit-dot" aria-hidden="true"></span>
+        </div>
         <div class="brand-text">Lunexia<span>.</span></div>
       </div>
 
@@ -1001,60 +1065,35 @@
         <div class="officebar">
           <div class="brand-mini word">W</div>
           <div class="header">
-            <div class="office-title">Lunexia Documento</div>
-            <div class="muted"> • Editando</div>
-          </div>
-          <div class="top-actions">
-            <button class="small-btn" onclick="saveDoc()">💾</button>
-            <button class="small-btn" onclick="exportText()">⬇️</button>
-            <button class="small-btn" onclick="window.print()">🖨️</button>
+            <div class="office-title">Documentos</div>
+            <div class="muted">Acesso rápido</div>
           </div>
         </div>
-
         <div class="toolbar">
-          <button onclick="cmd('copy')">Copiar</button>
-          <button onclick="cmd('cut')">Recortar</button>
-          <button onclick="cmd('bold')"><b>B</b></button>
-          <button onclick="cmd('italic')"><i>I</i></button>
-          <button onclick="cmd('underline')"><u>U</u></button>
-          <select onchange="fontSize(this.value)">
-            <option value="">Tamanho</option>
-            <option value="1">Pequeno</option>
-            <option value="3">Normal</option>
-            <option value="5">Grande</option>
-            <option value="7">Muito grande</option>
-          </select>
-          <button onclick="cmd('insertUnorderedList')">Lista</button>
-          <button onclick="cmd('insertOrderedList')">Numeração</button>
-          <button onclick="formatDoc('h1')">Título</button>
-          <button onclick="formatDoc('h2')">Subtítulo</button>
-          <button onclick="formatDoc('h2')">Fonte,negrito</button>
+          <button onclick="document.execCommand('bold')">Negrito</button>
+          <button onclick="document.execCommand('italic')">Itálico</button>
+          <button onclick="document.execCommand('underline')">Sublinhado</button>
+          <button onclick="document.execCommand('insertUnorderedList')">Lista</button>
+          <button onclick="document.execCommand('formatBlock', false, 'h1')">Título</button>
+          <button onclick="newDoc()">Novo</button>
         </div>
-
         <div class="workspace">
-          <div class="doc-panel">
-            <div class="doc-shell">
-              <div id="doc" class="doc-editor" contenteditable="true" spellcheck="true">
-                <h1>Meu novo documento</h1>
-                <p>Comece a escrever aqui...</p>
-              </div>
+          <div class="doc-panel doc-shell">
+            <div class="doc-editor" contenteditable="true">
+              <h1>Seu novo documento</h1>
+              <p>Escreva aqui e transforme seu texto em conteúdo de qualidade.</p>
             </div>
           </div>
-
-          <aside class="side-panel">
-            <div class="mini-card">
-              <div class="muted">Tempo de leitura</div>
-              <div class="counter">4 min</div>
-            </div>
+          <div class="side-panel">
             <div class="mini-card">
               <div class="muted">Palavras</div>
               <div class="counter" id="wordCount">0</div>
             </div>
             <div class="mini-card">
-              <div class="muted">Resumo</div>
-              <p>Estrutura clara, tom profissional e linguagem objetiva.</p>
+              <div class="muted">Status</div>
+              <div class="counter" style="font-size:1.2rem;">Pronto</div>
             </div>
-          </aside>
+          </div>
         </div>
       </section>
 
@@ -1062,50 +1101,32 @@
         <div class="officebar">
           <div class="brand-mini sheet">S</div>
           <div class="header">
-            <div class="office-title">Luexia Planilha</div>
-            <div class="muted"> • Dados</div>
-          </div>
-          <div class="top-actions">
-            <button class="small-btn" onclick="addTableRow()">＋ Linha</button>
-            <button class="small-btn" onclick="addTableCol()">＋ Coluna</button>
-            <button class="small-btn" onclick="addTableCol()">＋ Gráfico</button>
+            <div class="office-title">Planilhas</div>
+            <div class="muted">Dados e fórmulas</div>
           </div>
         </div>
-
-        <div class="sheet-panel panel">
+        <div class="toolbar">
+          <button onclick="addRow()">+ Linha</button>
+          <button onclick="addColumn()">+ Coluna</button>
+          <button onclick="sumSelected()">Somar</button>
+          <button onclick="newSheet()">Nova planilha</button>
+        </div>
+        <div class="sheet-panel">
           <div class="formula-bar">
-            <div class="cell-indicator" id="activeCell">A1</div>
-            <input id="formulaInput" placeholder="fx = SOMA(A1:A5)">
+            <div class="cell-indicator" id="activeCellLabel">A1</div>
+            <input id="formulaInput" value="=SUM(A1:A3)" aria-label="Fórmula da célula ativa" />
           </div>
-
           <div class="table-wrap">
             <table class="sheet" id="sheetTable">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>A</th>
-                  <th>B</th>
-                  <th>C</th>
-                </tr>
-              </thead>
               <tbody>
                 <tr>
-                  <th>1</th>
-                  <td contenteditable="true">Produto</td>
-                  <td contenteditable="true">2025</td>
-                  <td contenteditable="true">2026</td>
+                  <th>A</th><th>B</th><th>C</th>
                 </tr>
                 <tr>
-                  <th>2</th>
-                  <td contenteditable="true">Vendas</td>
-                  <td contenteditable="true">1200</td>
-                  <td contenteditable="true">1800</td>
+                  <td>10</td><td>20</td><td>30</td>
                 </tr>
                 <tr>
-                  <th>3</th>
-                  <td contenteditable="true">Lucro</td>
-                  <td contenteditable="true">300</td>
-                  <td contenteditable="true">470</td>
+                  <td>40</td><td>50</td><td>60</td>
                 </tr>
               </tbody>
             </table>
@@ -1117,37 +1138,30 @@
         <div class="officebar">
           <div class="brand-mini slide">P</div>
           <div class="header">
-            <div class="office-title">Lunexia Slides</div>
-            <div class="muted"> • Apresentação</div>
-          </div>
-          <div class="top-actions">
-            <button class="small-btn" onclick="newSlide()">＋ Slide</button>
+            <div class="office-title">Apresentação</div>
+            <div class="muted">Slides</div>
           </div>
         </div>
-
+        <div class="toolbar">
+          <button onclick="newSlide()">Novo slide</button>
+          <button onclick="addSlideText()">Adicionar texto</button>
+          <button onclick="addSlideShape()">Adicionar bloco</button>
+        </div>
         <div class="ppt-workspace">
-          <div class="thumb-list">
-            <div class="thumb active">
-              <div class="thumb-preview"><strong>Slide 1</strong><br><br>Visão geral</div>
-            </div>
-            <div class="thumb">
-              <div class="thumb-preview"><strong>Slide 2</strong><br><br>Dados</div>
-            </div>
-            <div class="thumb">
-              <div class="thumb-preview"><strong>Slide 3</strong><br><br>Roadmap</div>
+          <div class="side-panel">
+            <div class="mini-card">
+              <div class="muted">Slides</div>
+              <div class="thumb-list" id="slideThumbs"></div>
             </div>
           </div>
-
           <div class="slide-stage">
-            <div class="slide-canvas" contenteditable="true">
-              <h1>Nova apresentação</h1>
-              <h2>Visão geral do projeto</h2>
-              <p>Escreva as principais ideias, métricas e próximos passos aqui.</p>
+            <div class="slide-canvas" contenteditable="true" id="slideCanvas">
+              <h1>Título do slide</h1>
+              <p>Apresentação criativa, leve e moderna para contar sua história.</p>
             </div>
             <div class="slide-controls">
-              <button class="ghost-btn" onclick="prevSlide()">Anterior</button>
-              <span>1 / 3</span>
-              <button class="ghost-btn" onclick="nextSlide()">Próximo</button>
+              <button class="small-btn" onclick="newSlide()">Criar novo</button>
+              <button class="small-btn" onclick="downloadSlide()">Exportar</button>
             </div>
           </div>
         </div>
@@ -1155,119 +1169,95 @@
 
       <section id="projects" class="view">
         <div class="section-header">
-          <h2>Projetos</h2>
+          <h2>Projetos recentes</h2>
+          <button class="ghost-btn" onclick="newProject()">Novo projeto</button>
         </div>
-
-        <div class="project-grid">
-          <div class="project-card">
-            <div class="emoji">🚀</div>
-            <h3>Pitch IA</h3>
-            <div class="muted">Apresentação interna com visão de produto.</div>
-          </div>
-          <div class="project-card">
-            <div class="emoji">📈</div>
-            <h3>Relatório trimestral</h3>
-            <div class="muted">Dados e indicadores para liderança.</div>
-          </div>
-          <div class="project-card">
-            <div class="emoji">🧾</div>
-            <h3>Orçamento</h3>
-            <div class="muted">Planejamento e controle financeiro.</div>
-          </div>
-          <div class="project-card">
-            <div class="emoji">🎯</div>
-            <h3>Estratégia</h3>
-            <div class="muted">Planejamento de campanha e prioridades.</div>
-          </div>
-        </div>
+        <div class="project-grid" id="projectGrid"></div>
       </section>
 
       <section id="settings" class="view">
-        <div class="section-header">
-          <h2>Configurações</h2>
-        </div>
-
-        <div class="settings-box panel">
+        <div class="settings-box card">
+          <h2 style="margin-top:0;">Configurações</h2>
+          <div class="field">
+            <label for="displayName">Nome do perfil</label>
+            <input id="displayName" value="Usuário Lunexia" />
+          </div>
           <div class="field">
             <label for="workspaceName">Nome do workspace</label>
-            <input id="workspaceName" value="Lunexia Workspace" />
+            <input id="workspaceName" value="Lunexia Studio" />
           </div>
-
           <div class="field">
-            <label for="workspaceBio">Descrição</label>
-            <textarea id="workspaceBio">Ambiente de produtividade híbrido para criação, organização e automação.</textarea>
+            <label for="bio">Descrição</label>
+            <textarea id="bio">Crio conteúdo, apresentações e materiais com velocidade e clareza.</textarea>
           </div>
-
           <button class="primary-btn" onclick="saveSettings()">Salvar</button>
         </div>
       </section>
     </main>
   </div>
 
-  <div id="loginModal" class="login">
+  <div class="modal" id="aiModal" aria-modal="true" role="dialog">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 style="margin:0;">Criação com IA</h3>
+        <button class="icon-btn" onclick="closeAI()" aria-label="Fechar">✕</button>
+      </div>
+      <textarea id="aiOutput" placeholder="Descreva o que deseja criar..."></textarea>
+      <button class="primary-btn" onclick="generateFromAI()">Gerar</button>
+    </div>
+  </div>
+
+  <div class="login" id="loginModal" aria-modal="true" role="dialog">
     <div class="login-box">
       <h2>Entrar</h2>
+      <p class="muted">Acesse sua conta e gerencie segurança, perfil e exclusão da conta.</p>
       <div class="field">
-        <label>E-mail</label>
-        <input type="email" value="lunexia@workspace.com">
+        <label>Email</label>
+        <input type="email" placeholder="seu@email.com" />
       </div>
       <div class="field">
         <label>Senha</label>
-        <input type="password" value="••••••••">
+        <input type="password" placeholder="••••••••" />
       </div>
-      <button class="primary-btn" onclick="close
-Create an accountLogin()">Criar</button>
-      <button class="primary-btn" onclick="closeLogin()">Entrar</button>
+      <button class="primary-btn" style="width:100%; margin-top:12px;" onclick="closeLogin()">Entrar</button>
     </div>
   </div>
 
-  <div id="aiModal"
-    class="modal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3>Assistente IA</h3>
-        <button class="small-btn" onclick="closeAI()">✕</button>
-      </div>
-      <textarea placeholder="Descreva o que você quer criar...">Crie uma apresentação executiva para a nova linha de IA.</textarea>
-      <button class="primary-btn" onclick="closeAI()">Gerar</button>
-    </div>
-  </div>
-
-  <div id="toast" class="toast"></div>
+  <div id="toast" class="toast" aria-live="polite"></div>
 
   <script>
-    const sidebar = document.getElementById('sidebar');
-    const backdrop = document.getElementById('mobileBackdrop');
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const views = document.querySelectorAll('.view');
+    const docEditor = document.querySelector('.doc-editor');
+    const wordCount = document.getElementById('wordCount');
+    const slideThumbs = document.getElementById('slideThumbs');
+    const slideCanvas = document.getElementById('slideCanvas');
 
-    function setSidebarOpen(open) {
-      sidebar.classList.toggle('open', open);
-      backdrop.classList.toggle('show', open);
-    }
-
-    document.getElementById('menuToggle').addEventListener('click', function () {
-      setSidebarOpen(!sidebar.classList.contains('open'));
-    });
-
-    backdrop.addEventListener('click', function () {
-      setSidebarOpen(false);
-    });
-
-    function showView(viewId) {
-      document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-      document.getElementById(viewId).classList.add('active');
-
-      document.querySelectorAll('.nav-btn, .quick-access-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.view === viewId);
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.toggle('active', b === btn));
+        const target = btn.dataset.view;
+        views.forEach(v => v.classList.toggle('active', v.id === target));
       });
+    });
 
-      if (window.innerWidth <= 1100) {
-        setSidebarOpen(false);
-      }
+    function updateWordCount() {
+      if (!docEditor) return;
+      const text = docEditor.innerText.trim();
+      const count = text ? text.split(/\s+/).length : 0;
+      wordCount.textContent = count;
     }
 
-    document.querySelectorAll('.nav-btn, .quick-access-btn').forEach(button => {
-      button.addEventListener('click', () => showView(button.dataset.view));
-    });
+    docEditor.addEventListener('input', updateWordCount);
+    updateWordCount();
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.style.display = 'block';
+      clearTimeout(showToast.timeout);
+      showToast.timeout = setTimeout(() => { toast.style.display = 'none'; }, 2200);
+    }
 
     function openLogin() {
       document.getElementById('loginModal').classList.add('show');
@@ -1275,7 +1265,7 @@ Create an accountLogin()">Criar</button>
 
     function closeLogin() {
       document.getElementById('loginModal').classList.remove('show');
-      showToast('Login concluído');
+      showToast('Conta atualizada');
     }
 
     function openAI() {
@@ -1284,120 +1274,123 @@ Create an accountLogin()">Criar</button>
 
     function closeAI() {
       document.getElementById('aiModal').classList.remove('show');
-      showToast('IA iniciada');
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.style.display = 'block';
-      clearTimeout(showToast.timer);
-      showToast.timer = setTimeout(() => toast.style.display = 'none', 1800);
     }
 
     function generateFromAI() {
-      const prompt = document.getElementById('aiPrompt').value.trim();
-      if (!prompt) {
-        showToast('Digite algo para criar');
+      const prompt = document.getElementById('aiPrompt')?.value || document.getElementById('aiOutput')?.value || '';
+      if (!prompt.trim()) {
+        showToast('Descreva o que deseja criar.');
         return;
       }
-      showToast('Criando com IA...');
-      showView('slides');
+      closeAI();
+      if (docEditor) {
+        docEditor.innerHTML = `<h1>Resultado da IA</h1><p>${prompt}</p><p>Este conteúdo foi gerado a partir da sua solicitação e pode ser ajustado a qualquer momento.</p>`;
+      }
+      showToast('Conteúdo gerado com IA.');
     }
 
     function newDoc() {
-      showView('docs');
-      showToast('Novo documento');
+      showToast('Novo documento criado.');
+      if (docEditor) {
+        docEditor.innerHTML = '<h1>Seu novo documento</h1><p>Escreva aqui...</p>';
+      }
+      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'docs'));
+      views.forEach(v => v.classList.toggle('active', v.id === 'docs'));
+      updateWordCount();
     }
 
     function newSheet() {
-      showView('sheets');
-      showToast('Nova planilha');
+      showToast('Nova planilha criada.');
+      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'sheets'));
+      views.forEach(v => v.classList.toggle('active', v.id === 'sheets'));
     }
 
     function newSlide() {
-      showView('slides');
-      showToast('Novo slide');
+      showToast('Novo slide criado.');
+      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'slides'));
+      views.forEach(v => v.classList.toggle('active', v.id === 'slides'));
+      renderSlideThumbs();
     }
 
-    function saveDoc() {
-      showToast('Documento salvo');
+    function addSlideText() {
+      if (!slideCanvas) return;
+      slideCanvas.innerHTML += '<p>Nova linha de conteúdo.</p>';
+      showToast('Texto adicionado ao slide.');
     }
 
-    function exportText() {
-      const text = document.getElementById('doc').innerText;
-      const blob = new Blob([text], { type: 'text/plain' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'nexia-documento.txt';
-      a.click();
-      showToast('Arquivo exportado');
+    function addSlideShape() {
+      if (!slideCanvas) return;
+      const block = document.createElement('div');
+      block.style.width = '140px';
+      block.style.height = '100px';
+      block.style.borderRadius = '18px';
+      block.style.background = 'linear-gradient(135deg, rgba(124,108,255,0.8), rgba(163,147,255,0.5))';
+      block.style.marginTop = '14px';
+      slideCanvas.appendChild(block);
+      showToast('Bloco adicionado.');
     }
 
-    function cmd(command) {
-      document.execCommand(command, false, null);
+    function downloadSlide() {
+      showToast('Slide exportado.');
     }
 
-    function fontSize(value) {
-      if (!value) return;
-      document.execCommand('fontSize', false, value);
-    }
-
-    function formatDoc(tag) {
-      document.execCommand('formatBlock', false, tag);
-    }
-
-    function saveSettings() {
-      showToast('Configurações salvas');
-    }
-
-    function addTableRow() {
-      const table = document.getElementById('sheetTable');
-      const tbody = table.querySelector('tbody');
-      const row = tbody.insertRow();
-      const indexCell = document.createElement('th');
-      indexCell.textContent = tbody.rows.length + 1;
-      row.appendChild(indexCell);
-
-      for (let i = 0; i < 3; i++) {
-        const cell = row.insertCell();
-        cell.contentEditable = 'true';
+    function renderSlideThumbs() {
+      if (!slideThumbs) return;
+      slideThumbs.innerHTML = '';
+      for (let i = 0; i < 4; i++) {
+        const thumb = document.createElement('div');
+        thumb.className = 'thumb active';
+        thumb.innerHTML = '<div class="thumb-preview"><strong>Slide ' + (i + 1) + '</strong><br><br>Design moderno</div>';
+        slideThumbs.appendChild(thumb);
       }
     }
 
-    function addTableCol() {
+    function newProject() {
+      showToast('Projeto novo criado.');
+      navButtons.forEach(b => b.classList.toggle('active', b.dataset.view === 'projects'));
+      views.forEach(v => v.classList.toggle('active', v.id === 'projects'));
+    }
+
+    function saveSettings() {
+      showToast('Configurações salvas.');
+    }
+
+    function addRow() {
       const table = document.getElementById('sheetTable');
-      const headerRow = table.querySelector('thead tr');
-      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      const nextIndex = headerRow.children.length - 1;
-      const th = document.createElement('th');
-      th.textContent = letters[nextIndex] || 'Z';
-      headerRow.appendChild(th);
-
-      Array.from(table.querySelectorAll('tbody tr')).forEach((row) => {
-        const td = document.createElement('td');
-        td.contentEditable = 'true';
-        row.appendChild(td);
+      const tbody = table.querySelector('tbody');
+      const row = document.createElement('tr');
+      ['','',''].forEach(() => {
+        const cell = document.createElement('td');
+        cell.textContent = '';
+        row.appendChild(cell);
       });
+      tbody.appendChild(row);
+      showToast('Linha adicionada.');
     }
 
-    function prevSlide() {
-      showToast('Slide anterior');
+    function addColumn() {
+      const table = document.getElementById('sheetTable');
+      for (const row of table.rows) {
+        const cell = row.insertCell();
+        cell.textContent = '';
+      }
+      showToast('Coluna adicionada.');
     }
 
-    function nextSlide() {
-      showToast('Próximo slide');
+    function sumSelected() {
+      showToast('Função de soma aplicada.');
     }
 
-    function updateWordCount() {
-      const text = document.getElementById('doc')?.innerText || '';
-      const count = text.trim() ? text.trim().split(/\s+/).length : 0;
-      const counter = document.getElementById('wordCount');
-      if (counter) counter.textContent = count;
-    }
+    renderSlideThumbs();
+    document.getElementById('menuToggle')?.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('mobileBackdrop').classList.toggle('show');
+    });
 
-    document.getElementById('doc')?.addEventListener('input', updateWordCount);
-    updateWordCount();
+    document.getElementById('mobileBackdrop')?.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('mobileBackdrop').classList.remove('show');
+    });
   </script>
 </body>
 </html>
