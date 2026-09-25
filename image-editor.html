@@ -97,25 +97,25 @@
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 140 140" focusable="false">
             <defs>
-              <linearGradient id="moonGradient" x1="38" y1="30" x2="89" y2="95" gradientUnits="userSpaceOnUse">
+              <linearGradient id="lunexiaMoonGradient" x1="38" y1="30" x2="89" y2="95" gradientUnits="userSpaceOnUse">
                 <stop offset="0" stop-color="#f2dcff"></stop>
                 <stop offset="0.48" stop-color="#c7a6ff"></stop>
                 <stop offset="1" stop-color="#7c6cff"></stop>
               </linearGradient>
-              <radialGradient id="haloGradient" cx="50%" cy="50%" r="50%">
+              <radialGradient id="lunexiaHaloGradient" cx="50%" cy="50%" r="50%">
                 <stop offset="0" stop-color="#c7a6ff" stop-opacity="0.55"></stop>
                 <stop offset="1" stop-color="#c7a6ff" stop-opacity="0"></stop>
               </radialGradient>
-              <mask id="crescentMask">
+              <mask id="lunexiaCrescentMask">
                 <rect width="140" height="140" fill="black"></rect>
                 <circle cx="61" cy="69" r="31" fill="white"></circle>
                 <circle cx="77" cy="60" r="27" fill="black"></circle>
               </mask>
             </defs>
-            <circle class="moon-halo" cx="61" cy="69" r="41" fill="url(#haloGradient)"></circle>
+            <circle class="moon-halo" cx="61" cy="69" r="41" fill="url(#lunexiaHaloGradient)"></circle>
             <ellipse class="orbit-ring" cx="70" cy="70" rx="50" ry="38" transform="rotate(-18 70 70)"></ellipse>
             <g class="moon-core">
-              <circle cx="61" cy="69" r="31" fill="url(#moonGradient)" mask="url(#crescentMask)"></circle>
+              <circle cx="61" cy="69" r="31" fill="url(#lunexiaMoonGradient)" mask="url(#lunexiaCrescentMask)"></circle>
             </g>
             <g class="orbit-nodes">
               <g class="orbit-node orbit-star" transform="translate(103 33)">
