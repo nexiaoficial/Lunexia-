@@ -935,8 +935,8 @@
           </div>
         </div>
         <div class="top-actions">
-          <button class="pill-btn" onclick="openLogin()">Conta,email,data de nascimento, segurança, excluir conta.</button>
-          <div class="avatar" id="avatarInitial">crie avatar, espaço do cliente.</div>
+          <button id="accountSecurityButton" class="pill-btn" onclick="openLogin()">Conta e segurança</button>
+          <div class="avatar" id="avatarInitial" aria-label="Avatar do cliente">?</div>
         </div>
       </div>
 
@@ -1204,22 +1204,7 @@
     </main>
   </div>
 
-  <div id="loginModal" class="login">
-    <div class="login-box">
-      <h2>Entrar</h2>
-      <div class="field">
-        <label>E-mail</label>
-        <input type="email" value="lunexia@workspace.com">
-      </div>
-      <div class="field">
-        <label>Senha</label>
-        <input type="password" value="••••••••">
-      </div>
-      <button class="primary-btn" onclick="close
-Create an accountLogin()">Criar</button>
-      <button class="primary-btn" onclick="closeLogin()">Entrar</button>
-    </div>
-  </div>
+  <div id="loginModal" class="login" hidden></div>
 
   <div id="aiModal"
     class="modal">
@@ -1399,5 +1384,6 @@ Create an accountLogin()">Criar</button>
     document.getElementById('doc')?.addEventListener('input', updateWordCount);
     updateWordCount();
   </script>
+  <script src="auth.js"></script>
 </body>
 </html>
