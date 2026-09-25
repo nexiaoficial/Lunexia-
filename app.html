@@ -896,6 +896,12 @@
       color: var(--ink);
     }
 
+    button:disabled {
+      opacity: 0.58;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
     .modal {
       position: fixed;
       inset: 0;
@@ -1207,9 +1213,9 @@
             </div>
             <div class="mini-card">
               <div class="muted">Status</div>
-              <div class="status-badge draft" id="docStatusBadge">Rascunho</div>
-              <div class="creation-note" id="docStatusText">Rascunho ativo pronto para edição.</div>
-              <button class="primary-btn" style="margin-top:12px; width:100%;" onclick="completeActiveDraft('doc')">Concluir documento</button>
+              <div class="status-badge draft" id="docStatusBadge" role="status" aria-live="polite">Rascunho</div>
+              <div class="creation-note" id="docStatusText" role="status" aria-live="polite">Rascunho ativo pronto para edição.</div>
+              <button class="primary-btn" style="margin-top:12px; width:100%;" data-complete-type="doc" onclick="completeActiveDraft('doc')">Concluir documento</button>
             </div>
             <div class="mini-card">
               <div class="muted">Documentos salvos</div>
@@ -1277,10 +1283,10 @@
             </div>
             <div class="mini-card">
               <div class="muted">Status</div>
-              <div class="status-badge draft" id="slideStatusBadge">Rascunho</div>
-              <div class="creation-note" id="slideStatusText">Rascunho de apresentação ativo.</div>
-              <div class="creation-note">Concluídas: <strong id="countSlides">0</strong></div>
-              <button class="primary-btn" style="margin-top:12px; width:100%;" onclick="completeActiveDraft('slide')">Concluir apresentação</button>
+              <div class="status-badge draft" id="slideStatusBadge" role="status" aria-live="polite">Rascunho</div>
+              <div class="creation-note" id="slideStatusText" role="status" aria-live="polite">Rascunho de apresentação ativo.</div>
+              <div class="creation-note">Concluídas: <strong id="slideCompletedTotal">0</strong></div>
+              <button class="primary-btn" style="margin-top:12px; width:100%;" data-complete-type="slide" onclick="completeActiveDraft('slide')">Concluir apresentação</button>
             </div>
           </div>
           <div class="slide-stage">
@@ -1290,7 +1296,7 @@
             </div>
             <div class="slide-controls">
               <button class="small-btn" onclick="newSlide()">Criar novo</button>
-              <button class="small-btn" onclick="completeActiveDraft('slide')">Concluir apresentação</button>
+              <button class="small-btn" data-complete-type="slide" onclick="completeActiveDraft('slide')">Concluir apresentação</button>
               <button class="small-btn" onclick="downloadSlide()">Exportar</button>
             </div>
           </div>
@@ -1307,7 +1313,7 @@
           <div class="panel card project-editor">
             <div class="section-header">
               <h3 style="margin:0;">Editor do projeto</h3>
-              <div class="status-badge draft" id="projectStatusBadge">Rascunho</div>
+              <div class="status-badge draft" id="projectStatusBadge" role="status" aria-live="polite">Rascunho</div>
             </div>
             <div class="field">
               <label for="projectTitleInput">Nome do projeto</label>
@@ -1321,10 +1327,10 @@
               <label for="projectMetaInput">Metadados</label>
               <input id="projectMetaInput" placeholder="Ex.: Cliente Aurora • Fase descoberta • Prioridade alta" />
             </div>
-            <div class="creation-note" id="projectStatusText">Rascunho ativo pronto para edição.</div>
+            <div class="creation-note" id="projectStatusText" role="status" aria-live="polite">Rascunho ativo pronto para edição.</div>
             <div class="toolbar">
               <button onclick="newProject()">Novo projeto</button>
-              <button class="primary-btn" onclick="completeActiveDraft('project')">Concluir projeto</button>
+              <button class="primary-btn" data-complete-type="project" onclick="completeActiveDraft('project')">Concluir projeto</button>
             </div>
           </div>
           <div class="side-panel">
@@ -1401,8 +1407,8 @@
     const projectGrid = document.getElementById('projectGrid');
     const countProjects = document.getElementById('countProjects');
     const countDocs = document.getElementById('countDocs');
-    const countSlides = document.getElementById('countSlides');
-    const lastType = document.getElementById('lastType');
+    const slidesCounterDisplay = document.getElementById('lastType');
+    const slideCompletedTotal = document.getElementById('slideCompletedTotal');
     const lastCreatedText = document.getElementById('lastCreatedText');
     const docStatusBadge = document.getElementById('docStatusBadge');
     const docStatusText = document.getElementById('docStatusText');
@@ -1415,12 +1421,17 @@
     const projectMetaInput = document.getElementById('projectMetaInput');
     const projectDraftCount = document.getElementById('projectDraftCount');
     const projectCompletedCount = document.getElementById('projectCompletedCount');
+    const concludeButtons = {
+      doc: document.querySelectorAll('[data-complete-type="doc"]'),
+      slide: document.querySelectorAll('[data-complete-type="slide"]'),
+      project: document.querySelectorAll('[data-complete-type="project"]')
+    };
 
     const CREATION_STORAGE_KEY = 'lunexia.creationState.v2';
     const creationConfig = {
-      doc: { label: 'Documento', counter: countDocs },
-      slide: { label: 'Apresentação', counter: countSlides },
-      project: { label: 'Projeto', counter: countProjects }
+      doc: { label: 'Documento', counter: countDocs, completedWord: 'concluído' },
+      slide: { label: 'Apresentação', counter: slidesCounterDisplay, completedWord: 'concluída' },
+      project: { label: 'Projeto', counter: countProjects, completedWord: 'concluído' }
     };
     const uiState = {
       displayed: {
@@ -1436,6 +1447,11 @@
         completed: { doc: {}, slide: {}, project: {} },
         counts: { doc: 0, slide: 0, project: 0 },
         activeDraft: { doc: null, slide: null, project: null },
+        displayed: {
+          doc: { id: null, status: 'draft' },
+          slide: { id: null, status: 'draft' },
+          project: { id: null, status: 'draft' }
+        },
         lastCompleted: { type: null, label: 'nenhuma concluída', id: null, completedAt: null }
       };
     }
@@ -1452,6 +1468,7 @@
           completed: { ...base.completed, ...(saved.completed || {}) },
           counts: { ...base.counts, ...(saved.counts || {}) },
           activeDraft: { ...base.activeDraft, ...(saved.activeDraft || {}) },
+          displayed: { ...base.displayed, ...(saved.displayed || {}) },
           lastCompleted: { ...base.lastCompleted, ...(saved.lastCompleted || {}) }
         };
         Object.keys(creationConfig).forEach(type => {
@@ -1459,6 +1476,7 @@
           state.completed[type] = state.completed[type] || {};
           state.counts[type] = Object.keys(state.completed[type]).length;
         });
+        state.lastCompleted = getLatestCompletedFromState(state) || state.lastCompleted;
         return state;
       } catch (error) {
         return base;
@@ -1502,6 +1520,55 @@
       return container.textContent || container.innerText || '';
     }
 
+    function sanitizeRichContent(value = '') {
+      const template = document.createElement('template');
+      template.innerHTML = value;
+      const allowedTags = new Set(['H1', 'H2', 'H3', 'P', 'STRONG', 'EM', 'U', 'UL', 'OL', 'LI', 'DIV', 'BR', 'SPAN']);
+      const allowedStyleProps = new Set(['width', 'height', 'border-radius', 'background', 'margin-top', 'text-align', 'font-size', 'font-weight', 'color']);
+      template.content.querySelectorAll('*').forEach(node => {
+        if (!allowedTags.has(node.tagName)) {
+          node.replaceWith(...Array.from(node.childNodes));
+          return;
+        }
+        Array.from(node.attributes).forEach(attribute => {
+          const name = attribute.name.toLowerCase();
+          if (name.startsWith('on')) {
+            node.removeAttribute(attribute.name);
+            return;
+          }
+          if (name === 'style') {
+            const safeStyle = attribute.value
+              .split(';')
+              .map(rule => rule.trim())
+              .filter(Boolean)
+              .map(rule => {
+                const separatorIndex = rule.indexOf(':');
+                if (separatorIndex === -1) return null;
+                const property = rule.slice(0, separatorIndex);
+                const rawValue = rule.slice(separatorIndex + 1);
+                const safeProperty = property.trim().toLowerCase();
+                const safeValue = rawValue.trim();
+                if (!allowedStyleProps.has(safeProperty)) return null;
+                if (/url\s*\(|expression|javascript:/i.test(safeValue)) return null;
+                return `${safeProperty}: ${safeValue}`;
+              })
+              .filter(Boolean)
+              .join('; ');
+            if (safeStyle) {
+              node.setAttribute('style', safeStyle);
+            } else {
+              node.removeAttribute('style');
+            }
+            return;
+          }
+          if (name !== 'class') {
+            node.removeAttribute(attribute.name);
+          }
+        });
+      });
+      return template.innerHTML;
+    }
+
     function truncateText(value = '', size = 110) {
       const cleanValue = value.trim().replace(/\s+/g, ' ');
       if (cleanValue.length <= size) return cleanValue;
@@ -1510,12 +1577,20 @@
 
     function formatDateTime(value) {
       if (!value) return 'Agora mesmo';
-      return new Date(value).toLocaleString('pt-BR', {
+      const parsed = new Date(value);
+      if (Number.isNaN(parsed.getTime())) return 'Data indisponível';
+      return parsed.toLocaleString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
         hour: '2-digit',
         minute: '2-digit'
       });
+    }
+
+    function getSlideSummary() {
+      const heading = slideCanvas?.querySelector('h1, h2, h3, strong')?.innerText.trim() || 'Apresentação Lunexia';
+      const paragraph = slideCanvas?.querySelector('p')?.innerText.trim() || '';
+      return truncateText(paragraph || heading, 90);
     }
 
     function getWordCountValue() {
@@ -1555,15 +1630,43 @@
 
     function getSortedItems(type, bucket) {
       const source = creationState[bucket]?.[type] || {};
-      return Object.values(source).sort((first, second) => {
-        const secondTime = new Date(second.completedAt || second.updatedAt || second.createdAt || 0).getTime();
-        const firstTime = new Date(first.completedAt || first.updatedAt || first.createdAt || 0).getTime();
-        return secondTime - firstTime;
-      });
+      return Object.values(source).sort(compareCreationItems);
+    }
+
+    function compareCreationItems(first, second) {
+      const secondTime = new Date(second.completedAt || second.updatedAt || second.createdAt || 0).getTime();
+      const firstTime = new Date(first.completedAt || first.updatedAt || first.createdAt || 0).getTime();
+      return secondTime - firstTime;
     }
 
     function getLatestItem(type, bucket) {
       return getSortedItems(type, bucket)[0] || null;
+    }
+
+    function getMergedEntries(type) {
+      return [
+        ...Object.values(creationState.drafts[type] || {}).map(item => ({ ...item, status: 'draft' })),
+        ...Object.values(creationState.completed[type] || {}).map(item => ({ ...item, status: 'completed' }))
+      ].sort(compareCreationItems);
+    }
+
+    function getLatestCompletedFromState(state) {
+      const completedEntries = Object.keys(creationConfig).flatMap(type =>
+        Object.values(state.completed?.[type] || {}).map(item => ({
+          ...item,
+          type,
+          label: creationConfig[type].label
+        }))
+      ).sort(compareCreationItems);
+      if (!completedEntries.length) return null;
+      const latest = completedEntries[0];
+      return {
+        type: latest.type,
+        label: latest.label,
+        completedWord: creationConfig[latest.type].completedWord,
+        id: latest.id,
+        completedAt: latest.completedAt || latest.updatedAt || latest.createdAt || null
+      };
     }
 
     function getDraft(type, id) {
@@ -1580,17 +1683,17 @@
         const preview = truncateText(docEditor?.innerText || 'Documento Lunexia em rascunho.');
         return {
           title,
-          content: docEditor?.innerHTML || buildDefaultData('doc').content,
+          content: sanitizeRichContent(docEditor?.innerHTML || buildDefaultData('doc').content),
           preview,
           wordCount: getWordCountValue()
         };
       }
       if (type === 'slide') {
         const title = slideCanvas?.querySelector('h1, h2, strong')?.innerText.trim() || 'Apresentação Lunexia';
-        const preview = truncateText(stripHtml(slideCanvas?.innerHTML || ''), 90) || 'Apresentação Lunexia em rascunho.';
+        const preview = getSlideSummary() || 'Apresentação Lunexia em rascunho.';
         return {
           title,
-          content: slideCanvas?.innerHTML || buildDefaultData('slide').content,
+          content: sanitizeRichContent(slideCanvas?.innerHTML || buildDefaultData('slide').content),
           preview
         };
       }
@@ -1608,18 +1711,29 @@
     function applyCreationToUI(type, item, status = 'draft') {
       const safeItem = item || buildDefaultData(type);
       uiState.displayed[type] = { id: safeItem.id || null, status };
+      creationState.displayed[type] = { id: safeItem.id || null, status };
       if (type === 'doc' && docEditor) {
-        docEditor.innerHTML = safeItem.content || buildDefaultData('doc').content;
+        docEditor.innerHTML = sanitizeRichContent(safeItem.content || buildDefaultData('doc').content);
+        docEditor.contentEditable = status === 'completed' ? 'false' : 'true';
+        docEditor.setAttribute('aria-readonly', status === 'completed' ? 'true' : 'false');
+        docEditor.tabIndex = status === 'completed' ? -1 : 0;
         updateWordCount();
       }
       if (type === 'slide' && slideCanvas) {
-        slideCanvas.innerHTML = safeItem.content || buildDefaultData('slide').content;
+        slideCanvas.innerHTML = sanitizeRichContent(safeItem.content || buildDefaultData('slide').content);
+        slideCanvas.contentEditable = status === 'completed' ? 'false' : 'true';
+        slideCanvas.setAttribute('aria-readonly', status === 'completed' ? 'true' : 'false');
+        slideCanvas.tabIndex = status === 'completed' ? -1 : 0;
       }
       if (type === 'project') {
         if (projectTitleInput) projectTitleInput.value = safeItem.title || '';
         if (projectSummaryInput) projectSummaryInput.value = safeItem.summary || '';
         if (projectMetaInput) projectMetaInput.value = safeItem.metadata || '';
+        if (projectTitleInput) projectTitleInput.disabled = status === 'completed';
+        if (projectSummaryInput) projectSummaryInput.disabled = status === 'completed';
+        if (projectMetaInput) projectMetaInput.disabled = status === 'completed';
       }
+      saveCreationState();
       renderCreationStatus();
     }
 
@@ -1661,13 +1775,14 @@
     function showCompletedCreation(type, id) {
       const item = getCompleted(type, id);
       if (!item) return;
-      creationState.activeDraft[type] = null;
-      saveCreationState();
       applyCreationToUI(type, item, 'completed');
       renderCreationCollections();
     }
 
     function setActiveDraft(type, id) {
+      if (uiState.displayed[type]?.status === 'draft' && uiState.displayed[type]?.id && uiState.displayed[type]?.id !== id) {
+        persistVisibleDraft(type);
+      }
       const draft = getDraft(type, id);
       if (draft) {
         creationState.activeDraft[type] = id;
@@ -1684,26 +1799,50 @@
         renderCreationCollections();
         return latestDraft;
       }
+      return createDraft(type, buildDefaultData(type));
+    }
+
+    function initializeCreationView(type) {
+      const savedView = creationState.displayed?.[type];
+      if (savedView?.status === 'completed' && savedView.id && getCompleted(type, savedView.id)) {
+        showCompletedCreation(type, savedView.id);
+        return;
+      }
+      const preferredDraftId = savedView?.status === 'draft' && savedView.id
+        ? savedView.id
+        : creationState.activeDraft[type] || getLatestItem(type, 'drafts')?.id || null;
+      if (preferredDraftId) {
+        setActiveDraft(type, preferredDraftId);
+        return;
+      }
       const latestCompleted = getLatestItem(type, 'completed');
       if (latestCompleted) {
+        creationState.activeDraft[type] = null;
+        saveCreationState();
         showCompletedCreation(type, latestCompleted.id);
-        return latestCompleted;
+        return;
       }
-      creationState.activeDraft[type] = null;
-      saveCreationState();
-      applyCreationToUI(type, buildDefaultData(type), 'draft');
-      renderCreationCollections();
-      return null;
+      createDraft(type, buildDefaultData(type));
     }
 
     function ensureActiveDraft(type) {
+      if (uiState.displayed[type]?.status === 'completed') {
+        return createDraft(type, buildDefaultData(type));
+      }
       const existingDraft = getDraft(type, creationState.activeDraft[type]);
       if (existingDraft) return existingDraft;
-      const currentView = uiState.displayed[type];
       return createDraft(type, {
-        ...captureCreationData(type),
-        createdAt: currentView?.id ? nowIso() : nowIso()
+        ...captureCreationData(type)
       });
+    }
+
+    function persistVisibleDraft(type) {
+      if (uiState.displayed[type]?.status !== 'draft') return null;
+      const draftId = uiState.displayed[type]?.id;
+      if (!draftId) return null;
+      const draft = getDraft(type, draftId);
+      if (!draft) return null;
+      return saveDraft(type, draft.id, captureCreationData(type));
     }
 
     function completeCreation(type, id) {
@@ -1712,18 +1851,16 @@
         showToast(`Abra um rascunho de ${creationConfig[type].label.toLowerCase()} antes de concluir.`);
         return null;
       }
-      if (getCompleted(type, itemId)) {
-        showCompletedCreation(type, itemId);
-        showToast(`${creationConfig[type].label} já estava concluído.`);
-        return getCompleted(type, itemId);
-      }
       const draft = getDraft(type, itemId);
       if (!draft) {
         showToast(`Nenhum rascunho de ${creationConfig[type].label.toLowerCase()} encontrado.`);
         return null;
       }
+      const latestDraft = uiState.displayed[type]?.status === 'draft' && uiState.displayed[type]?.id === itemId
+        ? saveDraft(type, itemId, captureCreationData(type)) || getDraft(type, itemId)
+        : draft;
       const completedItem = {
-        ...draft,
+        ...latestDraft,
         ...captureCreationData(type),
         status: 'concluído',
         completedAt: nowIso(),
@@ -1736,18 +1873,27 @@
       creationState.lastCompleted = {
         type,
         label: creationConfig[type].label,
+        completedWord: creationConfig[type].completedWord,
         id: itemId,
         completedAt: completedItem.completedAt
       };
       saveCreationState();
       renderCreationStats();
       showCompletedCreation(type, itemId);
-      showToast(`${creationConfig[type].label} concluído com sucesso.`);
+      showToast(`${creationConfig[type].label} ${creationConfig[type].completedWord} com sucesso.`);
       return completedItem;
     }
 
     function completeActiveDraft(type) {
-      const activeId = creationState.activeDraft[type] || uiState.displayed[type]?.id;
+      if (uiState.displayed[type]?.status === 'completed') {
+        showToast(`${creationConfig[type].label} já está ${creationConfig[type].completedWord}.`);
+        return null;
+      }
+      const activeId = creationState.activeDraft[type];
+      if (!activeId) {
+        showToast(`Abra um rascunho de ${creationConfig[type].label.toLowerCase()} antes de concluir.`);
+        return null;
+      }
       return completeCreation(type, activeId);
     }
 
@@ -1758,13 +1904,16 @@
           counter.textContent = String(creationState.counts[type] || 0);
         }
       });
-      if (lastType) {
-        lastType.textContent = String(creationState.counts.slide || 0);
+      if (slideCompletedTotal) {
+        slideCompletedTotal.textContent = String(creationState.counts.slide || 0);
       }
       if (lastCreatedText) {
-        const latest = creationState.lastCompleted;
+        const latest = getLatestCompletedFromState(creationState) || creationState.lastCompleted;
+        if (latest) {
+          creationState.lastCompleted = latest;
+        }
         lastCreatedText.textContent = latest?.type
-          ? `Última criação: ${latest.label} concluído em ${formatDateTime(latest.completedAt)}`
+          ? `Última criação: ${latest.label} ${latest.completedWord || creationConfig[latest.type]?.completedWord || 'concluído'} em ${formatDateTime(latest.completedAt)}`
           : 'Última criação: nenhuma concluída';
       }
       if (projectDraftCount) {
@@ -1804,19 +1953,33 @@
           ? 'Projeto concluído carregado para consulta.'
           : 'Rascunho de projeto salvo automaticamente.';
       }
+      const concludeButtonLabels = {
+        doc: 'Concluir documento',
+        slide: 'Concluir apresentação',
+        project: 'Concluir projeto'
+      };
+      Object.entries(concludeButtons).forEach(([type, buttons]) => {
+        buttons.forEach(button => {
+          const isEditableDraft = uiState.displayed[type].status === 'draft'
+            && !!uiState.displayed[type].id
+            && creationState.activeDraft[type] === uiState.displayed[type].id
+            && !!getDraft(type, creationState.activeDraft[type]);
+          button.disabled = !isEditableDraft;
+          button.textContent = uiState.displayed[type].status === 'completed'
+            ? `${creationConfig[type].label} concluído`
+            : concludeButtonLabels[type];
+        });
+      });
     }
 
     function renderDocList() {
       if (!docList) return;
-      const entries = [
-        ...getSortedItems('doc', 'drafts').map(item => ({ ...item, status: 'draft' })),
-        ...getSortedItems('doc', 'completed').map(item => ({ ...item, status: 'completed' }))
-      ];
-      docList.innerHTML = '';
+      const entries = getMergedEntries('doc');
       if (!entries.length) {
-        docList.innerHTML = '<div class="creation-note">Nenhum documento salvo ainda.</div>';
+        renderEmptyState(docList, 'Nenhum documento salvo ainda.');
         return;
       }
+      docList.innerHTML = '';
       entries.forEach(item => {
         const button = document.createElement('button');
         button.type = 'button';
@@ -1824,10 +1987,12 @@
         if (uiState.displayed.doc.id === item.id && uiState.displayed.doc.status === item.status) {
           button.classList.add('active');
         }
-        button.innerHTML = `
-          <strong>${item.title || 'Documento Lunexia'}</strong>
-          <small>${item.status === 'completed' ? 'Concluído' : 'Rascunho'} • ${formatDateTime(item.completedAt || item.updatedAt)}</small>
-        `;
+        const title = document.createElement('strong');
+        title.textContent = item.title || 'Documento Lunexia';
+        const meta = document.createElement('small');
+        meta.textContent = `${item.status === 'completed' ? 'Concluído' : 'Rascunho'} • ${formatDateTime(item.completedAt || item.updatedAt)}`;
+        button.appendChild(title);
+        button.appendChild(meta);
         button.addEventListener('click', () => {
           if (item.status === 'completed') {
             showCompletedCreation('doc', item.id);
@@ -1841,15 +2006,12 @@
 
     function renderSlideThumbs() {
       if (!slideThumbs) return;
-      const entries = [
-        ...getSortedItems('slide', 'drafts').map(item => ({ ...item, status: 'draft' })),
-        ...getSortedItems('slide', 'completed').map(item => ({ ...item, status: 'completed' }))
-      ];
-      slideThumbs.innerHTML = '';
+      const entries = getMergedEntries('slide');
       if (!entries.length) {
-        slideThumbs.innerHTML = '<div class="creation-note">Nenhuma apresentação salva ainda.</div>';
+        renderEmptyState(slideThumbs, 'Nenhuma apresentação salva ainda.');
         return;
       }
+      slideThumbs.innerHTML = '';
       entries.forEach((item, index) => {
         const thumb = document.createElement('button');
         thumb.type = 'button';
@@ -1857,12 +2019,19 @@
         if (uiState.displayed.slide.id === item.id && uiState.displayed.slide.status === item.status) {
           thumb.classList.add('active');
         }
-        thumb.innerHTML = `
-          <div class="thumb-preview">
-            <strong>${item.title || `Apresentação ${index + 1}`}</strong><br><br>
-            ${item.status === 'completed' ? 'Concluído' : 'Rascunho'} • ${truncateText(item.preview || '', 52)}
-          </div>
-        `;
+        const preview = document.createElement('div');
+        preview.className = 'thumb-preview';
+        thumb.setAttribute('aria-label', `${item.status === 'completed' ? 'Concluído' : 'Rascunho'}: ${item.title || `Apresentação ${index + 1}`}`);
+        const title = document.createElement('strong');
+        title.textContent = item.title || `Apresentação ${index + 1}`;
+        const spacing = document.createElement('br');
+        const spacingTwo = document.createElement('br');
+        const metaText = document.createTextNode(`${item.status === 'completed' ? 'Concluído' : 'Rascunho'} • ${truncateText(item.preview || '', 52)}`);
+        preview.appendChild(title);
+        preview.appendChild(spacing);
+        preview.appendChild(spacingTwo);
+        preview.appendChild(metaText);
+        thumb.appendChild(preview);
         thumb.addEventListener('click', () => {
           if (item.status === 'completed') {
             showCompletedCreation('slide', item.id);
@@ -1876,29 +2045,39 @@
 
     function renderProjectGrid() {
       if (!projectGrid) return;
-      const entries = [
-        ...getSortedItems('project', 'drafts').map(item => ({ ...item, status: 'draft' })),
-        ...getSortedItems('project', 'completed').map(item => ({ ...item, status: 'completed' }))
-      ];
-      projectGrid.innerHTML = '';
+      const entries = getMergedEntries('project');
       if (!entries.length) {
-        projectGrid.innerHTML = '<div class="empty-box card">Nenhum projeto salvo ainda. Crie um rascunho e conclua quando estiver pronto.</div>';
+        renderEmptyState(projectGrid, 'Nenhum projeto salvo ainda. Crie um rascunho e conclua quando estiver pronto.', 'empty-box card');
         return;
       }
+      projectGrid.innerHTML = '';
       entries.forEach(item => {
         const card = document.createElement('button');
         card.type = 'button';
         card.className = 'project-card card';
-        card.innerHTML = `
-          <div class="emoji">${item.status === 'completed' ? '✅' : '📝'}</div>
-          <div class="status-badge ${item.status === 'completed' ? 'completed' : 'draft'}">${item.status === 'completed' ? 'Concluído' : 'Rascunho'}</div>
-          <h3>${item.title || 'Projeto Lunexia'}</h3>
-          <p>${item.preview || 'Planejamento premium em construção.'}</p>
-          <div class="project-meta">
-            <span>${item.metadata ? truncateText(item.metadata, 40) : 'Metadados prontos para atualização'}</span>
-            <span>${formatDateTime(item.completedAt || item.updatedAt)}</span>
-          </div>
-        `;
+        const emoji = document.createElement('div');
+        emoji.className = 'emoji';
+        emoji.textContent = item.status === 'completed' ? '✅' : '📝';
+        const badge = document.createElement('div');
+        badge.className = `status-badge ${item.status === 'completed' ? 'completed' : 'draft'}`;
+        badge.textContent = item.status === 'completed' ? 'Concluído' : 'Rascunho';
+        const title = document.createElement('h3');
+        title.textContent = item.title || 'Projeto Lunexia';
+        const summary = document.createElement('p');
+        summary.textContent = item.preview || 'Planejamento premium em construção.';
+        const meta = document.createElement('div');
+        meta.className = 'project-meta';
+        const metadata = document.createElement('span');
+        metadata.textContent = item.metadata ? truncateText(item.metadata, 40) : 'Metadados prontos para atualização';
+        const timestamp = document.createElement('span');
+        timestamp.textContent = formatDateTime(item.completedAt || item.updatedAt);
+        meta.appendChild(metadata);
+        meta.appendChild(timestamp);
+        card.appendChild(emoji);
+        card.appendChild(badge);
+        card.appendChild(title);
+        card.appendChild(summary);
+        card.appendChild(meta);
         if (uiState.displayed.project.id === item.id && uiState.displayed.project.status === item.status) {
           card.classList.add('active');
         }
@@ -1919,6 +2098,15 @@
       renderSlideThumbs();
       renderProjectGrid();
       renderCreationStatus();
+    }
+
+    function renderEmptyState(container, text, className = 'creation-note') {
+      if (!container) return;
+      container.innerHTML = '';
+      const emptyState = document.createElement('div');
+      emptyState.className = className;
+      emptyState.textContent = text;
+      container.appendChild(emptyState);
     }
 
     function showToast(message) {
@@ -1953,20 +2141,41 @@
         return;
       }
       closeAI();
+      openView('docs');
+      const draft = ensureActiveDraft('doc');
       if (docEditor) {
-        docEditor.innerHTML = `<h1>Resultado da IA</h1><p>${prompt}</p><p>Este conteúdo foi gerado a partir da sua solicitação e pode ser ajustado a qualquer momento.</p>`;
-        const draft = ensureActiveDraft('doc');
+        docEditor.innerHTML = '';
+        const heading = document.createElement('h1');
+        heading.textContent = 'Resultado da IA';
+        const content = document.createElement('p');
+        content.textContent = prompt;
+        const note = document.createElement('p');
+        note.textContent = 'Este conteúdo foi gerado a partir da sua solicitação e pode ser ajustado a qualquer momento.';
+        docEditor.appendChild(heading);
+        docEditor.appendChild(content);
+        docEditor.appendChild(note);
         saveDraft('doc', draft.id, captureCreationData('doc'));
         applyCreationToUI('doc', getDraft('doc', draft.id), 'draft');
       }
       showToast('Conteúdo gerado com IA.');
     }
 
+    function startNewCreation(type, viewId, message) {
+      persistAllVisibleDrafts();
+      const draft = createDraft(type, buildDefaultData(type));
+      openView(viewId);
+      applyCreationToUI(type, draft, 'draft');
+      showToast(message);
+    }
+
+    function persistAllVisibleDrafts() {
+      Object.keys(creationConfig).forEach(type => {
+        persistVisibleDraft(type);
+      });
+    }
+
     function newDoc() {
-      const draft = createDraft('doc');
-      openView('docs');
-      applyCreationToUI('doc', draft, 'draft');
-      showToast('Rascunho de documento pronto para edição.');
+      startNewCreation('doc', 'docs', 'Rascunho de documento pronto para edição.');
     }
 
     function newSheet() {
@@ -1975,21 +2184,28 @@
     }
 
     function newSlide() {
-      const draft = createDraft('slide');
-      openView('slides');
-      applyCreationToUI('slide', draft, 'draft');
-      showToast('Rascunho de apresentação pronto para edição.');
+      startNewCreation('slide', 'slides', 'Rascunho de apresentação pronto para edição.');
     }
 
     function addSlideText() {
       if (!slideCanvas) return;
-      slideCanvas.innerHTML += '<p>Nova linha de conteúdo.</p>';
+      if (uiState.displayed.slide.status === 'completed') {
+        showToast('Abra um rascunho antes de editar ou concluir uma nova apresentação.');
+        return;
+      }
+      const paragraph = document.createElement('p');
+      paragraph.textContent = 'Nova linha de conteúdo.';
+      slideCanvas.appendChild(paragraph);
       debouncedSlideSave();
       showToast('Texto adicionado ao slide.');
     }
 
     function addSlideShape() {
       if (!slideCanvas) return;
+      if (uiState.displayed.slide.status === 'completed') {
+        showToast('Abra um rascunho antes de editar ou concluir uma nova apresentação.');
+        return;
+      }
       const block = document.createElement('div');
       block.style.width = '140px';
       block.style.height = '100px';
@@ -2006,10 +2222,7 @@
     }
 
     function newProject() {
-      const draft = createDraft('project');
-      openView('projects');
-      applyCreationToUI('project', draft, 'draft');
-      showToast('Rascunho de projeto pronto para edição.');
+      startNewCreation('project', 'projects', 'Rascunho de projeto pronto para edição.');
     }
 
     function saveSettings() {
@@ -2043,17 +2256,20 @@
     }
 
     const debouncedDocSave = debounce(() => {
+      if (uiState.displayed.doc.status !== 'draft') return;
       const draft = ensureActiveDraft('doc');
       saveDraft('doc', draft.id, captureCreationData('doc'));
       updateWordCount();
     });
 
     const debouncedSlideSave = debounce(() => {
+      if (uiState.displayed.slide.status !== 'draft') return;
       const draft = ensureActiveDraft('slide');
       saveDraft('slide', draft.id, captureCreationData('slide'));
     });
 
     const debouncedProjectSave = debounce(() => {
+      if (uiState.displayed.project.status !== 'draft') return;
       const draft = ensureActiveDraft('project');
       saveDraft('project', draft.id, captureCreationData('project'));
     });
@@ -2071,9 +2287,9 @@
     projectSummaryInput?.addEventListener('input', debouncedProjectSave);
     projectMetaInput?.addEventListener('input', debouncedProjectSave);
 
-    setActiveDraft('doc', creationState.activeDraft.doc);
-    setActiveDraft('slide', creationState.activeDraft.slide);
-    setActiveDraft('project', creationState.activeDraft.project);
+    initializeCreationView('doc');
+    initializeCreationView('slide');
+    initializeCreationView('project');
     renderCreationCollections();
     document.getElementById('menuToggle')?.addEventListener('click', () => {
       document.getElementById('sidebar').classList.toggle('open');
